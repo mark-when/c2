@@ -9,23 +9,24 @@ var __extends =
         null === p ? Object.create(p) : ((d.prototype = p.prototype), new d());
     },
   oneview9;
+
 (function (a) {
   var p;
   (function (a) {
     function b() {
-      document.addEventListener("pause", c, !1);
-      document.addEventListener("resume", e, !1);
-      document.addEventListener("menubutton", f, !1);
+      document.addEventListener("pause", c, false);
+      document.addEventListener("resume", e, false);
+      document.addEventListener("menubutton", f, false);
     }
     function c() {}
     function e() {}
     function f() {
       OneView.core &&
         OneView.core.appStateHandler &&
-        OneView.core.appStateHandler.showMainMenu(!0);
+        OneView.core.appStateHandler.showMainMenu(true);
     }
     a.initialize = function () {
-      document.addEventListener("deviceready", b, !1);
+      document.addEventListener("deviceready", b, false);
     };
   })((p = a.Application || (a.Application = {})));
   window.onload = function () {
@@ -78,12 +79,12 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "hasShownRemindersInfo", {
       get: function () {
-        return this.getBoolean("oneview_settings_hasShownRemindersInfo", !1);
+        return this.getBoolean("oneview_settings_hasShownRemindersInfo", false);
       },
       set: function (a) {
         this.localStorageSetItem(
@@ -91,8 +92,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     b.prototype.getDefaultUse24hFormat = function () {
       return void 0 !== this.defaultUse24hFormat &&
@@ -110,10 +111,10 @@ var OneView;
         "AT AX BE CH CZ DE DK EE ES EU FI FO FR GB GL GR IE IM IS IT LI LU LV NL NO PL PT SE SJ".split(
           " "
         );
-      this.defaultUseWeek = !1;
+      this.defaultUseWeek = false;
       for (var b = 0; b < a.length; b++)
         -1 < navigator.language.toUpperCase().indexOf(a[b]) &&
-          (this.defaultUseWeek = !0);
+          (this.defaultUseWeek = true);
       return this.defaultUseWeek;
     };
     Object.defineProperty(b.prototype, "showWeekNumbers", {
@@ -129,8 +130,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "use24hFormat", {
       get: function () {
@@ -145,8 +146,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "timeZoneForSettingsPage", {
       get: function () {
@@ -159,12 +160,12 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "dataAmountToLoad", {
       get: function () {
-        return this.getNumber("oneview_settings_dataAmountToLoad", 48, !1);
+        return this.getNumber("oneview_settings_dataAmountToLoad", 48, false);
       },
       set: function (a) {
         this.localStorageSetItem(
@@ -172,8 +173,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "language", {
       get: function () {
@@ -189,8 +190,8 @@ var OneView;
         );
         this.updateAppWithLang();
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     b.prototype.updateAppWithLang = function () {
       var b = this.language;
@@ -209,12 +210,12 @@ var OneView;
       set: function (a) {
         this.localStorageSetItem("oneview_settings_theme", JSON.stringify(a));
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "licenceDarkTheme", {
       get: function () {
-        return this.getBoolean("oneview_settings_licenceDarkTheme", !1);
+        return this.getBoolean("oneview_settings_licenceDarkTheme", false);
       },
       set: function (a) {
         this.localStorageSetItem(
@@ -222,12 +223,12 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "licenceCandyTheme", {
       get: function () {
-        return this.getBoolean("oneview_settings_licenceCandyTheme", !1);
+        return this.getBoolean("oneview_settings_licenceCandyTheme", false);
       },
       set: function (a) {
         this.localStorageSetItem(
@@ -235,12 +236,12 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "licenceColorPicker", {
       get: function () {
-        return this.getBoolean("oneview_settings_licenceColorPicker", !1);
+        return this.getBoolean("oneview_settings_licenceColorPicker", false);
       },
       set: function (a) {
         this.localStorageSetItem(
@@ -248,8 +249,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "firstDayOfWeek", {
       get: function () {
@@ -268,8 +269,8 @@ var OneView;
           JSON.stringify(this.correctWeekDayNumber(a))
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "savedCalendarColors", {
       get: function () {
@@ -291,8 +292,8 @@ var OneView;
           JSON.stringify(a)
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     Object.defineProperty(b.prototype, "grayDays", {
       get: function () {
@@ -309,8 +310,8 @@ var OneView;
           JSON.stringify(a.replace("0", "7"))
         );
       },
-      enumerable: !0,
-      configurable: !0,
+      enumerable: true,
+      configurable: true,
     });
     b.prototype.getCachedTimeZoneDiffInMinutes = function () {
       if (void 0 == this.cachedTimeZoneDiffInMinutes) {
@@ -443,9 +444,9 @@ var OneView;
       a.core.zopDrawArea.removeShadow(d);
     };
     d.prototype.setFont = function (b, c, e, f) {
-      void 0 === c && (c = !1);
-      void 0 === e && (e = !1);
-      void 0 === f && (f = !1);
+      void 0 === c && (c = false);
+      void 0 === e && (e = false);
+      void 0 === f && (f = false);
       c
         ? ((c = b + "px " + a.core.settings.theme.titleBarFont),
           f && (c = b + "px " + a.core.settings.theme.titleBarFontBold),
@@ -523,24 +524,24 @@ var OneView;
       a.core.zopDrawArea.canvasContext.stroke();
     };
     d.prototype.drawCenteredText = function (b, c, e, f, g, d, n, l, h) {
-      void 0 === h && (h = !1);
+      void 0 === h && (h = false);
       for (
         n = Math.max(
           0,
-          (f - a.core.zopDrawArea.measureTextWidth(b, g, l, !1)) / 2
+          (f - a.core.zopDrawArea.measureTextWidth(b, g, l, false)) / 2
         );
-        a.core.zopDrawArea.measureTextWidth(b, g, l, !1) > f;
+        a.core.zopDrawArea.measureTextWidth(b, g, l, false) > f;
 
       )
         b = b.substring(0, b.length - 1);
-      a.core.drawArea.drawText(b, c + n, e, g, d, !1, l, h, !1);
+      a.core.drawArea.drawText(b, c + n, e, g, d, false, l, h, false);
     };
     d.prototype.startNewRound = function () {
       this.canvasCache.startNewRound();
     };
     d.prototype.drawText = function (b, c, e, f, g, d, n, l, h) {
-      void 0 === l && (l = !1);
-      void 0 === h && (h = !1);
+      void 0 === l && (l = false);
+      void 0 === h && (h = false);
       this.setFont(f, n, l, h);
       a.core.zopDrawArea.canvasContext.fillStyle = g;
       a.core.zopDrawArea.canvasContext.fillText(
@@ -583,14 +584,14 @@ var OneView;
           ? this.azBottomZOPSpeed / 3e3
           : this.azBottomZOPSpeed / 20;
       this.azLastZoomTime = a.core.getTimeStamp();
-      this.azRunning = !0;
+      this.azRunning = true;
       this.azCallBack = f;
-      a.core.redraw(!1);
+      a.core.redraw(false);
     };
     d.prototype.runAutoZoom = function () {
-      if (!this.azRunning) return !1;
+      if (!this.azRunning) return false;
       var b = a.core.getTimeStamp() - this.azLastZoomTime;
-      if (0 === b) return !1;
+      if (0 === b) return false;
       var c = a.core.zopHandler.topZOP + this.azTopZOPSpeed * b;
       if (
         (0 <= this.azTopZOPSpeed && c > this.azGoalTopZOP) ||
@@ -610,7 +611,7 @@ var OneView;
         a.core.zopHandler.bottomPixel
       );
       if (0 == this.azTopZOPSpeed && 0 == this.azBottomZOPSpeed)
-        return this.stopAutoZoom(), !1;
+        return this.stopAutoZoom(), false;
       this.megaSlowZoom
         ? ((this.azTopZOPSpeed = this.getAzTopZopSpeed() / 2),
           (this.azBottomZOPSpeed = this.getAzBottomZopSpeed() / 2))
@@ -618,7 +619,7 @@ var OneView;
             (this.getAzTopZopSpeed() + this.azTopZOPSpeed_Linear) / 2),
           (this.azBottomZOPSpeed =
             (this.getAzBottomZopSpeed() + this.azBottomZOPSpeed_Linear) / 2));
-      return !0;
+      return true;
     };
     d.prototype.getAzTopZopSpeed = function () {
       return (
@@ -663,7 +664,7 @@ var OneView;
       if (0 != this.scrollSpeed && 0 === this.preparingScrollCounter) {
         var b = a.core.getTimeStamp(),
           c = b - this.lastScrollTime;
-        if (0 === c) return !1;
+        if (0 === c) return false;
         var e = this.lastScrollYPixel + this.scrollSpeed * c;
         this.lastScrollYPixel = e;
         this.lastScrollTime = b;
@@ -678,24 +679,24 @@ var OneView;
             ? this.scrollSpeed + this.speedSlowDown
             : 0;
         0 === this.scrollSpeed && a.core.zopHandler.endScroll();
-        return !0;
+        return true;
       }
-      return !1;
+      return false;
     };
     d.prototype.isScrollingOrZooming = function () {
-      return 1 < this.scrollSpeed || !0 === this.azRunning;
+      return 1 < this.scrollSpeed || true === this.azRunning;
     };
     d.prototype.stopAllEffects = function () {
       this.previousScrollSpeed = this.scrollSpeed = 0;
       a.core.zopHandler.endScroll();
       this.stopAutoZoom();
-      a.core.redraw(!1);
+      a.core.redraw(false);
     };
     d.prototype.stopAutoZoom = function () {
-      this.azRunning = !1;
+      this.azRunning = false;
       this.azBottomZOPSpeed = this.azTopZOPSpeed = 0;
       this.azCallBack && (this.azCallBack(), (this.azCallBack = void 0));
-      a.core.redraw(!1);
+      a.core.redraw(false);
     };
     return d;
   })();
@@ -789,7 +790,7 @@ var OneView;
             a.core.settings.theme.eventColors,
             {
               open: m,
-              closeOnBlur: !1,
+              closeOnBlur: false,
             },
             "" + b
           );
@@ -819,7 +820,7 @@ var OneView;
         } else
           (this.showNoColorPickerWindow =
             this.showNoColorPickerWindow.bind(this)),
-            m.addEventListener("click", this.showNoColorPickerWindow, !1);
+            m.addEventListener("click", this.showNoColorPickerWindow, false);
         f.id = "calendarsPopupList" + b;
         e.appendChild(f);
         a.core.domHandler.addClickEvent(f.id, this.calendarClicked, this);
@@ -841,7 +842,7 @@ var OneView;
       a.core.appStateHandler.viewShop();
     };
     b.prototype.hide = function () {
-      a.core.appStateHandler.calendarsControlIsShowing = !1;
+      a.core.appStateHandler.calendarsControlIsShowing = false;
       for (var b = 0; b < a.core.calendars.length; b++)
         this.visibilitySettings[b].newVisibility =
           a.core.calendars[b].visibility;
@@ -963,8 +964,8 @@ var OneView;
         ((b = new Option(
           "-",
           a.core.translate.get("Auto(partially English)"),
-          !1,
-          !1
+          false,
+          false
         )),
         (b.className = "inputOption"),
         this.languageSelectElement.appendChild(b));
@@ -972,8 +973,8 @@ var OneView;
         (b = new Option(
           a.core.translate.languages.values()[c],
           a.core.translate.languages.keys()[c],
-          !1,
-          !1
+          false,
+          false
         )),
           (b.className = "inputOption"),
           this.languageSelectElement.appendChild(b);
@@ -983,8 +984,8 @@ var OneView;
         (b = new Option(
           a.core.translate.get(a.core.settings.themes.values()[c].themeName),
           a.core.settings.themes.keys()[c],
-          !1,
-          !1
+          false,
+          false
         )),
           (b.className = "inputOption"),
           this.themeSelectElement.appendChild(b);
@@ -1033,8 +1034,8 @@ var OneView;
       a.core.appStateHandler.viewShop();
     };
     d.prototype.hide = function () {
-      var b = !1;
-      a.core.appStateHandler.settingsControlIsShowing = !1;
+      var b = false;
+      a.core.appStateHandler.settingsControlIsShowing = false;
       a.core.commonUserSettings.showWeekNumbers = this.showWeekCheckBox.checked;
       a.core.commonUserSettings.use24hFormat != this.use24hCheckBox.checked &&
         ((a.core.commonUserSettings.use24hFormat = this.use24hCheckBox.checked),
@@ -1044,7 +1045,7 @@ var OneView;
           "Use 24h",
           1 == a.core.commonUserSettings.use24hFormat ? 1 : 0
         ),
-        (b = !0));
+        (b = true));
       a.core.commonUserSettings.timeZoneForSettingsPage !=
         this.timeZoneSelectElement.value &&
         ((a.core.commonUserSettings.timeZoneForSettingsPage =
@@ -1058,7 +1059,7 @@ var OneView;
             1e3
           )
         ),
-        (b = !0));
+        (b = true));
       a.core.commonUserSettings.dataAmountToLoad.toString() !=
         this.dataAmountSelectElement.value &&
         ((a.core.commonUserSettings.dataAmountToLoad = Number(
@@ -1070,7 +1071,7 @@ var OneView;
           "Data amount to load",
           a.core.commonUserSettings.dataAmountToLoad
         ),
-        (b = !0));
+        (b = true));
       a.core.commonUserSettings.firstDayOfWeek + "" !=
         a.core.domHandler.getSelectOptions(this.firstDaySelectElement) &&
         ((a.core.commonUserSettings.firstDayOfWeek = Number(
@@ -1108,7 +1109,7 @@ var OneView;
           1
         ),
         a.core.reopenApp(),
-        (b = !0));
+        (b = true));
       a.core.commonUserSettings.theme.toString() !==
         this.themeSelectElement.value &&
         ((a.core.commonUserSettings.theme = this.themeSelectElement.value),
@@ -1120,7 +1121,7 @@ var OneView;
         ),
         a.core.settings.reloadTheme(),
         a.core.reopenApp(),
-        (b = !0));
+        (b = true));
       a.core.domHandler.showCanvas();
       a.core.domHandler.removeElement(this.settingsPage.id);
       b && a.core.reloadAllCalendarData();
@@ -1267,8 +1268,8 @@ var OneView;
         var e = a.core.zopDrawArea.measureTextWidth(
             "OneView",
             this.logoTextSize,
-            !0,
-            !1
+            true,
+            false
           ),
           f = 0;
         f < this.menuItems.length;
@@ -1282,8 +1283,8 @@ var OneView;
             a.core.zopDrawArea.measureTextWidth(
               this.menuItems[f].text,
               this.textSize,
-              !0,
-              !1
+              true,
+              false
             )
           ));
       this.expandedMenuWidth = Math.floor(
@@ -1384,7 +1385,7 @@ var OneView;
           k,
           b,
           a.core.settings.theme.colorTitleText,
-          !1
+          false
         ),
         a.core.drawArea.drawLine2(
           u,
@@ -1393,7 +1394,7 @@ var OneView;
           p,
           b,
           a.core.settings.theme.colorTitleText,
-          !1
+          false
         ));
       var y = e / 5;
       if (
@@ -1445,8 +1446,8 @@ var OneView;
         b < a.core.settings.titleWidth &&
         0 < e &&
         e < a.core.settings.titleWidth
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     b.prototype.redraw = function () {
       this.setSizes();
@@ -1479,9 +1480,9 @@ var OneView;
           this.expandedMenuWidth,
           this.logoTextSize,
           this.textColor,
-          !1,
-          !0,
-          !0
+          false,
+          true,
+          true
         );
         this.menuTop += this.logoTextSize;
         a.core.drawArea.drawCenteredText(
@@ -1491,9 +1492,9 @@ var OneView;
           this.expandedMenuWidth,
           this.logoTextSubSize,
           this.textColor,
-          !1,
-          !0,
-          !0
+          false,
+          true,
+          true
         );
         this.menuTop += this.logoTextSubSize + 2 * b;
         for (b = 0; b < this.menuItems.length; b++)
@@ -1510,7 +1511,7 @@ var OneView;
             2 * a.core.ratio,
           a.core.zopDrawArea.zopAreaHeight,
           a.core.settings.theme.colorTitleBackground,
-          !1
+          false
         );
         a.core.zopDrawArea.canvasContext.globalAlpha = 1;
         a.core.zopDrawArea.canvasContext.restore();
@@ -1524,7 +1525,7 @@ var OneView;
         this.expandedMenuWidth - 4,
         this.textColor,
         1,
-        !1
+        false
       );
       a.core.drawArea.drawHorizontalLineNotZOP(
         this.menuLeft,
@@ -1532,7 +1533,7 @@ var OneView;
         this.expandedMenuWidth - 4,
         this.textColor,
         1,
-        !1
+        false
       );
       a.core.drawArea.drawText(
         b.text,
@@ -1542,10 +1543,10 @@ var OneView;
           (a.core.settings.menuItemHeight - this.textSize) / 2.5,
         this.textSize,
         this.textColor,
-        !1,
-        !0,
-        !1,
-        !1
+        false,
+        true,
+        false,
+        false
       );
       a.core.drawArea.drawIcon(
         b.charCode,
@@ -1561,8 +1562,8 @@ var OneView;
         b < this.menuLeft + this.expandedMenuWidth &&
         f > this.menuTop + a.top &&
         f < this.menuTop + a.bottom
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     b.prototype.menuItemLogin_Click = function () {
       a.core.calendarDataProxy.analyticsEvent("Event", "Login Clicked");
@@ -1623,8 +1624,8 @@ var OneView;
       return 1 - (1 - b) * (1 - b) * (1 - b) * (1 - b);
     };
     b.prototype.startOpenAnimation = function () {
-      this.animationAborted = !1;
-      a.core.appStateHandler.isMainMenuBeingDragged = !1;
+      this.animationAborted = false;
+      a.core.appStateHandler.isMainMenuBeingDragged = false;
       this.animationStartTime = a.core.getTimeStamp() - 20;
       this.animationStartPos = this.currentMaxRight;
       this.animationGoalDistance =
@@ -1641,14 +1642,14 @@ var OneView;
           window.setTimeout(function () {
             b.doOpenAnimation();
           }, 30),
-        a.core.redraw(!0));
+        a.core.redraw(true));
     };
     b.prototype.isFullyExpanded = function () {
       return this.movingMenuWidth >= this.expandedMenuWidth - 5;
     };
     b.prototype.startCloseAnimation = function () {
-      this.animationAborted = !1;
-      a.core.appStateHandler.isMainMenuBeingDragged = !1;
+      this.animationAborted = false;
+      a.core.appStateHandler.isMainMenuBeingDragged = false;
       this.animationStartTime = a.core.getTimeStamp() - 20;
       this.animationStartPos = this.currentMaxRight;
       this.animationGoalDistance = -this.animationStartPos;
@@ -1665,33 +1666,34 @@ var OneView;
               b.doCloseAnimation();
             }, 30)
           : ((this.currentMaxRight = 0),
-            (a.core.appStateHandler.isMainMenuBeingDragged = !1),
+            (a.core.appStateHandler.isMainMenuBeingDragged = false),
             (this.movingMenuWidth = a.core.settings.titleWidth),
-            (a.core.appStateHandler.isMainMenuShowing = !1),
+            (a.core.appStateHandler.isMainMenuShowing = false),
             this.redraw()));
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     b.prototype.startDragging = function (b, e) {
-      a.core.appStateHandler.isMainMenuBeingDragged = !1;
+      a.core.appStateHandler.isMainMenuBeingDragged = false;
       return (b >= a.core.zopDrawArea.zopAreaLeft &&
         b <=
           a.core.zopDrawArea.zopAreaLeft +
             Math.max(a.core.settings.titleWidth, this.currentMaxRight)) ||
         (a.core.appStateHandler.isMainMenuShowing && this.isFullyExpanded())
-        ? (this.animationAborted = !0)
-        : !1;
+        ? (this.animationAborted = true)
+        : false;
     };
     b.prototype.continueDragging = function (b, e) {
       this.animationAborted = a.core.appStateHandler.isMainMenuBeingDragged =
-        !0;
+        true;
       b = Math.max(b, a.core.settings.titleWidth);
       this.lastDragDirection = b - this.currentMaxRight;
       this.currentMaxRight = b;
       a.core.appStateHandler.isMainMenuShowing ||
-        (a.core.appStateHandler.showMainMenu(!1), (this.currentMaxRight = b));
+        (a.core.appStateHandler.showMainMenu(false),
+        (this.currentMaxRight = b));
     };
     b.prototype.endDragging = function () {
-      a.core.appStateHandler.isMainMenuBeingDragged = !1;
+      a.core.appStateHandler.isMainMenuBeingDragged = false;
       0 < this.lastDragDirection
         ? (a.core.appStateHandler.addVisibleControl(a.core.mainMenuControl),
           this.startOpenAnimation())
@@ -1702,7 +1704,7 @@ var OneView;
   a.MainMenuControl = p;
   var d = (function () {
     return function (a, c) {
-      this.isHighlited = !1;
+      this.isHighlited = false;
       this.text = a;
       this.charCode = c;
     };
@@ -1713,7 +1715,7 @@ var OneView;
     function d() {
       this.animationLength = 2e3;
       this.precision = 4;
-      this.animationActive = !1;
+      this.animationActive = false;
     }
     d.prototype.drawAreaResized = function () {
       a.core.appStateHandler.isAddButtonBeingDragged && this.redraw();
@@ -1766,7 +1768,7 @@ var OneView;
             this.defaultCenterY,
             this.radius + 1,
             a.core.settings.theme.colorDarkSoft,
-            !1
+            false
           ),
           a.core.zopDrawArea.drawFilledCircle2(
             this.defaultCenterX +
@@ -1774,7 +1776,7 @@ var OneView;
             this.defaultCenterY,
             this.radius - 1,
             a.core.settings.theme.colorLightSoft,
-            !1
+            false
           ))
         : ((this.currentCenterX = this.defaultCenterX),
           (this.currentCenterY = this.defaultCenterY));
@@ -1784,7 +1786,7 @@ var OneView;
         this.currentCenterY,
         this.radius,
         a.core.settings.theme.colorAddButton,
-        !1
+        false
       );
       var b = a.core.settings.lineThickness,
         c = 0;
@@ -1800,9 +1802,9 @@ var OneView;
             2 * this.radius,
             b,
             a.core.settings.theme.colorTagText,
-            !1,
-            !1,
-            !1
+            false,
+            false,
+            false
           ))
         : (a.core.drawArea.drawLine2(
             this.currentCenterX +
@@ -1815,7 +1817,7 @@ var OneView;
             Math.floor(this.currentCenterY + this.width / 7) - c,
             b,
             a.core.settings.theme.colorTitleText,
-            !1
+            false
           ),
           a.core.drawArea.drawLine2(
             Math.floor(
@@ -1832,11 +1834,11 @@ var OneView;
             this.currentCenterY - c,
             b,
             a.core.settings.theme.colorTitleText,
-            !1
+            false
           ));
     };
     d.prototype.startDragging = function (b, c) {
-      this.passefMinDistanceEver = !1;
+      this.passefMinDistanceEver = false;
       return b >
         this.currentCenterX +
           a.core.mainMenuControl.nudgeBecauseMenuBeingDragged -
@@ -1853,8 +1855,8 @@ var OneView;
           this.currentCenterY +
             a.core.mainMenuControl.nudgeBecauseMenuBeingDragged +
             1.5 * this.radius
-        ? (a.core.appStateHandler.isAddButtonBeingDragged = !0)
-        : (a.core.appStateHandler.isAddButtonBeingDragged = !1);
+        ? (a.core.appStateHandler.isAddButtonBeingDragged = true)
+        : (a.core.appStateHandler.isAddButtonBeingDragged = false);
     };
     d.prototype.getTitleExtraData = function () {
       if (
@@ -1867,17 +1869,17 @@ var OneView;
       this.currentCenterX = b;
       this.currentCenterY = c;
       if (this.passedMinDistance()) {
-        this.passefMinDistanceEver = !0;
+        this.passefMinDistanceEver = true;
         var e;
         b >= this.leftForDetailedSelection &&
           (e = a.core.calendarDateHandler.getClosestFakeDetailAt(
             c,
             this.precision,
-            !1
+            false
           ));
         if (!e) {
           this.detailedTimeInfo = void 0;
-          e = a.core.calendarDateHandler.selectCalendarDateObjectAt(b, c, !0);
+          e = a.core.calendarDateHandler.selectCalendarDateObjectAt(b, c, true);
           for (
             var f = 10;
             e && e.calendarDateObjectType === a.CalendarDateObjectType.Title;
@@ -1886,7 +1888,7 @@ var OneView;
             (e = a.core.calendarDateHandler.selectCalendarDateObjectAt(
               b + f,
               c,
-              !0
+              true
             )),
               (f += 10);
         }
@@ -1917,7 +1919,7 @@ var OneView;
             void 0;
     };
     d.prototype.endDragging = function () {
-      a.core.appStateHandler.isAddButtonBeingDragged = !1;
+      a.core.appStateHandler.isAddButtonBeingDragged = false;
       this.selectedTimeStamp + 200 > a.core.getTimeStamp() &&
         void 0 !== this.previousSelectedEndTime &&
         ((this.selectedStartTime = this.previousSelectedStartTime),
@@ -1942,7 +1944,7 @@ var OneView;
         ? ((this.currentCenterX = this.defaultCenterX),
           (this.currentCenterY = this.defaultCenterY))
         : ((this.animationStartTime = a.core.getTimeStamp()),
-          (this.animationActive = !0));
+          (this.animationActive = true));
       this.detailedTimeInfo =
         this.selectedEndTime =
         this.selectedStartTime =
@@ -1950,7 +1952,7 @@ var OneView;
     };
     d.prototype.isAnimationActive = function () {
       a.core.appStateHandler.isAddButtonBeingDragged &&
-        (this.animationActive = !1);
+        (this.animationActive = false);
       return this.animationActive;
     };
     d.prototype.passedMinDistance = function () {
@@ -1968,7 +1970,7 @@ var OneView;
       if (b > 2 * this.animationLength)
         (this.currentCenterX = this.defaultCenterX),
           (this.currentCenterY = this.defaultCenterY),
-          (this.animationActive = !1);
+          (this.animationActive = false);
       else {
         var c = a.core.zopDrawArea.zopAreaHeight / 8,
           e =
@@ -1980,7 +1982,7 @@ var OneView;
         this.currentCenterX -= Math.sin(b) * c * 1;
         this.currentCenterY -= Math.sin(b) * c * 1.5;
         this.continueDragging(this.currentCenterX, this.currentCenterY);
-        a.core.redraw(!1);
+        a.core.redraw(false);
       }
     };
     d.prototype.doAnimation2 = function () {
@@ -1991,7 +1993,7 @@ var OneView;
       if (b > 2 * this.animationLength)
         (this.currentCenterX = this.defaultCenterX),
           (this.currentCenterY = this.defaultCenterY),
-          (this.animationActive = !1);
+          (this.animationActive = false);
       else {
         var c = a.core.zopDrawArea.zopAreaHeight / 8,
           e = this.defaultCenterY - 1 * c,
@@ -2022,7 +2024,7 @@ var OneView;
           this.newPosHelper(this.defaultCenterX, this.currentCenterX, l),
           this.newPosHelper(this.defaultCenterY, this.currentCenterY, l)
         );
-        a.core.redraw(!1);
+        a.core.redraw(false);
       }
     };
     d.prototype.newPosHelper = function (a, c, e) {
@@ -2068,8 +2070,8 @@ var OneView;
             a.core.zopDrawArea.measureTextWidth(
               this.menuItems[e].text,
               a.core.settings.menuTextHeight,
-              !0,
-              !1
+              true,
+              false
             )
           )));
       this.menuWidth = Math.min(
@@ -2092,7 +2094,7 @@ var OneView;
         this.menuWidth + 2,
         this.menuHeight + 2,
         a.core.settings.theme.colorWhite,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         this.menuLeft,
@@ -2100,7 +2102,7 @@ var OneView;
         this.menuWidth,
         this.menuHeight,
         a.core.settings.theme.colorDarkSoft,
-        !1
+        false
       );
       for (e = 0; e < this.menuItems.length; e++)
         this.paintMenuItem(this.menuItems[e]);
@@ -2114,7 +2116,7 @@ var OneView;
           this.menuWidth - 2,
           a.core.settings.menuItemHeight - 1,
           a.core.settings.theme.colorDark,
-          !1
+          false
         );
         a.core.drawArea.drawText(
           b.text,
@@ -2125,10 +2127,10 @@ var OneView;
               2.5,
           a.core.settings.menuTextHeight,
           a.core.settings.theme.colorWhite,
-          !1,
-          !0,
-          !1,
-          !1
+          false,
+          true,
+          false,
+          false
         );
         a.core.drawArea.drawIcon(
           b.charCode,
@@ -2144,16 +2146,16 @@ var OneView;
         c < this.menuLeft + this.menuWidth &&
         e > this.menuTop + a.top &&
         e < this.menuTop + a.bottom
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     return d;
   })();
   a.PopupMenuControl_Base = p;
   p = (function () {
     return function (a, b, c) {
-      this.isHighlited = !1;
-      this.isVisible = !0;
+      this.isHighlited = false;
+      this.isVisible = true;
       this.text = a;
       this.charCode = b;
       this.onMenuItemClicked = c;
@@ -2166,11 +2168,11 @@ var OneView;
     function d() {
       this.pageHtml =
         '<div id="message" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="messageText" class="base menuItem" style="text-align:center">{#Error#}</div>    <div>        <button id="messageOk" class="topBarButton" style="width:100%"><img src="images/check.svg" height="24px" style="vertical-align: text-bottom"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="noColorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Color picker?#}</div>    <div>        <button id="gotoShopCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="gotoShopOk" class="topBarButton" style="width:50%"><img src="images/shop.svg" class="topBarImage"/><span>{#Shop#}</span></button>    </div></div></div></div><div id="colorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner" >          <div id="colorPickerArea" style="padding: 20px; padding-top: 12px;"></div></div></div></div><div id="editEventTopBar" class="topBar">    <button id="editEventCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="editEventOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div><div class="pageContent" id="editEventArea" style="float:left; background-color: #E9E9E9;">        <div class="editEventPopupContent pageTopPadding" id="editEventPopupContent">            <div class="miniTitle sizedTitle">{#Title#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventTitle" required /></div></div>            <div class="miniTitle sizedTitle">{#Start#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateStart" min="0001-01-01" max="4000-01-01" /><span id="fakeDateStart" class="base inputBase dateFake" ></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeStart" step="60"></div></div>            <div class="miniTitle sizedTitle">{#End#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><select id="editEventDuration" class="base inputBase">            </select></div></div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateEnd" min="0001-01-01" max="4000-01-01" ><span id="fakeDateEnd" class="base inputBase dateFake"></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeEnd"  step="60"/></div></div>            <div class="miniTitle sizedTitle" id="remindersTitle">{#Reminders#}</div>            <div style="position: relative"><div class="inputBox"><select id="editEventReminders" class="base inputBase maybeBig" multiple="multiple" >            </select></div></div>            <div class="miniTitle sizedTitle">{#Where#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventLocation" ></div></div>            <div class="miniTitle sizedTitle">{#Details#}</div>            <div style="position: relative"><div class="inputBox"><textarea class="base inputBase inputTwoLiner" name="task" id="editEventDetails" ></textarea></div></div>            <div id="spaceForColors"></div>                        <div class="miniTitle sizedTitle">{#Calendar#}</div>                        <div style="position: relative"><div id="calendarSelWrapper" class="inputBox"><select id="editEventCalendar" class="base inputBase inputOneLiner" >                        </select></div><div id="editEventColor" class="square"></div>            <table style ="width:100%">                <tr>                    <td style="white-space: nowrap">                        <div class="miniTitle sizedTitle">{#Recurrence#}</div>                        <div><div class="inputBox"><div class="base inputBase inputOneLiner" id="editEventRecurrenceWrapper"><span class="pageContentText" id="editEventRecurrence" style="cursor: pointer" style="float:left" taborder="10"></span></div></div></div>                    </td><td style="width:80%"></td>                 </tr>            </table>            </div> </div>         </div></div>';
-      this.isShowingDatePickerForStartTime = !1;
-      this.canEditReccur = !0;
+      this.isShowingDatePickerForStartTime = false;
+      this.canEditReccur = true;
     }
     d.prototype.reshow = function () {
-      a.core.appStateHandler.editEventControlIsShowing = !0;
+      a.core.appStateHandler.editEventControlIsShowing = true;
       this.updateRecurrenceHtml();
       this.timestamp = a.core.getTimeStamp();
     };
@@ -2330,7 +2332,7 @@ var OneView;
         a.core.settings.theme.eventColors,
         {
           open: document.getElementById("editEventColor"),
-          closeOnBlur: !0,
+          closeOnBlur: true,
         },
         ""
       );
@@ -2381,11 +2383,11 @@ var OneView;
     };
     d.prototype.showDatePickerForStartTime = function (a) {
       a.preventDefault();
-      this.showDatePicker(!0);
+      this.showDatePicker(true);
     };
     d.prototype.showDatePickerForEndTime = function (a) {
       a.preventDefault();
-      this.showDatePicker(!1);
+      this.showDatePicker(false);
     };
     d.prototype.showMessage = function (b, c) {
       var e = this;
@@ -2425,14 +2427,14 @@ var OneView;
       a.core.appStateHandler.viewShop();
     };
     d.prototype.updateRecurrenceHtml = function () {
-      this.canEditReccur = !0;
+      this.canEditReccur = true;
       this.calendarEvent.isRecurring &&
         this.editType != a.EventEditType.ThisOnly &&
         (document.getElementById("editEventRecurrence").innerHTML =
           "YES (Press to edit)");
       this.calendarEvent.isRecurring &&
         this.editType == a.EventEditType.ThisOnly &&
-        ((this.canEditReccur = !1),
+        ((this.canEditReccur = false),
         (document.getElementById("editEventRecurrence").innerHTML =
           a.core.translate.get("Not possible")),
         document
@@ -2440,10 +2442,10 @@ var OneView;
           .setAttribute("style", "cursor: default"),
         document
           .getElementById("editEventRecurrence")
-          .removeEventListener("touchend", this.editRecurrency, !1),
+          .removeEventListener("touchend", this.editRecurrency, false),
         document
           .getElementById("editEventRecurrence")
-          .removeEventListener("mouseup", this.editRecurrency, !1));
+          .removeEventListener("mouseup", this.editRecurrency, false));
       this.calendarEvent.isRecurring ||
         (document.getElementById("editEventRecurrence").innerHTML =
           "NO (Press to add)");
@@ -2492,7 +2494,7 @@ var OneView;
       a && (this.originalRRule = this.calendarEvent.rruleToSave = a);
     };
     d.prototype.hide = function () {
-      a.core.appStateHandler.editEventControlIsShowing = !1;
+      a.core.appStateHandler.editEventControlIsShowing = false;
       a.core.domHandler.showCanvas();
       a.core.domHandler.removeElement(this.editPage.id);
     };
@@ -2560,13 +2562,13 @@ var OneView;
     };
     d.prototype.validateStartAndEnd = function () {
       return this.calendarEvent.startDateTime >= this.calendarEvent.endDateTime
-        ? (this.showMessage("Please enter a valid end time.", !1), !1)
-        : !0;
+        ? (this.showMessage("Please enter a valid end time.", false), false)
+        : true;
     };
     d.prototype.validateTitle = function (a) {
       return null == a || 0 == a.length
-        ? (this.showMessage("Please enter a title.", !1), !1)
-        : !0;
+        ? (this.showMessage("Please enter a title.", false), false)
+        : true;
     };
     d.prototype.editEventOk = function (b) {
       b.preventDefault();
@@ -2597,13 +2599,13 @@ var OneView;
           ? (a.core.calendarDataProxy.deleteEvent(
               this.calendarEvent,
               this.editType,
-              !0
+              true
             ),
             (this.calendarEvent.calendarId = c),
-            a.core.calendarDataProxy.addNewEvent(this.calendarEvent, !0))
+            a.core.calendarDataProxy.addNewEvent(this.calendarEvent, true))
           : ((this.calendarEvent.calendarId = c),
             this.editType == a.EventEditType.New
-              ? a.core.calendarDataProxy.addNewEvent(this.calendarEvent, !1)
+              ? a.core.calendarDataProxy.addNewEvent(this.calendarEvent, false)
               : (this.editType == a.EventEditType.DontKnow &&
                   (this.editType = a.EventEditType.AllInSeries),
                 a.core.calendarDataProxy.editExistingEvent(
@@ -2615,9 +2617,9 @@ var OneView;
         !a.core.commonUserSettings.hasShownRemindersInfo
           ? (this.showMessage(
               "You have set reminders. Please note that this app relies on your default calendar to show the reminders.",
-              !0
+              true
             ),
-            (a.core.commonUserSettings.hasShownRemindersInfo = !0))
+            (a.core.commonUserSettings.hasShownRemindersInfo = true))
           : a.core.appStateHandler.back();
       }
     };
@@ -2830,7 +2832,7 @@ var OneView;
       else if (b.options.freq == a.RRuleFrequencies.Week) {
         this.editRecurrenceFrequency.value = "week";
         for (var c = 0; c < this.weekDays.options.length; c++)
-          this.weekDays.options[c].selected = !1;
+          this.weekDays.options[c].selected = false;
         this.weekDays.options[0].selected =
           -1 < b.options.byweekday.indexOf(a.RRuleWeekDay.Monday);
         this.weekDays.options[1].selected =
@@ -3044,29 +3046,29 @@ var OneView;
         void 0 == this.calendarEvent.location ||
         0 === this.calendarEvent.location.length
       )
-        document.getElementById("viewEventBoxWhere").hidden = !0;
+        document.getElementById("viewEventBoxWhere").hidden = true;
       if (
         void 0 == this.calendarEvent.description ||
         0 === this.calendarEvent.description.length
       )
-        document.getElementById("viewEventBoxDetails").hidden = !0;
+        document.getElementById("viewEventBoxDetails").hidden = true;
       document.getElementById("viewEventReminders").textContent =
         this.remindersToString();
       if (
         void 0 == this.calendarEvent.reminders ||
         0 === this.calendarEvent.reminders.length
       )
-        document.getElementById("viewEventBoxReminders").hidden = !0;
+        document.getElementById("viewEventBoxReminders").hidden = true;
       if (
         void 0 == this.calendarEvent.invited ||
         0 === this.calendarEvent.invited.length
       )
-        document.getElementById("viewEventBoxInvited").hidden = !0;
+        document.getElementById("viewEventBoxInvited").hidden = true;
       this.resize();
     };
     d.prototype.resize = function () {
       var a;
-      a = this.verifySize("Back", !1);
+      a = this.verifySize("Back", false);
       a = this.verifySize("Edit", a);
       a = this.verifySize("Back", a);
       this.verifySize("Edit", a);
@@ -3116,15 +3118,15 @@ var OneView;
           return (
             (document.getElementById("viewEvent" + b + "Text").style.display =
               "none"),
-            !0
+            true
           );
         document.getElementById("viewEvent" + b + "Text").style.display =
           "inline";
-        return !1;
+        return false;
       }
     };
     d.prototype.hide = function () {
-      a.core.appStateHandler.viewEventControlIsShowing = !1;
+      a.core.appStateHandler.viewEventControlIsShowing = false;
       a.core.domHandler.showCanvas();
       a.core.domHandler.removeElement(this.viewPage.id);
     };
@@ -3415,7 +3417,7 @@ var OneView;
       return a.split(c).join(e);
     };
     d.prototype.canShowDatePicker = function () {
-      return a.core.isCordovaApp ? !0 : !1;
+      return a.core.isCordovaApp ? true : false;
     };
     d.prototype.setCalendarColorId = function (b, c) {
       var e = a.core.commonUserSettings.savedCalendarColors;
@@ -3589,7 +3591,7 @@ var OneView;
         '        <span class="topBarImage" style="display: inline-block; fill: _buttonImageColor">            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%" viewBox="0 0 48 48">                <path d="M40.5 0c4.142 0 7.5 3.358 7.5 7.5 0 1.688-0.558 3.246-1.5 4.5l-3 3-10.5-10.5 3-3c1.254-0.942 2.811-1.5 4.5-1.5zM3 34.5l-3 13.5 13.5-3 27.75-27.75-10.5-10.5-27.75 27.75zM33.543 17.043l-21 21-2.585-2.585 21-21 2.585 2.585z"></path>            </svg>        </span>';
       this.trashButtonImage =
         '        <span class="topBarImage" style="display: inline-block; fill: _buttonImageColor">            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="100%" viewBox="0 0 48 48">                <path d="M20 2h8q2.484 0 4.242 1.758t1.758 4.242v2h8q0.828 0 1.414 0.586t0.586 1.414-0.586 1.414-1.414 0.586h-2v24q0 2.484-1.758 4.242t-4.242 1.758h-20q-2.484 0-4.242-1.758t-1.758-4.242v-24h-2q-0.828 0-1.414-0.586t-0.586-1.414 0.586-1.414 1.414-0.586h8v-2q0-2.484 1.758-4.242t4.242-1.758zM36 38v-24h-24v24q0 0.828 0.586 1.414t1.414 0.586h20q0.828 0 1.414-0.586t0.586-1.414zM28 6h-8q-0.828 0-1.414 0.586t-0.586 1.414v2h12v-2q0-0.828-0.586-1.414t-1.414-0.586z"></path>            </svg>        </span>';
-      this.alreadyFadedIn = !1;
+      this.alreadyFadedIn = false;
       this.getTextLength = function (a, c) {
         var b = document.getElementById("ruler");
         b.style.fontSize = c;
@@ -3620,9 +3622,9 @@ var OneView;
       a.core.calendarDataProxy.analyticsPage("Main page");
       this.addElement(this.canvas, document.body.id);
       this.resetDrawAreaSize_Delayed();
-      a.core.redraw(!0);
+      a.core.redraw(true);
       window.setTimeout(function () {
-        return a.core.redraw(!0);
+        return a.core.redraw(true);
       }, 100);
     };
     d.prototype.insertImages = function (b, c) {
@@ -3670,7 +3672,7 @@ var OneView;
     };
     d.prototype.addEvent = function (a, c, e, f) {
       e = e.bind(f);
-      this.getElement(a).addEventListener(c, e, !1);
+      this.getElement(a).addEventListener(c, e, false);
     };
     d.prototype.addClickEvent = function (a, c, e) {
       this.addEvent(a, "click", c, e);
@@ -3724,16 +3726,16 @@ var OneView;
         "undefined" !== typeof b &&
         window.matchMedia("(orientation: portrait)").matches
       )
-        e = !0;
+        e = true;
       else if (
         "undefined" !== typeof b &&
         window.matchMedia("(orientation: landscape)").matches
       )
-        e = !1;
+        e = false;
       else if ((c && 0 == window.orientation) || 180 == window.orientation)
-        e = !0;
+        e = true;
       else if ((c && 0 == window.orientation) || 180 == window.orientation)
-        e = !1;
+        e = false;
       void 0 !== e && null !== e
         ? (e
             ? (this.screenWidthForDOM !==
@@ -3861,10 +3863,10 @@ var OneView;
       a.core.mainMenuControl.drawAreaResized();
       a.core.addButtonControl.drawAreaResized();
       a.core.appStateHandler.viewEventControl.resize();
-      a.core.appStateHandler.sizesInitiated = !0;
+      a.core.appStateHandler.sizesInitiated = true;
       this.resizeDomElements();
       a.core.preloadAllImages();
-      a.core.redraw(!0);
+      a.core.redraw(true);
       this.fadeInIfWebPage();
     };
     d.prototype.fadeInIfWebPage = function () {
@@ -3882,7 +3884,7 @@ var OneView;
             },
             2e3
           )),
-        (this.alreadyFadedIn = !0));
+        (this.alreadyFadedIn = true));
     };
     d.prototype.resizeDomElements = function (b) {
       void 0 === b && (b = "");
@@ -4097,7 +4099,7 @@ var OneView;
         "textarea" != a.target.type &&
         "button" != a.target.type
       )
-        return a.target.blur(), !1;
+        return a.target.blur(), false;
     };
     d.prototype.getSelectOptions = function (a) {
       for (var b = "", e = 0; e < a.options.length; e++)
@@ -4110,7 +4112,12 @@ var OneView;
     };
     d.prototype.addWeekDaysToSelectNode = function (b) {
       for (var c, e = 1; 7 >= e; e++)
-        (c = new Option(a.core.helper.weekdayLong.find(e), "" + e, !1, !1)),
+        (c = new Option(
+          a.core.helper.weekdayLong.find(e),
+          "" + e,
+          false,
+          false
+        )),
           (c.className = "inputOption"),
           b.appendChild(c);
     };
@@ -4118,53 +4125,53 @@ var OneView;
       var e = [],
         f = moment(),
         g = f.clone().add("minutes", 0);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 1);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 5);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 10);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 15);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 20);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 25);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 30);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 45);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("hours", 1);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("minutes", 90);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("hours", 2);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("hours", 3);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("hours", 6);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("hours", 12);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("days", 1);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("days", 2);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       g = f.clone().add("days", 7);
-      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, !0)));
+      e.push(new a.NumberStringPair(g.diff(f, "minutes"), g.from(f, true)));
       for (var d = 0; d < c.length; d++)
         (g = f.clone().add("minutes", c[d].minutes)),
           this.addSortedIfNotExists(
             e,
-            new a.NumberStringPair(c[d].minutes, g.from(f, !0))
+            new a.NumberStringPair(c[d].minutes, g.from(f, true))
           );
       b.innerHTML = "";
       for (f = 0; f < e.length; f++) {
-        g = !1;
+        g = false;
         for (d = 0; d < c.length; d++)
-          c[d].minutes == e[f].valueNumber && (g = !0);
-        d = new Option(e[f].valueString, "" + e[f].valueNumber, !1, g);
+          c[d].minutes == e[f].valueNumber && (g = true);
+        d = new Option(e[f].valueString, "" + e[f].valueNumber, false, g);
         d.className = "inputOption";
         b.appendChild(d);
       }
@@ -4175,90 +4182,90 @@ var OneView;
       c = moment(c);
       var g = c.clone().add("minutes", 1),
         d = c.clone().add("minutes", 15);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 30);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 45);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 60);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 75);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 90);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 105);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 120);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("minutes", 150);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("hours", 3);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("hours", 4);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("hours", 6);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("hours", 8);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("hours", 12);
-      f.push(new a.NumberStringPair(d.diff(c), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(c), d.from(c, true)));
       d = c.clone().add("days", 1);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 2);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 3);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 4);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 5);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 6);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 7);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 8);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 9);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 10);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 14);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("days", 21);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 1);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 2);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 3);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 4);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 6);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = c.clone().add("months", 12);
-      f.push(new a.NumberStringPair(d.diff(g), d.from(c, !0)));
+      f.push(new a.NumberStringPair(d.diff(g), d.from(c, true)));
       d = moment(e);
       this.addSortedIfNotExists(
         f,
-        new a.NumberStringPair(d.diff(c), d.from(c, !0))
+        new a.NumberStringPair(d.diff(c), d.from(c, true))
       );
       b.innerHTML = "";
       for (g = 0; g < f.length; g++)
         (e = new Option(
           f[g].valueString,
           "" + f[g].valueNumber,
-          !1,
+          false,
           f[g].valueNumber === d.diff(c)
         )),
           (e.className = "inputOption"),
           b.appendChild(e);
     };
     d.prototype.addSortedIfNotExists = function (a, c) {
-      for (var b = a.length, f = !1, g = 0; g < b && 0 == f; g++)
-        c.valueNumber < a[g].valueNumber && (a.splice(g, 0, c), (f = !0)),
-          c.valueNumber === a[g].valueNumber && (f = !0);
-      !1 === f && a.push(c);
+      for (var b = a.length, f = false, g = 0; g < b && 0 == f; g++)
+        c.valueNumber < a[g].valueNumber && (a.splice(g, 0, c), (f = true)),
+          c.valueNumber === a[g].valueNumber && (f = true);
+      false === f && a.push(c);
     };
     return d;
   })();
@@ -4267,7 +4274,7 @@ var OneView;
 (function (a) {
   var p = (function () {
     function d() {
-      this.showMessage = !1;
+      this.showMessage = false;
       this.loadingCounter = 0;
     }
     d.prototype.showLoadingSpinnerIfNeeded = function () {
@@ -4278,7 +4285,7 @@ var OneView;
             24e3 > a.core.getTimeStamp() - this.loadStartTime)
         )
           (this.loadingCounter = 0),
-            (this.showMessage = !0),
+            (this.showMessage = true),
             (this.messageStartTime = a.core.getTimeStamp());
         else {
           if (a.core.drawArea && a.core.zopDrawArea) {
@@ -4296,7 +4303,7 @@ var OneView;
               a.core.settings.titleWidth +
                 a.core.mainMenuControl.nudgeBecauseMenuBeingDragged,
               a.core.settings.theme.colorRed,
-              !1
+              false
             ),
             a.core.drawArea.drawCenteredText(
               a.core.translate.get("Connection failed"),
@@ -4308,31 +4315,31 @@ var OneView;
               a.core.zopDrawArea.zopAreaWidth,
               a.core.settings.menuTextHeight,
               a.core.settings.theme.colorWhite,
-              !1,
-              !1
+              false,
+              false
             ),
-            a.core.redraw(!0))
-          : (this.showMessage = !1));
+            a.core.redraw(true))
+          : (this.showMessage = false));
     };
     d.prototype.isLoading = function () {
       return 0 < this.loadingCounter;
     };
     d.prototype.startLoading = function () {
-      this.showMessage = !1;
+      this.showMessage = false;
       a.core.eventHandler.closeAllPagesAndMenus();
       0 > this.loadingCounter
         ? (this.loadingCounter = 1)
         : this.loadingCounter++;
       a.core &&
-        ((this.loadStartTime = a.core.getTimeStamp()), a.core.redraw(!0));
+        ((this.loadStartTime = a.core.getTimeStamp()), a.core.redraw(true));
     };
     d.prototype.stopLoadingWithError = function () {
-      this.showMessage = !0;
+      this.showMessage = true;
       this.stopLoading();
     };
     d.prototype.stopLoading = function () {
       this.loadingCounter = 0;
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     return d;
   })();
@@ -4342,7 +4349,7 @@ var OneView;
   var p = (function () {
     function d() {
       this.isEditingEvent = this.isCreatingNewEvent = 0;
-      this.isChoosingDateTimeForEvent = !1;
+      this.isChoosingDateTimeForEvent = false;
       this.isAutoZooming =
         this.isAutoScrolling =
         this.isManuallyZooming =
@@ -4353,7 +4360,7 @@ var OneView;
         this.isMainMenuBeingDragged =
         this.isAddButtonBeingDragged =
         this.isMainMenuShowing =
-          !1;
+          false;
       this.isPopupDissabled = 0;
       this.sizesInitiated =
         this.settingsControlIsShowing =
@@ -4363,7 +4370,7 @@ var OneView;
         this.viewEventControlIsShowing =
         this.isDraggingBottomMarker =
         this.isDraggingTopMarker =
-          !1;
+          false;
       this.visibleControls = [];
       this.settingsControl = new a.SettingsControl();
       this.calendarsControl = new a.CalendarsControl();
@@ -4385,27 +4392,27 @@ var OneView;
       (this.isChoosingDateTimeForEvent = b)
         ? (this.isPopupDissabled++,
           a.core.zopDrawArea &&
-            (a.core.dateTimeSelectionHandler.makeVisible(!0),
-            a.core.redraw(!0)))
+            (a.core.dateTimeSelectionHandler.makeVisible(true),
+            a.core.redraw(true)))
         : (this.isPopupDissabled--,
           a.core.zopDrawArea &&
-            (a.core.dateTimeSelectionHandler.makeVisible(!1),
-            a.core.redraw(!0)));
+            (a.core.dateTimeSelectionHandler.makeVisible(false),
+            a.core.redraw(true)));
     };
     d.prototype.viewEvent = function (b) {
       a.core.loadingHandler.isLoading() ||
-        ((this.viewEventControlIsShowing = !0),
+        ((this.viewEventControlIsShowing = true),
         this.viewEventControl.init(b),
         this.addVisibleControl(this.viewEventControl));
     };
     d.prototype.editEvent = function (b, c) {
       a.core.loadingHandler.isLoading() ||
-        ((this.editEventControlIsShowing = !0),
+        ((this.editEventControlIsShowing = true),
         this.editEventControl.init(b, c),
         this.addVisibleControl(this.editEventControl));
     };
     d.prototype.deleteEvent = function (b, c) {
-      a.core.calendarDataProxy.deleteEvent(b, c, !1);
+      a.core.calendarDataProxy.deleteEvent(b, c, false);
     };
     d.prototype.editRecurrence = function (a) {
       this.editRecurrenceControl.init(a);
@@ -4459,7 +4466,7 @@ var OneView;
     d.prototype.back = function () {
       var b = a.core.getTimeStamp();
       if (this.previousBackTime && b - 500 < this.previousBackTime)
-        return (this.previousBackTime = b), !1;
+        return (this.previousBackTime = b), false;
       this.previousBackTime = b;
       if (this.visibleControls && 0 < this.visibleControls.length)
         return (
@@ -4467,50 +4474,50 @@ var OneView;
           this.visibleControls.pop(),
           0 < this.visibleControls.length &&
             this.visibleControls[this.visibleControls.length - 1].reshow(),
-          !0
+          true
         );
       navigator && navigator.app && navigator.app.exitApp();
-      return !1;
+      return false;
     };
     d.prototype.safeBack = function (a) {
       return this.visibleControls &&
         0 < this.visibleControls.length &&
         this.visibleControls[this.visibleControls.length - 1] === a
         ? this.back()
-        : !1;
+        : false;
     };
     d.prototype.mainButtonPressed = function () {
       if (!a.core.loadingHandler.isLoading()) {
         var b = a.core.zopHandler.dateToZOP(new Date());
         a.core.zopHandler.topZOP < b && a.core.zopHandler.bottomZOP > b
-          ? this.showMainMenu(!0)
-          : a.core.zopHandler.showInitialBounds(!0);
+          ? this.showMainMenu(true)
+          : a.core.zopHandler.showInitialBounds(true);
       }
     };
     d.prototype.showMainMenu = function (b) {
       a.core.loadingHandler.isLoading() ||
         (a.core.appStateHandler.isMainWindowShowing()
-          ? ((a.core.appStateHandler.isMainMenuShowing = !0),
+          ? ((a.core.appStateHandler.isMainMenuShowing = true),
             this.addVisibleControl(a.core.mainMenuControl),
             b && a.core.mainMenuControl.startOpenAnimation(),
             window.setTimeout(function () {
-              return a.core.redraw(!0);
+              return a.core.redraw(true);
             }, 100),
             window.setTimeout(function () {
-              return a.core.redraw(!0);
+              return a.core.redraw(true);
             }, 200))
           : this.back());
     };
     d.prototype.viewCalendars = function () {
-      this.calendarsControlIsShowing = !0;
+      this.calendarsControlIsShowing = true;
       this.addVisibleControl(this.calendarsControl);
     };
     d.prototype.viewShop = function () {
-      this.shopControlIsShowing = !0;
+      this.shopControlIsShowing = true;
       this.addVisibleControl(this.shopControl);
     };
     d.prototype.viewSettings = function () {
-      this.settingsControlIsShowing = !0;
+      this.settingsControlIsShowing = true;
       this.addVisibleControl(this.settingsControl);
     };
     d.prototype.viewAbout = function () {};
@@ -4535,21 +4542,21 @@ var OneView;
         this.textHeight2 =
         this.horizontalTitleTextHeight =
           0;
-      this.useDividerLine = !1;
+      this.useDividerLine = false;
       this.averageObjectPixelHeight =
         this.nowZOP =
         this.hourWidth2 =
         this.hourWidth =
           0;
-      this.showExtraTextToRight = this.showExtraTextBelow = !1;
+      this.showExtraTextToRight = this.showExtraTextBelow = false;
       this.averageObjectPixelHeight2 = 0;
-      this.showExtraTextToRight2 = this.showExtraTextBelow2 = !1;
+      this.showExtraTextToRight2 = this.showExtraTextBelow2 = false;
       this.horizontalTitleHeight = 0;
       this.rootCalendarDateObjects = [];
       this.weekCalendarDateObjects = [];
       this.counter = 0;
       this.selectedCalendarDateObject = void 0;
-      this.showMonthSpecialDetails = !1;
+      this.showMonthSpecialDetails = false;
       this.lowestLevelCalendarDateObjectType = void 0;
       this.commonDateTimes = [];
       this.weekNumbersVisible = [];
@@ -4676,7 +4683,7 @@ var OneView;
           a.CalendarDateObjectType.Month &&
         !this.showMonthSpecialDetails
       )
-        return this.getHitWeekAt(a.core.zopHandler.rightPixel - 1, b, !1);
+        return this.getHitWeekAt(a.core.zopHandler.rightPixel - 1, b, false);
       if (
         this.lowestLevelCalendarDateObjectType == a.CalendarDateObjectType.Day
       ) {
@@ -4818,7 +4825,7 @@ var OneView;
       }
     };
     d.prototype.gotoCalendarDateObjectAt = function (b, c) {
-      var e = this.selectCalendarDateObjectAt(b, c, !0);
+      var e = this.selectCalendarDateObjectAt(b, c, true);
       if (
         e &&
         e.calendarDateObjectType == this.lowestLevelCalendarDateObjectType &&
@@ -4831,7 +4838,7 @@ var OneView;
         if (c > f + this.horizontalTitleHeight) {
           e = a.core.zopHandler.getZOPFromPixel(c - 25 * a.core.ratio);
           f = a.core.zopHandler.getZOPFromPixel(c + 25 * a.core.ratio);
-          a.core.drawAreaEffects.startAutoZoom(e, f, !1, function () {});
+          a.core.drawAreaEffects.startAutoZoom(e, f, false, function () {});
           return;
         }
       }
@@ -4866,13 +4873,13 @@ var OneView;
               a.core.zopHandler.getZOPFromPixel(c) -
               (b.endZOP - b.startZOP) / 2,
             f = e + (b.endZOP - b.startZOP);
-          a.core.drawAreaEffects.startAutoZoom(e, f, !1, this.clearSelect);
+          a.core.drawAreaEffects.startAutoZoom(e, f, false, this.clearSelect);
         } else
           (f = b.startZOP + (b.endZOP - b.startZOP)),
             a.core.drawAreaEffects.startAutoZoom(
               b.startZOP,
               f,
-              !1,
+              false,
               this.clearSelect
             );
     };
@@ -5017,7 +5024,7 @@ var OneView;
                 a.core.zopHandler.rightPixel - this.fakeLeft,
                 e - c,
                 this.oddWeekColor,
-                !1
+                false
               );
             }
           } else
@@ -5043,7 +5050,7 @@ var OneView;
                   a.core.zopHandler.rightPixel - this.fakeLeft,
                   Math.min(c + e * f + 1, a.core.zopHandler.bottomPixel) - d,
                   this.oddWeekColor,
-                  !1
+                  false
                 ));
             }
     };
@@ -5097,7 +5104,7 @@ var OneView;
                 e,
                 a.core.settings.weekCircleDiameter / 2 + 1 * a.core.ratio,
                 a.core.settings.theme.colorWeekNumberShadow,
-                !1
+                false
               );
               a.core.zopDrawArea.drawFilledCircle2(
                 a.core.zopHandler.rightPixel +
@@ -5107,7 +5114,7 @@ var OneView;
                 e,
                 a.core.settings.weekCircleDiameter / 2,
                 a.core.settings.theme.colorWeekNumberCircle,
-                !1
+                false
               );
               a.core.drawArea.drawCenteredText(
                 this.weekCalendarDateObjects[c].shortText,
@@ -5120,8 +5127,8 @@ var OneView;
                 a.core.settings.weekCircleDiameter,
                 a.core.settings.tagTextHeight,
                 a.core.settings.theme.colorWeekNumberText,
-                !1,
-                !0
+                false,
+                true
               );
             }
       }
@@ -5174,16 +5181,16 @@ var OneView;
             a.core.settings.title0FontSize,
             a.core.settings.theme.colorTitleText,
             a.core.settings.margin,
-            !0,
-            !0
+            true,
+            true
           )
         : this.paintVisibleTitleObjects(
             this.visibleTitleBarDateObjects,
             this.fakeLeft,
             c,
-            !1,
+            false,
             a.core.settings.title0FontSize,
-            !0
+            true
           );
       a.core.zopDrawArea.canvasContext.globalAlpha = 1;
       if (this.horizontalDateObjectType) this.paintVisibleHorizontalTitles();
@@ -5359,10 +5366,15 @@ var OneView;
           a.CalendarDateObjectType.Minutes5;
       this.useDividerLine = this.averageObjectPixelHeight > 25 * a.core.ratio;
       this.hourWidth = Math.round(
-        a.core.zopDrawArea.measureTextWidth("22", this.textHeight, !1, !1)
+        a.core.zopDrawArea.measureTextWidth("22", this.textHeight, false, false)
       );
       this.hourWidth2 = Math.round(
-        a.core.zopDrawArea.measureTextWidth("22", this.textHeight2, !1, !1)
+        a.core.zopDrawArea.measureTextWidth(
+          "22",
+          this.textHeight2,
+          false,
+          false
+        )
       );
       this.horizontalTitleHeight =
         this.horizontalTitleTextHeight +
@@ -5402,7 +5414,7 @@ var OneView;
             this.drawHorizontalLine(h, a.core.zopHandler.topZOP),
             this.title4CalendarDateObjectType != h.calendarDateObjectType &&
               ((k = h.longText),
-              !0 === f && (k = k + " (" + h.parentText + ")"),
+              true === f && (k = k + " (" + h.parentText + ")"),
               a.core.zopDrawArea.drawVerticalTitle(
                 h.startZOP,
                 h.endZOP,
@@ -5411,7 +5423,7 @@ var OneView;
                 d,
                 a.core.settings.theme.colorTitleText,
                 a.core.settings.margin,
-                !0,
+                true,
                 m
               ));
       }
@@ -5431,7 +5443,7 @@ var OneView;
               b.endZOP,
               a.core.zopHandler.rightPixel - e,
               this.smallDividerColor,
-              !1
+              false
             )
           : b.calendarDateObjectType == this.horizontalDateObjectType
           ? this.useDividerLine &&
@@ -5440,7 +5452,7 @@ var OneView;
               b.endZOP,
               a.core.zopHandler.rightPixel - e,
               this.bigDividerColor,
-              !1
+              false
             )
           : a.core.zopHandler.getPixelFromZOP(b.endZOP) <=
             a.core.settings.menuButtonBottom
@@ -5449,14 +5461,14 @@ var OneView;
               b.endZOP,
               a.core.zopHandler.rightPixel,
               this.bigDividerColor,
-              !1
+              false
             )
           : a.core.zopDrawArea.drawHorizontalLine(
               a.core.zopHandler.leftPixel,
               b.endZOP,
               a.core.zopHandler.rightPixel,
               this.bigDividerColor,
-              !1
+              false
             ));
     };
     d.prototype.verifyDetailsArePopulatedFor = function (a) {
@@ -5504,7 +5516,7 @@ var OneView;
             a.core.zopHandler.topPixel,
             0
           );
-      return !0;
+      return true;
     };
     d.prototype.paintVisibleHorizontalTitles = function () {
       var b,
@@ -5512,12 +5524,12 @@ var OneView;
         e;
       for (b = 0; b < c; b++)
         (e = this.visibleHorizontalDateObjects[b]),
-          this.paintObject(e, !0, a.core.zopHandler.topPixel, 0);
+          this.paintObject(e, true, a.core.zopHandler.topPixel, 0);
       var f = this.horizontalTitleHeight;
       for (b = 0; b < c; b++)
         (e = this.visibleHorizontalDateObjects[b]),
           this.paintDaySpecialDetails(e, f);
-      return !0;
+      return true;
     };
     d.prototype.populateDetails = function (a) {
       this.populateDetails_helper(a);
@@ -5563,8 +5575,8 @@ var OneView;
           (b.details.push(e),
           a.core.calendarEventHandler.copyEventsFromParent(b, e));
       }
-      b.detailsArePopulated = !0;
-      a.core.redraw(!1);
+      b.detailsArePopulated = true;
+      a.core.redraw(false);
     };
     d.prototype.addMinutes = function (a, c) {
       return new Date(a.getTime() + 6e4 * c);
@@ -5646,7 +5658,7 @@ var OneView;
               b.shortText2,
               n,
               b.isRed,
-              !1,
+              false,
               c
             )
           : this.showExtraTextToRight && !b.ampm && b.shortText2
@@ -5657,7 +5669,7 @@ var OneView;
               b.shortText2,
               n,
               b.isRed,
-              !1,
+              false,
               c
             )
           : b.ampm && !b.shortText2
@@ -5668,7 +5680,7 @@ var OneView;
               b.ampm,
               n,
               b.isRed,
-              !1,
+              false,
               c
             )
           : b.ampm &&
@@ -5680,7 +5692,7 @@ var OneView;
               b.shortText2,
               n,
               b.isRed,
-              !1,
+              false,
               c
             ),
             a.core.zopDrawArea.drawCalendarDateObjectName(
@@ -5690,7 +5702,7 @@ var OneView;
               b.ampm,
               0.8 * n,
               b.isRed,
-              !1,
+              false,
               c
             ));
       }
@@ -5700,7 +5712,7 @@ var OneView;
       var e,
         f = a.core.zopHandler.getPixelFromZOP(b.startZOP),
         d = Math.max(f + c, this.topDateBottom);
-      this.useDividerLine = !1;
+      this.useDividerLine = false;
       this.textHeight = this.textHeight2;
       this.extraTextHeight = this.extraTextHeight2;
       this.hourWidth = this.hourWidth2;
@@ -5728,7 +5740,7 @@ var OneView;
               ((d - f) / this.averageObjectPixelHeight2 - n) *
               a.core.settings.minDateHeight *
               1.5),
-          this.paintObject(b.details[e], !1, a.core.zopHandler.topPixel, m);
+          this.paintObject(b.details[e], false, a.core.zopHandler.topPixel, m);
     };
     d.prototype.paintDaySpecialDetails = function (b, c) {
       this.verifyDetailsArePopulatedFor(b);
@@ -5747,7 +5759,7 @@ var OneView;
             this.visibleLowestLevelObjects[e].startZOP >= b.endZOP &&
             (m = e);
       for (e = d; e < m; e += 1)
-        this.paintObject(this.visibleLowestLevelObjects[e], !1, f, 0);
+        this.paintObject(this.visibleLowestLevelObjects[e], false, f, 0);
     };
     return d;
   })();
@@ -5773,7 +5785,7 @@ var OneView;
           0;
       this.tagSurfaces = [];
       this.selectedCalendarEvent = void 0;
-      this.recalc = !0;
+      this.recalc = true;
       this.commonTimeKeys = [];
       this.commonTimeKeysHelper = [];
       this.rootCalendarDateObjects.push(
@@ -5796,15 +5808,15 @@ var OneView;
     }
     d.prototype.canEditEvent = function (a) {
       a = this.getOwningCalendar(a);
-      return void 0 === a ? !1 : a.canEditCalendarEvents;
+      return void 0 === a ? false : a.canEditCalendarEvents;
     };
     d.prototype.isFullDayEvent = function (a) {
       return 0 === moment(a.startDateTime).minutes() &&
         0 === moment(a.startDateTime).hours() &&
         0 === moment(a.endDateTime).minutes() &&
         0 === moment(a.endDateTime).hours()
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     d.prototype.getOwningCalendar = function (b) {
       return a.core.getCalendar(b.calendarId);
@@ -5815,7 +5827,7 @@ var OneView;
     d.prototype.gradeCalendarEvent = function (a) {
       a.grade =
         100 * (a.endZOP - a.startZOP) + this.sumLettersInString(a.summary);
-      a.isGraded = !0;
+      a.isGraded = true;
     };
     d.prototype.sumLettersInString = function (a) {
       var b = 0,
@@ -5893,8 +5905,8 @@ var OneView;
           this.selectVisibleEventTagsIn(
             c.minZOP,
             c.maxZOP,
-            !1,
-            !1,
+            false,
+            false,
             c.parentCollidingFullEventWrapper
           );
       for (a = 0; a < this.visibleEventTagWrappers.length; a++)
@@ -5906,8 +5918,8 @@ var OneView;
           (f = this.visibleEventTagWrappers[c]),
             this.DoEventsCollide(e.calendarEvent, f.calendarEvent) &&
               (e.calendarEvent.grade > f.calendarEvent.grade
-                ? (f.visible = !1)
-                : (e.visible = !1));
+                ? (f.visible = false)
+                : (e.visible = false));
     };
     d.prototype.prepareBadges = function () {
       for (
@@ -5916,10 +5928,10 @@ var OneView;
         n++
       ) {
         var l = this.tagDatasToPaint[n];
-        !1 === l.visible && (this.tagDatasToPaint.splice(n, 1), n--);
+        false === l.visible && (this.tagDatasToPaint.splice(n, 1), n--);
       }
       for (n = 0; n < this.tagDatasToPaint.length; n++) {
-        var h = !1,
+        var h = false,
           l = this.tagDatasToPaint[n],
           k = new a.Badge();
         f = l.calendarEventTagWrapper.calendarEvent;
@@ -5959,7 +5971,7 @@ var OneView;
                       2 * a.core.settings.tagTextHeight
                     )
                 );
-          !1 === h &&
+          false === h &&
           d < a.core.calendarDateHandler.visibleLowestLevelObjects.length;
 
         ) {
@@ -5970,11 +5982,11 @@ var OneView;
           ) {
             f = e.calendarEvents[m];
             if (f.startZOP > c) {
-              h = !0;
+              h = true;
               break;
             }
             m++;
-            !0 === this.doesEventStartWithinCalendarDateObject(f, e) &&
+            true === this.doesEventStartWithinCalendarDateObject(f, e) &&
               void 0 === this.findFullEventWrapperForEvent(f) &&
               f.startZOP > b &&
               (p++,
@@ -5987,7 +5999,7 @@ var OneView;
                 f.endZOP
               )));
           }
-          !1 === h && ((m = 0), d++);
+          false === h && ((m = 0), d++);
         }
         k.count = p;
         k.isPartial = l.isPartial;
@@ -6144,14 +6156,14 @@ var OneView;
       for (b = this.visibleFullEventWrappers.length - 1; 0 <= b; b--) {
         var d = this.visibleFullEventWrappers[b];
         if (this.DoEventsCollide(a.calendarEvent, d.calendarEvent)) {
-          f = !1;
+          f = false;
           if (void 0 !== a.parentCollidingFullEventWrappers)
             for (e = 0; e < a.parentCollidingFullEventWrappers.length; e++)
               this.IsEventInCollisionList(
                 a.parentCollidingFullEventWrappers[e],
                 d.calendarEvent
-              ) && (f = !0);
-          !1 === f &&
+              ) && (f = true);
+          false === f &&
             (d.childCollidingFullEventWrappers.push(a),
             a.parentCollidingFullEventWrappers.push(d));
         }
@@ -6185,15 +6197,15 @@ var OneView;
     };
     d.prototype.IsEventInCollisionList = function (a, c) {
       var b;
-      if (void 0 === a) return !1;
-      if (a.calendarEvent === c) return !0;
+      if (void 0 === a) return false;
+      if (a.calendarEvent === c) return true;
       for (b = 0; b < a.parentCollidingFullEventWrappers.length; b++)
         if (
           a.parentCollidingFullEventWrappers[b].calendarEvent === c ||
           this.IsEventInCollisionList(a.parentCollidingFullEventWrappers[b], c)
         )
-          return !0;
-      return !1;
+          return true;
+      return false;
     };
     d.prototype.calculateMinAndPrefWidth = function (a) {
       a.preferredWidth =
@@ -6239,7 +6251,7 @@ var OneView;
         (c = this.visibleFullEventWrappers[b].calendarEvent),
           (e = this.visibleFullEventWrappers[b].left),
           (f = this.visibleFullEventWrappers[b].right - e),
-          !0 === a.core.settings.rightToLeft &&
+          true === a.core.settings.rightToLeft &&
             ((e = Math.floor(this.eventsFarRight + this.eventsFarLeft - e - f)),
             (this.visibleFullEventWrappers[b].paintedLeft = e),
             (this.visibleFullEventWrappers[b].paintedRight = e + f)),
@@ -6313,15 +6325,15 @@ var OneView;
                 ((d = l.wantedPixelShift), (d = Math.min(d, e.extraSpace))),
               (p = l.right - l.left),
               (k = l.left),
-              !0 === a.core.settings.rightToLeft &&
+              true === a.core.settings.rightToLeft &&
                 ((k = this.eventsFarLeft),
                 (l.paintedLeft = k),
                 (l.paintedRight = k + p)),
-              !0 === l.visible)
+              true === l.visible)
             ) {
               var q = new a.TagDataToPaint();
               q.calendarEventTagWrapper = l;
-              q.visible = !0;
+              q.visible = true;
               q.left = k;
               q.zopHeight = l.calendarEvent.endZOP - l.calendarEvent.startZOP;
               q.topPixel =
@@ -6334,9 +6346,10 @@ var OneView;
               q.textColor = h;
               l.partialHeight
                 ? ((q.height = l.partialHeight),
-                  (q.isPartial = !0),
+                  (q.isPartial = true),
                   (f = l.partialHeight - a.core.settings.tagHeight))
-                : ((q.height = a.core.settings.tagHeight), (q.isPartial = !1));
+                : ((q.height = a.core.settings.tagHeight),
+                  (q.isPartial = false));
               q.text = m;
               this.tagDatasToPaint.push(q);
               l.topPixel = q.topPixel;
@@ -6374,7 +6387,7 @@ var OneView;
             0 < r && (this.tagDatasToPaint[b].topPixel += r));
       for (b = 0; b < this.tagDatasToPaint.length; b++)
         (c = this.tagDatasToPaint[b]),
-          !0 === c.visible &&
+          true === c.visible &&
             a.core.zopDrawArea.drawTag(
               c.left,
               c.topPixel,
@@ -6411,16 +6424,16 @@ var OneView;
         var b = Math.round(a.topPixel + a.height - c.topPixel);
         2 < b &&
           (a.zopHeight >= c.zopHeight
-            ? ((c.isPartial = !0),
-              (c.calendarEventTagWrapper.isPartial = !0),
+            ? ((c.isPartial = true),
+              (c.calendarEventTagWrapper.isPartial = true),
               (c.topPixel += b),
               (c.height -= b),
-              2 >= c.height && (c.visible = !1))
+              2 >= c.height && (c.visible = false))
             : a.zopHeight < c.zopHeight &&
-              ((a.isPartial = !0),
-              (a.calendarEventTagWrapper.isPartial = !0),
+              ((a.isPartial = true),
+              (a.calendarEventTagWrapper.isPartial = true),
               (a.height -= b),
-              2 >= a.height && (a.visible = !1)));
+              2 >= a.height && (a.visible = false)));
       }
     };
     d.prototype.copyEventsFromParent = function (a, c) {
@@ -6495,7 +6508,7 @@ var OneView;
     };
     d.prototype.removeCalendarEventFromDateObjectandChildren = function (a, c) {
       var b;
-      c.isReadyForParentToBeShown = !1;
+      c.isReadyForParentToBeShown = false;
       for (b = 0; b < c.possibleFullEvents.length; b++)
         if (c.possibleFullEvents[b] == a) {
           c.possibleFullEvents.splice(b, 1);
@@ -6544,7 +6557,7 @@ var OneView;
     };
     d.prototype.reorderAllEventsInDateObjectandChildren = function (a) {
       var b;
-      a.isReadyForParentToBeShown = !1;
+      a.isReadyForParentToBeShown = false;
       a.topNonFullEvent = void 0;
       a.possibleEventTagsAtThisZoomLevel = [];
       a.possibleEventTagsAtThisZoomLevelMinZop = void 0;
@@ -6568,7 +6581,7 @@ var OneView;
     };
     d.prototype.clearAllEventsFromDateObjectandChildren = function (a) {
       var b;
-      a.isReadyForParentToBeShown = !1;
+      a.isReadyForParentToBeShown = false;
       a.possibleFullEvents = [];
       a.calendarEvents = [];
       a.topNonFullEvent = void 0;
@@ -6644,7 +6657,7 @@ var OneView;
         (c.calendarEvents.push(a),
         a.endZOP - a.startZOP > (c.endZOP - c.startZOP) / 32 &&
           c.possibleFullEvents.push(a),
-        (c.isReadyForParentToBeShown = !1),
+        (c.isReadyForParentToBeShown = false),
         c.details)
       )
         for (b = 0; b < c.details.length; b++)
@@ -6683,7 +6696,7 @@ var OneView;
     d.prototype.verifyCalendarDateObjectIsReadyForParentToBeShown = function (
       a
     ) {
-      if (!0 !== a.isReadyForParentToBeShown) {
+      if (true !== a.isReadyForParentToBeShown) {
         var b;
         a.possibleFullEvents.sort(function (a, b) {
           return b.grade - a.grade;
@@ -6694,12 +6707,12 @@ var OneView;
             (void 0 === a.topNonFullEvent ||
               a.topNonFullEvent.grade < a.calendarEvents[b].grade) &&
             (a.topNonFullEvent = a.calendarEvents[b]);
-        a.isReadyForParentToBeShown = !0;
+        a.isReadyForParentToBeShown = true;
       }
     };
     d.prototype.selectVisibleEventTagsFor = function (b, c, e, f, d, m) {
       a.core.debugCounter++;
-      f = !0;
+      f = true;
       this.verifyChildCalendarDateObjectsAreReadyForParentToBeShown(b);
       this.selectAndOrderPossibleEventTagsAtThisZoomLevel(b);
       var g = void 0,
@@ -6710,7 +6723,7 @@ var OneView;
         q = 0,
         r,
         v,
-        t = !1,
+        t = false,
         l = Math.max(
           c,
           Math.min(b.startZOP, b.possibleEventTagsAtThisZoomLevelMinZop)
@@ -6743,7 +6756,7 @@ var OneView;
         y = 0;
       u.startZOP = l;
       u.countDetails = b.details.length;
-      !1 === g &&
+      false === g &&
         ((y = this.getPositionSubtractionForEventTags(b, c)),
         (u.countDetails = this.countDetailsForPartialCalendarDateObject(
           b,
@@ -6788,7 +6801,7 @@ var OneView;
             this.calendarEventIsOnExtendedScreen(b.topNonFullEvent) &&
             ((g = b.topNonFullEvent), (l = 100));
           if (g) {
-            t = !1;
+            t = false;
             for (p = 0; p < u.calendarEventTagWrappers.length; p++)
               if (
                 ((r = u.calendarEventTagWrappers[p].calendarEvent.startZOP),
@@ -6796,7 +6809,7 @@ var OneView;
                 (g.startZOP >= r && g.startZOP <= v) ||
                   (g.endZOP >= r && g.endZOP <= v))
               )
-                t = !0;
+                t = true;
             t
               ? --h
               : ((p = this.getOrCreateEventTagWrapperFor(g)),
@@ -6816,7 +6829,7 @@ var OneView;
             ].partialHeight = A),
             (u.calendarEventTagWrappers[
               u.calendarEventTagWrappers.length - 1
-            ].isPartial = !0))
+            ].isPartial = true))
           : (u.extraSpace =
               w -
               u.calendarEventTagWrappers.length * a.core.settings.tagHeight);
@@ -6873,7 +6886,7 @@ var OneView;
                 this.eventsFarRight),
               g >= this.eventsFarRight)
             )
-              e.childCollidingEventTagWrappers[c].visible = !1;
+              e.childCollidingEventTagWrappers[c].visible = false;
             else if (
               void 0 === e.childCollidingEventTagWrappers[c].left ||
               e.childCollidingEventTagWrappers[c].left < g
@@ -7093,12 +7106,12 @@ var OneView;
             a.core.drawAreaEffects.startAutoZoom(
               this.visibleBadges[e].topZOPForAllEvents - d,
               this.visibleBadges[e].bottomZOPForAllEvents + d,
-              !1,
+              false,
               function () {}
             );
-            return !0;
+            return true;
           }
-      return !1;
+      return false;
     };
     d.prototype.selectCalendarEventObjectAt = function (b, c) {
       var e,
@@ -7169,7 +7182,7 @@ var OneView;
     };
     d.prototype.paint = function () {
       void 0 !== this.calendarEventObject &&
-        !0 === a.core.appStateHandler.isChoosingDateTimeForEvent &&
+        true === a.core.appStateHandler.isChoosingDateTimeForEvent &&
         ((this.topPanelLeft = a.core.zopDrawArea.screenLeft),
         (this.topPanelWidth = a.core.domHandler.screenWidth),
         (this.topPanelTop = a.core.zopDrawArea.screenTop),
@@ -7197,7 +7210,7 @@ var OneView;
       a.core.drawAreaEffects.startAutoZoom(
         b.startZOP - c,
         b.endZOP + c,
-        !1,
+        false,
         function () {}
       );
     };
@@ -7209,10 +7222,10 @@ var OneView;
         this.calendarEventObject.endZOP
       );
       a.core.appStateHandler.isDraggingTopMarker
-        ? (this.paintMarker(this.bottomText, this.bottomMarkerY, !1),
-          this.paintMarker(this.topText, this.topMarkerY, !0))
-        : (this.paintMarker(this.topText, this.topMarkerY, !0),
-          this.paintMarker(this.bottomText, this.bottomMarkerY, !1));
+        ? (this.paintMarker(this.bottomText, this.bottomMarkerY, false),
+          this.paintMarker(this.topText, this.topMarkerY, true))
+        : (this.paintMarker(this.topText, this.topMarkerY, true),
+          this.paintMarker(this.bottomText, this.bottomMarkerY, false));
     };
     d.prototype.makeNiceTimeToShow = function (a) {
       return (
@@ -7265,11 +7278,11 @@ var OneView;
         d,
         g,
         a.core.settings.theme.colorDark,
-        !1
+        false
       );
       g -= 6;
-      a.core.drawArea.setFont(g, !1, !1, !1);
-      var f = a.core.zopDrawArea.measureTextWidth(b, g, !1, !0),
+      a.core.drawArea.setFont(g, false, false, false);
+      var f = a.core.zopDrawArea.measureTextWidth(b, g, false, true),
         f = (d - f) / 2;
       a.core.zopDrawArea.drawText(
         b,
@@ -7279,10 +7292,10 @@ var OneView;
         g,
         a.core.settings.theme.colorLight,
         a.core.settings.theme.colorDark,
-        !1,
+        false,
         d - f,
-        !1,
-        !1
+        false,
+        false
       );
     };
     d.prototype.paintMarker = function (b, c, e) {
@@ -7293,7 +7306,7 @@ var OneView;
             this.markerLeft + this.markerWidth,
             this.markerColor,
             3,
-            !0
+            true
           ),
           (c -= this.markerHeight))
         : a.core.zopDrawArea.drawHorizontalLineThick(
@@ -7302,7 +7315,7 @@ var OneView;
             this.markerLeft + this.markerWidth,
             this.markerColor,
             3,
-            !0
+            true
           );
       a.core.drawArea.drawFilledRectangle(
         this.markerLeft,
@@ -7310,7 +7323,7 @@ var OneView;
         this.markerWidth,
         this.markerHeight,
         this.markerColor,
-        !0
+        true
       );
       e = this.markerHeight / 6;
       var d = this.markerLeft + this.markerWidth - 4 * e,
@@ -7321,7 +7334,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 1 * e,
@@ -7329,7 +7342,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 1 * e,
@@ -7337,7 +7350,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 1 * e,
@@ -7345,7 +7358,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 2 * e,
@@ -7353,7 +7366,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 2 * e,
@@ -7361,7 +7374,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 2 * e,
@@ -7369,7 +7382,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         d + 2 * e,
@@ -7377,7 +7390,7 @@ var OneView;
         2,
         2,
         this.textColor,
-        !1
+        false
       );
       e = this.markerHeight / 2 - 4;
       a.core.zopDrawArea.drawText(
@@ -7388,17 +7401,17 @@ var OneView;
         e,
         this.textColor,
         this.markerColor,
-        !1,
+        false,
         this.markerWidth - 5,
-        !1,
-        !1
+        false,
+        false
       );
     };
     d.prototype.click = function (a, c) {
-      return !1;
+      return false;
     };
     d.prototype.saveChanges = function (b) {
-      a.core.appStateHandler.setChoosingDateTimeForEvent(!1);
+      a.core.appStateHandler.setChoosingDateTimeForEvent(false);
       this.callback
         ? this.callback()
         : a.core.calendarDataProxy.editExistingEvent(
@@ -7407,7 +7420,7 @@ var OneView;
           );
     };
     d.prototype.cancelChanges = function (b) {
-      a.core.appStateHandler.setChoosingDateTimeForEvent(!1);
+      a.core.appStateHandler.setChoosingDateTimeForEvent(false);
       this.calendarEventObject.startDateTime = this.originalTopDateTime;
       this.calendarEventObject.endDateTime = this.originalBottomDateTime;
       a.core.zopHandler.updateStartEndZOP(this.calendarEventObject);
@@ -7418,27 +7431,27 @@ var OneView;
         c <= this.topMarkerY &&
         a >= this.markerLeft &&
         a <= this.markerLeft + this.markerWidth
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     d.prototype.hitBottomMarkerAt = function (a, c) {
       return c >= this.bottomMarkerY &&
         c <= this.bottomMarkerY + this.markerHeight &&
         a >= this.markerLeft &&
         a <= this.markerLeft + this.markerWidth
-        ? !0
-        : !1;
+        ? true
+        : false;
     };
     d.prototype.startDraggingTopMarker = function (b) {
       this.draggingTopMarkerOffset = b;
-      a.core.appStateHandler.isDraggingTopMarker = !0;
+      a.core.appStateHandler.isDraggingTopMarker = true;
       this.startDragTopDateTime = this.calendarEventObject.startDateTime;
       a.core.appStateHandler.isDraggingBottomMarker ||
         (this.startDragBottomDateTime = this.calendarEventObject.endDateTime);
     };
     d.prototype.startDraggingBottomMarker = function (b) {
       this.draggingBottomMarkerOffset = b;
-      a.core.appStateHandler.isDraggingBottomMarker = !0;
+      a.core.appStateHandler.isDraggingBottomMarker = true;
       this.startDragBottomDateTime = this.calendarEventObject.endDateTime;
     };
     d.prototype.continueDraggingTopMarker = function (b) {
@@ -7451,7 +7464,7 @@ var OneView;
         (b = a.core.calendarDateHandler.getClosestFakeDetailAt(
           this.topMarkerY,
           this.precision,
-          !0
+          true
         ))
       )
         (this.calendarEventObject.startDateTime = b.startDateTime),
@@ -7472,7 +7485,7 @@ var OneView;
         (b = a.core.calendarDateHandler.getClosestFakeDetailAt(
           this.bottomMarkerY,
           1,
-          !0
+          true
         ))) &&
         ((this.calendarEventObject.endDateTime = b.startDateTime),
         (this.calendarEventObject.endZOP = b.startZOP),
@@ -7493,7 +7506,7 @@ var OneView;
         (b = a.core.calendarDateHandler.getClosestFakeDetailAt(
           this.bottomMarkerY,
           this.precision,
-          !0
+          true
         ))
       )
         (this.calendarEventObject.endDateTime = b.startDateTime),
@@ -7502,10 +7515,10 @@ var OneView;
           b.shortText2 && (this.bottomText += " " + b.shortText2);
     };
     d.prototype.endDraggingTopMarker = function () {
-      a.core.appStateHandler.isDraggingTopMarker = !1;
+      a.core.appStateHandler.isDraggingTopMarker = false;
     };
     d.prototype.endDraggingBottomMarker = function () {
-      a.core.appStateHandler.isDraggingBottomMarker = !1;
+      a.core.appStateHandler.isDraggingBottomMarker = false;
     };
     return d;
   })();
@@ -7515,11 +7528,11 @@ var OneView;
   var p = (function () {
     function d() {
       this.touches = [];
-      this.mouseWasDraged = this.mouseRightDown = this.mouseLeftDown = !1;
-      this.canBeAClick = !0;
-      this.touchOneFingerStarted = this.startedInTitleArea = !1;
+      this.mouseWasDraged = this.mouseRightDown = this.mouseLeftDown = false;
+      this.canBeAClick = true;
+      this.touchOneFingerStarted = this.startedInTitleArea = false;
       this.touchOneFingerStartY = this.touchOneFingerStartX = 0;
-      this.toucohEnabledDevice = this.touchTwoFingerStarted = !1;
+      this.toucohEnabledDevice = this.touchTwoFingerStarted = false;
       this.touchSlop = 8;
       this.elementsWithMouseEvents = [];
       this.timeForLastScrollEvent =
@@ -7530,43 +7543,43 @@ var OneView;
     d.prototype.addBatchEventsTo = function (b) {
       this.removeBatchElementsFrom(b);
       this.touchEnd = this.touchEnd.bind(this);
-      b.addEventListener("touchend", this.touchEnd, !1);
+      b.addEventListener("touchend", this.touchEnd, false);
       this.touchMove = this.touchMove.bind(this);
-      b.addEventListener("touchmove", this.touchMove, !1);
+      b.addEventListener("touchmove", this.touchMove, false);
       this.touchStart = this.touchStart.bind(this);
-      b.addEventListener("touchstart", this.touchStart, !1);
+      b.addEventListener("touchstart", this.touchStart, false);
       this.touchLeave = this.touchLeave.bind(this);
-      b.addEventListener("touchleave", this.touchLeave, !1);
+      b.addEventListener("touchleave", this.touchLeave, false);
       a.core.isCordovaApp || this.addMouseEvents(b);
     };
     d.prototype.removeBatchElementsFrom = function (b) {
-      b.removeEventListener("touchend", this.touchEnd, !1);
-      b.removeEventListener("touchmove", this.touchMove, !1);
-      b.removeEventListener("touchstart", this.touchStart, !1);
-      b.removeEventListener("touchleave", this.touchLeave, !1);
+      b.removeEventListener("touchend", this.touchEnd, false);
+      b.removeEventListener("touchmove", this.touchMove, false);
+      b.removeEventListener("touchstart", this.touchStart, false);
+      b.removeEventListener("touchleave", this.touchLeave, false);
       a.core.isCordovaApp || this.removeMouseEvents(b);
     };
     d.prototype.addMouseEvents = function (a) {
       this.elementsWithMouseEvents.push(a);
       this.mouseDown = this.mouseDown.bind(this);
-      a.addEventListener("mousedown", this.mouseDown, !1);
+      a.addEventListener("mousedown", this.mouseDown, false);
       this.mouseMove = this.mouseMove.bind(this);
-      a.addEventListener("mousemove", this.mouseMove, !1);
+      a.addEventListener("mousemove", this.mouseMove, false);
       this.mouseUp = this.mouseUp.bind(this);
-      a.addEventListener("mouseup", this.mouseUp, !1);
+      a.addEventListener("mouseup", this.mouseUp, false);
       this.mouseLeave = this.mouseLeave.bind(this);
-      a.addEventListener("mouseleave", this.mouseLeave, !1);
+      a.addEventListener("mouseleave", this.mouseLeave, false);
       this.mouseScroll = this.mouseScroll.bind(this);
-      a.addEventListener("mousewheel", this.mouseScroll, !1);
-      window.addEventListener("DOMMouseScroll", this.mouseScroll, !1);
+      a.addEventListener("mousewheel", this.mouseScroll, false);
+      window.addEventListener("DOMMouseScroll", this.mouseScroll, false);
     };
     d.prototype.removeMouseEvents = function (a) {
-      a.removeEventListener("mousedown", this.mouseDown, !1);
-      a.removeEventListener("mousemove", this.mouseMove, !1);
-      a.removeEventListener("mouseup", this.mouseUp, !1);
-      a.removeEventListener("mouseleave", this.mouseLeave, !1);
-      a.removeEventListener("mousewheel", this.mouseScroll, !1);
-      window.removeEventListener("DOMMouseScroll", this.mouseScroll, !1);
+      a.removeEventListener("mousedown", this.mouseDown, false);
+      a.removeEventListener("mousemove", this.mouseMove, false);
+      a.removeEventListener("mouseup", this.mouseUp, false);
+      a.removeEventListener("mouseleave", this.mouseLeave, false);
+      a.removeEventListener("mousewheel", this.mouseScroll, false);
+      window.removeEventListener("DOMMouseScroll", this.mouseScroll, false);
     };
     d.prototype.reAddAllMouseEvents = function () {
       var a;
@@ -7593,7 +7606,7 @@ var OneView;
         for (; a.core.appStateHandler.back(); );
     };
     d.prototype.click = function (b, c) {
-      var e = !1,
+      var e = false,
         d =
           a.core.domHandler.screenTopForDOM * a.core.ratio +
           a.core.zopDrawArea.zopAreaTop,
@@ -7608,7 +7621,7 @@ var OneView;
           : a.core.mainMenuControl.hitMenuButton(b - g, c - d) &&
             !a.core.appStateHandler.isChoosingDateTimeForEvent
           ? a.core.appStateHandler.mainButtonPressed()
-          : (e = a.core.calendarDateHandler.getHitWeekAt(b - g, c - d, !0))
+          : (e = a.core.calendarDateHandler.getHitWeekAt(b - g, c - d, true))
           ? a.core.calendarDateHandler.gotoCalendarDateObject(e, c - d)
           : ((e = a.core.calendarEventHandler.selectCalendarEventObjectAt(
               b - g,
@@ -7660,45 +7673,46 @@ var OneView;
                   b - g,
                   c - d
                 )));
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     d.prototype.testIfStartDraggingMarker = function (b, c, e) {
       a.core.dateTimeSelectionHandler.hitTopMarkerAt(b, c)
         ? (a.core.dateTimeSelectionHandler.startDraggingTopMarker(c),
-          a.core.redraw(!1),
+          a.core.redraw(false),
           (this.fingerLastDraggingTopMarker = e))
         : a.core.dateTimeSelectionHandler.hitBottomMarkerAt(b, c) &&
           (a.core.dateTimeSelectionHandler.startDraggingBottomMarker(c),
-          a.core.redraw(!1),
+          a.core.redraw(false),
           (this.fingerLastDraggingBottomMarker = e));
     };
     d.prototype.testIfContinueDraggingMarker = function (b, c) {
       a.core.appStateHandler.isDraggingTopMarker &&
       c === this.fingerLastDraggingTopMarker
         ? (a.core.dateTimeSelectionHandler.continueDraggingTopMarker(b),
-          a.core.redraw(!1))
+          a.core.redraw(false))
         : a.core.appStateHandler.isDraggingBottomMarker &&
           c === this.fingerLastDraggingBottomMarker &&
           (a.core.dateTimeSelectionHandler.continueDraggingBottomMarker(b),
-          a.core.redraw(!1));
+          a.core.redraw(false));
     };
     d.prototype.testIfEndDraggingMarker = function () {
       a.core.appStateHandler.isDraggingTopMarker
         ? (a.core.dateTimeSelectionHandler.endDraggingTopMarker(),
-          a.core.redraw(!1))
+          a.core.redraw(false))
         : a.core.appStateHandler.isDraggingBottomMarker &&
           (a.core.dateTimeSelectionHandler.endDraggingBottomMarker(),
-          a.core.redraw(!1));
+          a.core.redraw(false));
     };
     d.prototype.touchStart = function (b) {
       b.preventDefault();
-      this.canBeAClick = !0;
-      a.core.drawAreaEffects.isScrollingOrZooming() && (this.canBeAClick = !1);
+      this.canBeAClick = true;
+      a.core.drawAreaEffects.isScrollingOrZooming() &&
+        (this.canBeAClick = false);
       a.core.preloadAllImages();
       a.core.drawAreaEffects.stopAllEffects();
-      a.core.touchEnabledDevice = !0;
+      a.core.touchEnabledDevice = true;
       this.touches = b.touches;
-      a.core.firstTouchMade = !0;
+      a.core.firstTouchMade = true;
       b = this.getTouchX(this.touches[0]) * a.core.ratio * a.core.domRatio;
       var c = this.getTouchY(this.touches[0]) * a.core.ratio * a.core.domRatio;
       this.startedInTitleArea = a.core.mainMenuControl.startDragging(b, c);
@@ -7713,16 +7727,16 @@ var OneView;
             1
           ));
       1 === this.touches.length &&
-        ((this.touchOneFingerStarted = !0),
+        ((this.touchOneFingerStarted = true),
         (this.touchOneFingerStartX = this.getTouchX(this.touches[0])),
         (this.touchOneFingerStartY = this.getTouchY(this.touches[0])),
         (this.currentPressStartedTime = a.core.getTimeStamp()),
         (this.longPressStartX = b),
         (this.longPressStartY = c));
       2 <= this.touches.length &&
-        ((this.touchOneFingerStarted = !1),
-        (this.touchTwoFingerStarted = !0),
-        (this.canBeAClick = !1));
+        ((this.touchOneFingerStarted = false),
+        (this.touchTwoFingerStarted = true),
+        (this.canBeAClick = false));
       a.core.addButtonControl.startDragging(b, c) ||
         a.core.appStateHandler.isDraggingTopMarker ||
         a.core.appStateHandler.isDraggingBottomMarker ||
@@ -7737,9 +7751,9 @@ var OneView;
           ));
       this.timeWhenLastTouchEnded &&
         this.timeWhenLastTouchEnded + 250 > a.core.getTimeStamp() &&
-        (this.canBeAClick = !1);
-      a.core.redraw(!1);
-      return !1;
+        (this.canBeAClick = false);
+      a.core.redraw(false);
+      return false;
     };
     d.prototype.getTouchX = function (b) {
       return b.pageX - a.core.domHandler.screenLeftForDOM;
@@ -7749,8 +7763,8 @@ var OneView;
     };
     d.prototype.mouseDown = function (b) {
       b.preventDefault();
-      a.core.firstTouchMade = !0;
-      if (!0 === a.core.touchEnabledDevice) this.removeAllMouseEvents();
+      a.core.firstTouchMade = true;
+      if (true === a.core.touchEnabledDevice) this.removeAllMouseEvents();
       else {
         a.core.drawAreaEffects.stopAllEffects();
         a.core.preloadAllImages();
@@ -7767,7 +7781,7 @@ var OneView;
             a.core.domRatio;
         this.startedInTitleArea = a.core.mainMenuControl.startDragging(g, d);
         if (0 === b.button) {
-          this.canBeAClick = this.mouseLeftDown = !0;
+          this.canBeAClick = this.mouseLeftDown = true;
           this.longPressStartX = e;
           this.longPressStartY = c;
           this.currentPressStartedTime = a.core.getTimeStamp();
@@ -7784,11 +7798,11 @@ var OneView;
           a.core.appStateHandler.isMainMenuShowing ||
             a.core.appStateHandler.isPopupMainMenuShowing ||
             a.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-            ((this.mouseRightDown = !0),
+            ((this.mouseRightDown = true),
             (this.mouseZoomY = c - 500),
             a.core.zopHandler.startZoom(this.mouseZoomY, c));
-        a.core.redraw(!1);
-        return !1;
+        a.core.redraw(false);
+        return false;
       }
     };
     d.prototype.touchMove = function (b) {
@@ -7804,7 +7818,7 @@ var OneView;
         (0 < this.touches.length && this.testIfContinueDraggingMarker(b, 0),
         1 < this.touches.length && this.testIfContinueDraggingMarker(e, 1));
       this.currentPressStartedTime < a.core.getTimeStamp() - 550 &&
-        (this.canBeAClick = !1);
+        (this.canBeAClick = false);
       1 === this.touches.length &&
         this.touchOneFingerStarted &&
         Math.abs(this.touchOneFingerStartX - this.getTouchX(this.touches[0])) +
@@ -7815,7 +7829,7 @@ var OneView;
             a.core.ratio *
             a.core.domRatio *
             (this.startedInTitleArea ? 1.5 : 1) &&
-        (this.canBeAClick = !1);
+        (this.canBeAClick = false);
       !this.canBeAClick && this.startedInTitleArea
         ? a.core.mainMenuControl.continueDragging(c, b)
         : a.core.appStateHandler.isAddButtonBeingDragged
@@ -7835,12 +7849,12 @@ var OneView;
           2 <= this.touches.length &&
             this.touchTwoFingerStarted &&
             a.core.zopHandler.continueZoom(b, e));
-      a.core.redraw(!1);
-      return !1;
+      a.core.redraw(false);
+      return false;
     };
     d.prototype.mouseMove = function (b) {
       b.preventDefault();
-      if (!0 === a.core.touchEnabledDevice) this.removeAllMouseEvents();
+      if (true === a.core.touchEnabledDevice) this.removeAllMouseEvents();
       else {
         var c = b.pageY * a.core.ratio * a.core.domRatio,
           e = b.pageX * a.core.ratio * a.core.domRatio,
@@ -7855,7 +7869,7 @@ var OneView;
         if (this.mouseLeftDown) {
           this.longPressStartX != e &&
             this.longPressStartY !== c &&
-            (this.canBeAClick = !1);
+            (this.canBeAClick = false);
           if (a.core.appStateHandler.isPopupEditRecurringMenuShowing) return;
           this.mouseWasDragged += 1;
           a.core.appStateHandler.isChoosingDateTimeForEvent &&
@@ -7871,26 +7885,27 @@ var OneView;
               a.core.appStateHandler.isAddButtonBeingDragged ||
               (a.core.zopHandler.continueScroll(c),
               a.core.drawAreaEffects.prepareAutoScroll(c));
-          a.core.redraw(!1);
+          a.core.redraw(false);
         }
         !this.mouseRightDown ||
           a.core.appStateHandler.isMainMenuShowing ||
           a.core.appStateHandler.isPopupMainMenuShowing ||
           a.core.appStateHandler.isPopupEditRecurringMenuShowing ||
           (a.core.zopHandler.continueZoom(this.mouseZoomY, c),
-          a.core.redraw(!1));
-        return !1;
+          a.core.redraw(false));
+        return false;
       }
     };
     d.prototype.touchEnd = function (b) {
       b.preventDefault();
-      if (!this.touchOneFingerStarted && !this.touchTwoFingerStarted) return !1;
+      if (!this.touchOneFingerStarted && !this.touchTwoFingerStarted)
+        return false;
       var c = b.touches;
       b = b.changedTouches;
       a.core.appStateHandler.isChoosingDateTimeForEvent &&
         this.testIfEndDraggingMarker();
       this.currentPressStartedTime < a.core.getTimeStamp() - 550 &&
-        (this.canBeAClick = !1);
+        (this.canBeAClick = false);
       a.core.appStateHandler.isMainMenuBeingDragged
         ? a.core.mainMenuControl.endDragging()
         : a.core.appStateHandler.isAddButtonBeingDragged
@@ -7898,7 +7913,7 @@ var OneView;
         : !this.touchOneFingerStarted ||
           1 !== b.length ||
           (void 0 !== c && 0 !== c.length) ||
-          (!1 === this.canBeAClick
+          (false === this.canBeAClick
             ? a.core.drawAreaEffects.startAutoScroll(
                 this.getTouchY(b[0]) * a.core.ratio * a.core.domRatio
               )
@@ -7911,22 +7926,24 @@ var OneView;
       this.touchTwoFingerStarted =
         this.touchOneFingerStarted =
         this.canBeAClick =
-          !1;
+          false;
       this.timeWhenLastTouchEnded = a.core.getTimeStamp();
-      a.core.redraw(!1);
-      return !1;
+      a.core.redraw(false);
+      return false;
     };
     d.prototype.mouseUp = function (b) {
       b.preventDefault();
-      if (!0 === a.core.touchEnabledDevice) this.removeAllMouseEvents();
+      if (true === a.core.touchEnabledDevice) this.removeAllMouseEvents();
       else
         return (
           a.core.appStateHandler.isMainMenuBeingDragged
-            ? ((this.mouseLeftDown = !1), a.core.mainMenuControl.endDragging())
+            ? ((this.mouseLeftDown = false),
+              a.core.mainMenuControl.endDragging())
             : a.core.appStateHandler.isAddButtonBeingDragged
-            ? ((this.mouseLeftDown = !1), a.core.addButtonControl.endDragging())
+            ? ((this.mouseLeftDown = false),
+              a.core.addButtonControl.endDragging())
             : this.mouseLeftDown &&
-              ((this.mouseLeftDown = !1),
+              ((this.mouseLeftDown = false),
               a.core.appStateHandler.isDraggingTopMarker ||
                 a.core.appStateHandler.isDraggingBottomMarker ||
                 (a.core.zopHandler.endScroll(),
@@ -7950,10 +7967,10 @@ var OneView;
             a.core.appStateHandler.isMainMenuShowing ||
             a.core.appStateHandler.isPopupMainMenuShowing ||
             a.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-            ((this.mouseRightDown = !1), a.core.zopHandler.endZoom()),
-          (this.canBeAClick = !1),
-          a.core.redraw(!1),
-          !1
+            ((this.mouseRightDown = false), a.core.zopHandler.endZoom()),
+          (this.canBeAClick = false),
+          a.core.redraw(false),
+          false
         );
     };
     d.prototype.mouseScroll = function (b) {
@@ -7988,14 +8005,14 @@ var OneView;
         e = e + b + c;
         d = d + b - c;
         a.core.drawAreaEffects.stopAllEffects();
-        a.core.drawAreaEffects.startAutoZoom(e, d, !1, function () {});
-        return !1;
+        a.core.drawAreaEffects.startAutoZoom(e, d, false, function () {});
+        return false;
       }
     };
     d.prototype.mouseLeave = function (b) {
-      if (!0 === a.core.touchEnabledDevice) this.removeAllMouseEvents();
+      if (true === a.core.touchEnabledDevice) this.removeAllMouseEvents();
       else {
-        a.core.appStateHandler.isAddButtonBeingDragged = !1;
+        a.core.appStateHandler.isAddButtonBeingDragged = false;
         if (
           b.pageX * a.core.ratio * a.core.domRatio >
             a.core.domHandler.screenWidth ||
@@ -8003,26 +8020,26 @@ var OneView;
             a.core.domHandler.screenHeight
         )
           this.mouseLeftDown &&
-            ((this.mouseLeftDown = !1),
+            ((this.mouseLeftDown = false),
             a.core.zopHandler.endScroll(),
             a.core.drawAreaEffects.stopAllEffects()),
             this.mouseRightDown &&
-              ((this.mouseRightDown = !1), a.core.zopHandler.endZoom()),
+              ((this.mouseRightDown = false), a.core.zopHandler.endZoom()),
             a.core.appStateHandler.isMainMenuBeingDragged
-              ? ((this.mouseLeftDown = !1),
+              ? ((this.mouseLeftDown = false),
                 a.core.mainMenuControl.endDragging())
               : a.core.appStateHandler.isAddButtonBeingDragged &&
-                ((this.mouseLeftDown = !1),
+                ((this.mouseLeftDown = false),
                 a.core.addButtonControl.endDragging());
-        a.core.redraw(!1);
+        a.core.redraw(false);
       }
     };
     d.prototype.touchLeave = function (b) {
-      a.core.appStateHandler.isAddButtonBeingDragged = !1;
+      a.core.appStateHandler.isAddButtonBeingDragged = false;
       a.core.zopHandler.endScroll();
       a.core.drawAreaEffects.stopAllEffects();
       a.core.zopHandler.endZoom();
-      a.core.redraw(!1);
+      a.core.redraw(false);
     };
     return d;
   })();
@@ -8062,7 +8079,7 @@ var OneView;
         this.bottomZOP =
         this.topZOP =
           0;
-      this.scrolling = !1;
+      this.scrolling = false;
     }
     d.prototype.setAbsoluteMinMax = function (a, c) {
       this.absoluteMinZOP = a;
@@ -8121,21 +8138,21 @@ var OneView;
       this.extendedBottomZOP = this.bottomZOP + b;
     };
     d.prototype.isObjectAboveScreen = function (a) {
-      return a < this.topZOP ? !0 : !1;
+      return a < this.topZOP ? true : false;
     };
     d.prototype.isObjectBelowScreen = function (a) {
-      return a > this.bottomZOP ? !0 : !1;
+      return a > this.bottomZOP ? true : false;
     };
     d.prototype.isObjectAboveExtendedScreen = function (a) {
-      return a < this.extendedTopZOP ? !0 : !1;
+      return a < this.extendedTopZOP ? true : false;
     };
     d.prototype.isObjectBelowExtendedScreen = function (a) {
-      return a > this.extendedBottomZOP ? !0 : !1;
+      return a > this.extendedBottomZOP ? true : false;
     };
     d.prototype.startScroll = function (a) {
       this.originalDelta = this.currentDelta;
       this.currentYPixel = this.originalYPixel = a;
-      this.scrolling = !0;
+      this.scrolling = true;
     };
     d.prototype.continueScroll = function (b) {
       if (this.scrolling) {
@@ -8164,7 +8181,7 @@ var OneView;
       }
     };
     d.prototype.endScroll = function () {
-      this.scrolling = !1;
+      this.scrolling = false;
     };
     d.prototype.startZoom = function (a, c) {
       this.originalDelta = this.currentDelta;
@@ -8478,7 +8495,7 @@ var OneView;
           0 === g.getMinutes() &&
           (this.endDateTime = a.core.calendarDateHandler.addMinutes(g, -1));
         a.core.zopHandler.updateStartEndZOP(this);
-        this.isGraded = !1;
+        this.isGraded = false;
         this.grade = 0;
         this.calendarId = m;
         this.id = n;
@@ -8494,7 +8511,7 @@ var OneView;
       this.canEditCalendar = m;
       this.canEditCalendarEvents = n;
       this.defaultReminders = e;
-      this.allEventsAreFullDay = !0;
+      this.allEventsAreFullDay = true;
       this.countEvents = 0;
     };
   })();
@@ -8511,12 +8528,12 @@ var OneView;
       this.possibleFullEvents = [];
       this.calendarEvents = [];
       this.calendarDateObjectType = b;
-      this.detailsArePopulated = !0;
-      this.isReadyForParentToBeShown = !1;
+      this.detailsArePopulated = true;
+      this.isReadyForParentToBeShown = false;
       this.startDateTime = c;
       this.endDateTime = new Date(this.startDateTime.getTime());
       this.startZOP = a.core.zopHandler.dateToZOP(this.startDateTime);
-      this.isRed = !1;
+      this.isRed = false;
       b === d.Minutes5 &&
         (this.endDateTime.setMinutes(this.startDateTime.getMinutes() + 5),
         a.core.commonUserSettings.use24hFormat
@@ -8530,7 +8547,7 @@ var OneView;
         this.startDateTime.getHours(),
         this.startDateTime.getHours(),
         (this.longText = this.shortText),
-        (this.detailsArePopulated = !0));
+        (this.detailsArePopulated = true));
       b === d.Hour &&
         (this.endDateTime.setHours(this.startDateTime.getHours() + 1),
         a.core.commonUserSettings.use24hFormat
@@ -8552,7 +8569,7 @@ var OneView;
               (this.shortText2 ? ":" + this.shortText2 : "") +
               " " +
               this.ampm)),
-        (this.detailsArePopulated = !1));
+        (this.detailsArePopulated = false));
       b === d.Day &&
         (this.endDateTime.setDate(this.startDateTime.getDate() + 1),
         (this.shortText = this.startDateTime.getDate().toString()),
@@ -8583,12 +8600,12 @@ var OneView;
             this.longText
           )),
         (this.longText = this.startDateTime.getDate() + " " + this.longText),
-        (this.detailsArePopulated = !1),
+        (this.detailsArePopulated = false),
         this.startDateTime.getDay() === a.core.settings.redDay &&
-          (this.isRed = !0));
+          (this.isRed = true));
       b === d.Week &&
         (this.endDateTime.setDate(this.endDateTime.getDate() + 7),
-        (this.detailsArePopulated = !0),
+        (this.detailsArePopulated = true),
         (this.details = [{}, {}, {}, {}, {}, {}, {}]));
       b === d.Month &&
         (this.endDateTime.setMonth(this.startDateTime.getMonth() + 1),
@@ -8611,16 +8628,16 @@ var OneView;
             this.longText
           )),
         (this.parentText = ""),
-        (this.detailsArePopulated = !1));
+        (this.detailsArePopulated = false));
       b === d.Year &&
         (this.endDateTime.setFullYear(this.startDateTime.getFullYear() + 1),
         (this.shortText = "" + this.startDateTime.getFullYear()),
         (this.longText = "" + this.startDateTime.getFullYear()),
-        (this.detailsArePopulated = !1));
+        (this.detailsArePopulated = false));
       b === d.Title &&
         ((this.endDateTime = e),
         (this.longText = "OneView Calendar"),
-        (this.detailsArePopulated = !1));
+        (this.detailsArePopulated = false));
       this.endZOP = a.core.zopHandler.dateToZOP(this.endDateTime);
     };
   })();
@@ -8647,9 +8664,9 @@ var OneView;
   p = (function () {
     return function (a) {
       this.wantedPixelShift = this.right = this.left = this.position = 0;
-      this.isPartial = !1;
+      this.isPartial = false;
       this.parentCollidingFullEventWrappers = [];
-      this.visible = !0;
+      this.visible = true;
       this.calendarEvent = a;
     };
   })();
@@ -8658,7 +8675,7 @@ var OneView;
     return function (a) {
       this.widthPercentWhenTagsExist = this.widthPercent = 0;
       this.preferredWidth = this.right = this.left = void 0;
-      this.collisionsHaveBeenChecked = !1;
+      this.collisionsHaveBeenChecked = false;
       this.parentCollidingFullEventWrappers = [];
       this.childCollidingFullEventWrappers = [];
       this.childCollidingEventTagWrappers = [];
@@ -8668,7 +8685,7 @@ var OneView;
   a.CalendarFullEventWrapper = p;
   p = (function () {
     return function () {
-      this.closeToBellow = this.closeToAbove = !1;
+      this.closeToBellow = this.closeToAbove = false;
     };
   })();
   a.Badge = p;
@@ -8747,11 +8764,11 @@ var OneView;
         this.minDateHeight =
         this.tagHeight =
           0;
-      this.rightToLeft = !0;
+      this.rightToLeft = true;
       this.eventsFarLeft = 0;
-      this.useMiniBadges = !1;
+      this.useMiniBadges = false;
       this.zoom = this.menuButtonBottom = this.badgesLeft = 0;
-      this.allowWeekNumber = !0;
+      this.allowWeekNumber = true;
       this.lineThickness = 2;
       this.reloadThemesSettings(a);
     }
@@ -8816,7 +8833,7 @@ var OneView;
         "#916181",
       ];
       this.eventsFarLeft = 0;
-      this.tagTextIsBold = !1;
+      this.tagTextIsBold = false;
       this.titleWidthFactor = 50;
       this.triangleColorStr = "rgba( 39, 49, 66, ";
       this.triangleTextNudgeX = 2;
@@ -8825,7 +8842,7 @@ var OneView;
       this.titleBarFontSize = 28;
       this.titleBarFontBold = "Quicksand";
       this.textFontThin = this.textFontBold = this.textFont = "Arial";
-      this.badgeColorIsTagTextColor = !1;
+      this.badgeColorIsTagTextColor = false;
       this.addButtonWidthFactor = 0.9;
     };
   })();
@@ -8877,7 +8894,7 @@ var OneView;
         "#7986CB",
       ];
       this.eventsFarLeft = 0;
-      this.tagTextIsBold = !1;
+      this.tagTextIsBold = false;
       this.titleWidthFactor = 50;
       this.triangleColorStr = "rgba( 1, 81, 142, ";
       this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
@@ -8887,7 +8904,7 @@ var OneView;
       this.textFont = "Roboto";
       this.textFontBold = "RobotoB";
       this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = !1;
+      this.badgeColorIsTagTextColor = false;
       this.addButtonWidthFactor = 1.1;
     };
   })();
@@ -8940,7 +8957,7 @@ var OneView;
         "#7986CB",
       ];
       this.eventsFarLeft = 0;
-      this.tagTextIsBold = !1;
+      this.tagTextIsBold = false;
       this.titleWidthFactor = 50;
       this.triangleColorStr = "rgba( 1, 81, 142, ";
       this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
@@ -8950,7 +8967,7 @@ var OneView;
       this.textFont = "Roboto";
       this.textFontBold = "RobotoB";
       this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = !1;
+      this.badgeColorIsTagTextColor = false;
       this.addButtonWidthFactor = 1.1;
     };
   })();
@@ -9001,7 +9018,7 @@ var OneView;
         "#7986CB",
       ];
       this.eventsFarLeft = 0;
-      this.tagTextIsBold = !1;
+      this.tagTextIsBold = false;
       this.titleWidthFactor = 50;
       this.triangleColorStr = "rgba( 1, 81, 142, ";
       this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
@@ -9011,7 +9028,7 @@ var OneView;
       this.textFont = "Roboto";
       this.textFontBold = "RobotoB";
       this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = !0;
+      this.badgeColorIsTagTextColor = true;
       this.addButtonWidthFactor = 1.1;
     };
   })();
@@ -9064,7 +9081,7 @@ var OneView;
         "#7986CB",
       ];
       this.eventsFarLeft = 0;
-      this.tagTextIsBold = !0;
+      this.tagTextIsBold = true;
       this.titleWidthFactor = 50;
       this.triangleColorStr = "rgba( 1, 81, 142, ";
       this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
@@ -9074,7 +9091,7 @@ var OneView;
       this.textFont = "Roboto";
       this.textFontBold = "RobotoB";
       this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = !0;
+      this.badgeColorIsTagTextColor = true;
       this.addButtonWidthFactor = 1.1;
     };
   })();
@@ -9085,7 +9102,7 @@ var OneView;
     function d() {
       this.calendars = [];
       this.debugtext = "";
-      this.touchEnabledDevice = this.isCordovaApp = !1;
+      this.touchEnabledDevice = this.isCordovaApp = false;
       this.charCodeReload = "reload";
       this.charCodeLogin = "cloud-download";
       this.charCodeLogout = "cloud-upload";
@@ -9107,7 +9124,7 @@ var OneView;
       this.charCodeNew = "circle-plus";
       this.charCodeMenu = "menu";
       this.charCodeAdd = "add";
-      this.alreadyRedrawing = this.pageLoaded = this.readyToGo = !1;
+      this.alreadyRedrawing = this.pageLoaded = this.readyToGo = false;
       this.redrawCountdown =
         this.maxTime =
         this.totalRedraws =
@@ -9115,7 +9132,7 @@ var OneView;
         this.fps =
         this.lastDrawTime =
           0;
-      this.hardRedraw = !1;
+      this.hardRedraw = false;
       this.debugCounter = 0;
       this.requestAnimFrame = (function () {
         return (
@@ -9127,7 +9144,7 @@ var OneView;
           }
         );
       })();
-      this.firstTouchMade = !1;
+      this.firstTouchMade = false;
       this.loadedFiles = [];
       this.loadingHandler = new a.LoadingHandler();
       this.isCordovaApp =
@@ -9157,7 +9174,7 @@ var OneView;
       this.setSizeSettings();
       this.domHandler.init();
       this.dateTimeSelectionHandler.init();
-      this.commonUserSettings.updateAppWithLang();
+      // this.commonUserSettings.updateAppWithLang();
       this.debugTexts = [];
       this.redrawCore = this.redrawCore.bind(this);
       this.loadGraphics();
@@ -9189,19 +9206,19 @@ var OneView;
       var b;
       if (
         !this.alreadyRedrawing &&
-        !0 === this.readyToGo &&
+        true === this.readyToGo &&
         a.core.appStateHandler.sizesInitiated &&
         0 < this.redrawCountdown
       ) {
         this.lastDrawTime = this.getTimeStamp();
         b = this.drawAreaEffects.runEffects();
-        this.alreadyRedrawing = !0;
+        this.alreadyRedrawing = true;
         this.appStateHandler.isMainMenuShowing &&
           this.mainMenuControl.setSizes();
         this.zopDrawArea.clearDrawArea();
         this.drawArea.startNewRound();
         this.addButtonControl.isAnimationActive() &&
-          ((b = !0), this.addButtonControl.doAnimation());
+          ((b = true), this.addButtonControl.doAnimation());
         this.calendarDateHandler &&
           (this.appStateHandler.isMainMenuShowing &&
             this.mainMenuControl.redraw(),
@@ -9225,7 +9242,7 @@ var OneView;
         this.lastDrawTime = c;
         this.zopDrawArea.debugTexts(this.debugTexts);
         this.debugCounter = 0;
-        this.alreadyRedrawing = !1;
+        this.alreadyRedrawing = false;
         b ||
           !this.loadingHandler ||
           this.loadingHandler.isLoading() ||
@@ -9275,10 +9292,10 @@ var OneView;
               ? ((this.calendarDataProxy = new a.AndroidCalendarDataProxy()),
                 this.calendarDataProxy.analyticsEvent("Event", "App started"))
               : -1 < document.URL.indexOf("rio2016")
-              ? ((this.enableGoogle = this.enableDemoMode = !1),
+              ? ((this.enableGoogle = this.enableDemoMode = false),
                 (this.calendarDataProxy = new a.RioCalendarDataProxy()),
                 this.calendarDataProxy.analyticsEvent("Event", "Rio started"))
-              : ((this.enableGoogle = this.enableDemoMode = !0),
+              : ((this.enableGoogle = this.enableDemoMode = true),
                 a.DemoCalendarDataProxy.getLastSessionWasInDemoMode()
                   ? (this.calendarDataProxy = new a.DemoCalendarDataProxy())
                   : (this.calendarDataProxy =
@@ -9291,10 +9308,10 @@ var OneView;
           window.setTimeout(this.populateCalendars, 100));
     };
     d.prototype.dataLoadReady = function () {
-      this.firstTouchMade || a.core.zopHandler.showInitialBounds(!0);
+      this.firstTouchMade || a.core.zopHandler.showInitialBounds(true);
       a.core.calendarEventHandler.dataLoadReady();
       a.core.loadingHandler.stopLoading();
-      this.redraw(!0);
+      this.redraw(true);
     };
     d.prototype.dynamicallyLoadFile = function (a, c, e) {
       var b = this;
@@ -9328,8 +9345,8 @@ var OneView;
         [],
         1,
         a.VisibilityType.Hidden,
-        !0,
-        !0
+        true,
+        true
       );
     };
     d.prototype.setSizeSettings = function () {
@@ -9419,13 +9436,17 @@ var OneView;
       var b = "onorientationchange" in window ? "orientationchange" : "resize";
       this.domHandler.resetDrawAreaSize_Delayed =
         this.domHandler.resetDrawAreaSize_Delayed.bind(this.domHandler);
-      window.addEventListener(b, this.domHandler.resetDrawAreaSize_Delayed, !1);
+      window.addEventListener(
+        b,
+        this.domHandler.resetDrawAreaSize_Delayed,
+        false
+      );
       this.domHandler.resetDrawAreaSize_Delayed();
-      this.zopHandler.showInitialBounds(!1);
-      this.readyToGo = !0;
-      this.redraw(!0);
+      this.zopHandler.showInitialBounds(false);
+      this.readyToGo = true;
+      this.redraw(true);
       this.preloadAllImages();
-      this.pageLoaded = !0;
+      this.pageLoaded = true;
     };
     d.prototype.preloadAllImages = function () {
       this.preloadImage(this.charCodeReload);
@@ -9540,7 +9561,7 @@ window.onhashchange = function () {
       return this._values;
     };
     a.prototype.containsKey = function (a) {
-      return "undefined" === typeof this[a] ? !1 : !0;
+      return "undefined" === typeof this[a] ? false : true;
     };
     a.prototype.toLookup = function () {
       return this;
@@ -9632,13 +9653,13 @@ window.onhashchange = function () {
     b.prototype.emptyCache = function () {
       var a;
       for (a = 0; a < this.cachedTags.length; a++)
-        this.cachedTags[a].isEmpty = !0;
+        this.cachedTags[a].isEmpty = true;
       for (a = 0; a < this.cachedDates.length; a++)
-        this.cachedDates[a].isEmpty = !0;
+        this.cachedDates[a].isEmpty = true;
       for (a = 0; a < this.cachedDates2.length; a++)
-        this.cachedDates2[a].isEmpty = !0;
+        this.cachedDates2[a].isEmpty = true;
       for (a = 0; a < this.cachedBadges.length; a++)
-        this.cachedBadges[a].isEmpty = !0;
+        this.cachedBadges[a].isEmpty = true;
       this.setBoundries();
     };
     b.prototype.setBoundries = function () {
@@ -9668,28 +9689,28 @@ window.onhashchange = function () {
     b.prototype.startRedraw = function () {
       var a;
       for (a = 0; a < this.cachedTags.length; a++)
-        this.cachedTags[a].wasUsedLast = !1;
+        this.cachedTags[a].wasUsedLast = false;
       for (a = 0; a < this.cachedDates.length; a++)
-        this.cachedDates[a].wasUsedLast = !1;
+        this.cachedDates[a].wasUsedLast = false;
       for (a = 0; a < this.cachedDates2.length; a++)
-        this.cachedDates2[a].wasUsedLast = !1;
+        this.cachedDates2[a].wasUsedLast = false;
       for (a = 0; a < this.cachedBadges.length; a++)
-        this.cachedBadges[a].wasUsedLast = !1;
+        this.cachedBadges[a].wasUsedLast = false;
     };
     b.prototype.endRedraw = function () {
       var a;
       for (a = 0; a < this.cachedTags.length; a++)
-        !1 === this.cachedTags[a].wasUsedLast &&
-          (this.cachedTags[a].isEmpty = !0);
+        false === this.cachedTags[a].wasUsedLast &&
+          (this.cachedTags[a].isEmpty = true);
       for (a = 0; a < this.cachedDates.length; a++)
-        !1 === this.cachedDates[a].wasUsedLast &&
-          (this.cachedDates[a].isEmpty = !0);
+        false === this.cachedDates[a].wasUsedLast &&
+          (this.cachedDates[a].isEmpty = true);
       for (a = 0; a < this.cachedDates2.length; a++)
-        !1 === this.cachedDates2[a].wasUsedLast &&
-          (this.cachedDates2[a].isEmpty = !0);
+        false === this.cachedDates2[a].wasUsedLast &&
+          (this.cachedDates2[a].isEmpty = true);
       for (a = 0; a < this.cachedBadges.length; a++)
-        !1 === this.cachedBadges[a].wasUsedLast &&
-          (this.cachedBadges[a].isEmpty = !0);
+        false === this.cachedBadges[a].wasUsedLast &&
+          (this.cachedBadges[a].isEmpty = true);
     };
     b.prototype.drawTagText = function (a, b, d, g, m, n, l) {
       this.drawTextHelper(
@@ -9810,8 +9831,8 @@ window.onhashchange = function () {
   a.CanvasHorizontalCacheObject = p;
   var d = (function () {
     return function () {
-      this.wasUsedLast = !1;
-      this.isEmpty = !0;
+      this.wasUsedLast = false;
+      this.isEmpty = true;
       this.textColor = this.text = "";
     };
   })();
@@ -9859,7 +9880,7 @@ window.onhashchange = function () {
         a.core.zopHandler.rightPixel - a.core.zopHandler.leftPixel,
         a.core.zopDrawArea.zopAreaHeight,
         a.core.settings.theme.colorBackground,
-        !1
+        false
       );
       a.core.drawArea.drawFilledRectangle(
         a.core.zopHandler.leftPixel,
@@ -9868,7 +9889,7 @@ window.onhashchange = function () {
           a.core.mainMenuControl.nudgeBecauseMenuBeingDragged,
         a.core.zopDrawArea.zopAreaHeight,
         a.core.settings.theme.colorTitleBackground,
-        !1
+        false
       );
     };
     e.prototype.resetDrawAreaSize = function (b, c) {
@@ -9918,14 +9939,14 @@ window.onhashchange = function () {
               l,
               e,
               a.core.settings.theme.colorBackground,
-              !1,
+              false,
               2e3,
               !p,
               p
             ),
             l,
-            !1,
-            !1
+            false,
+            false
           )
         : this.measureTextWidthIfRisky(
             this.drawText(
@@ -9936,15 +9957,15 @@ window.onhashchange = function () {
               l,
               e,
               a.core.settings.theme.colorBackground,
-              !1,
+              false,
               2e3,
               !p,
               p
             ),
             l,
             2e3,
-            !1,
-            !1
+            false,
+            false
           );
     };
     e.prototype.drawBadge = function (b, c, e, d, l, h, k) {
@@ -9954,18 +9975,18 @@ window.onhashchange = function () {
           c + e / 2,
           2 * a.core.ratio * a.core.settings.zoom,
           k,
-          !1
+          false
         );
       else {
         e = e - a.core.settings.margin - 1;
         var f = a.core.settings.badgeTextHeight;
         a.core.drawArea.setFont(f);
         for (
-          var g = d - b, m = this.measureTextWidth(l, f, !1, !0);
+          var g = d - b, m = this.measureTextWidth(l, f, false, true);
           m > g && 6 < f;
 
         )
-          --f, (m = this.measureTextWidth(l, f, !1, !0));
+          --f, (m = this.measureTextWidth(l, f, false, true));
         e = Math.floor((e - f) / 2);
         m > d - b && (d += (m - d + b) / 2);
         0.5 < h &&
@@ -9977,10 +9998,10 @@ window.onhashchange = function () {
             f,
             k,
             a.core.settings.theme.colorRed,
-            !1,
+            false,
             200,
-            !1,
-            !1
+            false,
+            false
           );
       }
     };
@@ -9990,15 +10011,16 @@ window.onhashchange = function () {
       if (void 0 !== g) {
         var k = g.lettersCount;
         if (g.lastMaxPixelWidth !== e) {
-          var m = this.measureTextWidth(a.substring(0, k), b, !1, d);
+          var m = this.measureTextWidth(a.substring(0, k), b, false, d);
           if (g.lastMaxPixelWidth > e)
             for (; 0 < k && m >= e; )
-              --k, (m = this.measureTextWidth(a.substring(0, k), b, !1, !0));
+              --k,
+                (m = this.measureTextWidth(a.substring(0, k), b, false, true));
           else {
             for (d = m; k < a.length && m < e; )
               (k += 1),
                 (d = m),
-                (m = this.measureTextWidth(a.substring(0, k), b, !1, !0));
+                (m = this.measureTextWidth(a.substring(0, k), b, false, true));
             (k == a.length && m < e) || ((m = d), --k);
           }
           g.lettersCount = k;
@@ -10007,8 +10029,12 @@ window.onhashchange = function () {
         return k;
       }
       k = a.length;
-      for (m = this.measureTextWidthIfRisky(a, b, e, !1, d); 0 < k && m >= e; )
-        --k, (m = this.measureTextWidth(a.substring(0, k), b, !1, d));
+      for (
+        m = this.measureTextWidthIfRisky(a, b, e, false, d);
+        0 < k && m >= e;
+
+      )
+        --k, (m = this.measureTextWidth(a.substring(0, k), b, false, d));
       this.characterFitCache.addObject(f, new c(k, e));
       return k;
     };
@@ -10039,7 +10065,7 @@ window.onhashchange = function () {
           g,
           h - a.core.settings.margin,
           a.core.settings.theme.colorBlue,
-          !1
+          false
         );
       0 < e - g &&
         (a.core.drawArea.drawFilledRectangle(
@@ -10048,7 +10074,7 @@ window.onhashchange = function () {
           e - g,
           h - a.core.settings.margin,
           d,
-          !1
+          false
         ),
         0.5 < p &&
           (0.95 > p && (l = a.core.helper.colorToRGBA(l, 2 * (p - 0.5))),
@@ -10060,9 +10086,9 @@ window.onhashchange = function () {
             a.core.settings.tagTextHeight,
             l,
             d,
-            !1,
+            false,
             e - g - n - 2,
-            !1,
+            false,
             a.core.settings.theme.tagTextIsBold
           )));
     };
@@ -10090,10 +10116,10 @@ window.onhashchange = function () {
             n,
             g,
             a.core.settings.theme.colorBlue,
-            !1
+            false
           );
         0 < d - n &&
-          a.core.drawArea.drawFilledRectangle(b + n, f, d - n, g, l, !1);
+          a.core.drawArea.drawFilledRectangle(b + n, f, d - n, g, l, false);
         1.6 * d > m || m < 2 * a.core.settings.tagHeight
           ? this.drawText(
               k,
@@ -10103,9 +10129,9 @@ window.onhashchange = function () {
               a.core.settings.tagTextHeight,
               h,
               l,
-              !1,
+              false,
               d - n - w - 2,
-              !1,
+              false,
               a.core.settings.theme.tagTextIsBold
             )
           : z > a.core.settings.tagTextHeight &&
@@ -10118,7 +10144,7 @@ window.onhashchange = function () {
               a.core.settings.tagTextHeight,
               h,
               a.core.settings.margin,
-              !1,
+              false,
               a.core.settings.theme.tagTextIsBold
             ));
       }
@@ -10132,7 +10158,7 @@ window.onhashchange = function () {
           e,
           l - a.core.settings.margin,
           d,
-          !1
+          false
         );
     };
     e.prototype.drawTextDiv = function (a, b, c, e, d, h, k, p, q, r) {};
@@ -10177,7 +10203,7 @@ window.onhashchange = function () {
       this.setShadow(l);
       c = Math.floor(a.core.zopHandler.getPixelFromZOP(c)) + 0.5;
       this.canvasContext.beginPath();
-      this.canvasContext.arc(b, c, e, 0, 2 * Math.PI, !1);
+      this.canvasContext.arc(b, c, e, 0, 2 * Math.PI, false);
       this.canvasContext.fillStyle = d;
       this.canvasContext.fill();
       this.removeShadow(l);
@@ -10185,7 +10211,7 @@ window.onhashchange = function () {
     e.prototype.drawFilledCircle2 = function (a, b, c, e, d) {
       this.setShadow(d);
       this.canvasContext.beginPath();
-      this.canvasContext.arc(a, b, c, 0, 2 * Math.PI, !1);
+      this.canvasContext.arc(a, b, c, 0, 2 * Math.PI, false);
       this.canvasContext.fillStyle = e;
       this.canvasContext.fill();
       this.removeShadow(d);
@@ -10195,10 +10221,10 @@ window.onhashchange = function () {
       a.core.drawArea.drawHorizontalLineNotZOP(b, c, e, d, l, h);
     };
     e.prototype.startTextDelayedDraw = function () {
-      this.delayedDraw = !0;
+      this.delayedDraw = true;
     };
     e.prototype.endTextDelayedDraw = function () {
-      this.delayedDraw = !1;
+      this.delayedDraw = false;
       this.drawInfos.sort(function (a, b) {
         return a.textHeight - b.textHeight;
       });
@@ -10224,13 +10250,13 @@ window.onhashchange = function () {
       if (this.delayedDraw)
         return this.drawInfos.push(new b(c, e, d, n, l, h, k, p, q, r, v)), c;
       d = Math.floor(d + n);
-      a.core.drawArea.setFont(l, !1, r, v);
-      c = c.substring(0, this.howManyCharactersFit(c, l, q, !0));
-      a.core.drawArea.drawText(c, e, d, l, h, !1, !1, r, v);
+      a.core.drawArea.setFont(l, false, r, v);
+      c = c.substring(0, this.howManyCharactersFit(c, l, q, true));
+      a.core.drawArea.drawText(c, e, d, l, h, false, false, r, v);
       return c;
     };
     e.prototype.drawVerticalTitle = function (b, c, e, d, l, h, k, p, q) {
-      a.core.drawArea.setFont(l, p, !1, q);
+      a.core.drawArea.setFont(l, p, false, q);
       q = a.core.zopHandler.get2PixelsFromZOPsForVErticalText(b, c);
       b = q.value1 + k;
       q = q.value2 - k;
@@ -10245,11 +10271,15 @@ window.onhashchange = function () {
         (f = q - a.core.zopHandler.bottomPixel);
       c = q - b - k - f;
       q = 0;
-      for (f = this.measureTextWidth(d, l, p, !0) + 5; 1 < d.length && f >= c; )
+      for (
+        f = this.measureTextWidth(d, l, p, true) + 5;
+        1 < d.length && f >= c;
+
+      )
         (d = d.substring(0, d.length - 1)),
-          (f = this.measureTextWidth(d, l, p, !0) + 5),
+          (f = this.measureTextWidth(d, l, p, true) + 5),
           (q = c - f);
-      this.measureTextWidth(d, l, p, !0) + 5 < c &&
+      this.measureTextWidth(d, l, p, true) + 5 < c &&
         (this.canvasContext.save(),
         this.canvasContext.translate(
           Math.floor(e + 0.85 * l),
@@ -10276,7 +10306,7 @@ window.onhashchange = function () {
             1e3,
             20 * a.core.ratio,
             "#000000",
-            !1
+            false
           ),
             a.core.drawArea.drawText(
               b[e],
@@ -10284,8 +10314,8 @@ window.onhashchange = function () {
               c - 1,
               18 * a.core.ratio,
               "#FFFFFF",
-              !1,
-              !1
+              false,
+              false
             ),
             (c += 22 * a.core.ratio);
       }
@@ -10341,21 +10371,21 @@ window.onhashchange = function () {
   var p = (function (d) {
     function b() {
       d.call(this);
-      this.enableReload = !0;
+      this.enableReload = true;
       this.enableFakeData =
         this.enableGoogleLogout =
         this.enableGoogleLogin =
-          !1;
-      this.enableShop = this.enableMultipleCalendars = !0;
+          false;
+      this.enableShop = this.enableMultipleCalendars = true;
       this.calendarDataProxyType = a.CalendarDataProxyType.Android;
-      this.demoVideoSpecial = !1;
+      this.demoVideoSpecial = false;
       this.rrulesDictionary = new a.Dictionary();
-      this.analyticsStarted = !1;
+      this.analyticsStarted = false;
       a.core.dynamicallyLoadFile("libs/rrule.js", "js", function () {});
     }
     __extends(b, d);
     b.prototype.connectionOk = function () {
-      return !0;
+      return true;
     };
     b.prototype.calendarsLoaded = function (b) {
       if (void 0 === b || void 0 === b[0].name) this.delayedReload();
@@ -10387,7 +10417,7 @@ window.onhashchange = function () {
     };
     b.prototype.populateCalendarEvents = function (b) {
       this.startLoadingTime = a.core.getTimeStamp();
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(!1);
+      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
       this.calendarsLoaded = this.calendarsLoaded.bind(this);
       this.calendarsLoadedFailed = this.calendarsLoadedFailed.bind(this);
       this.calendarsLoadedCallback = b;
@@ -10425,9 +10455,9 @@ window.onhashchange = function () {
         );
         a.core.calendars.push(e);
         "molyneux.peter@gmail.com" == e.name &&
-          ((a.core.commonUserSettings.licenceColorPicker = !0),
-          (a.core.commonUserSettings.licenceCandyTheme = !0),
-          (a.core.commonUserSettings.licenceDarkTheme = !0));
+          ((a.core.commonUserSettings.licenceColorPicker = true),
+          (a.core.commonUserSettings.licenceCandyTheme = true),
+          (a.core.commonUserSettings.licenceDarkTheme = true));
       }
     };
     b.prototype.eventsLoaded = function (a) {
@@ -10457,7 +10487,7 @@ window.onhashchange = function () {
         : ((c = a.core.helper.addUserTimeZoneSetting(c)),
           (d = a.core.helper.addUserTimeZoneSetting(d)));
       d.getDate() === c.getDate() &&
-        (a.core.getCalendar(b.calendarId).allEventsAreFullDay = !1);
+        (a.core.getCalendar(b.calendarId).allEventsAreFullDay = false);
       a.core.getCalendar(b.calendarId);
       var g = b.eventId + "#" + b.id,
         c = new a.CalendarEventObject(
@@ -10498,7 +10528,7 @@ window.onhashchange = function () {
             this.calendarEvents[b]
           );
       a.core.calendarEventHandler.findCommonTimes();
-      a.core.redraw(!0);
+      a.core.redraw(true);
       this.loadSettings();
       this.analyticsValue(
         "Value",
@@ -10609,7 +10639,7 @@ window.onhashchange = function () {
       }
     };
     b.prototype.addNewEvent = function (b, e) {
-      void 0 === e && (e = !1);
+      void 0 === e && (e = false);
       for (var c = null, d = [], m = 0; m < b.reminders.length; m++)
         d.push(b.reminders[m].minutes);
       b.rruleToSave && (c = RRule.optionsToString2(b.rruleToSave.options));
@@ -10658,10 +10688,10 @@ window.onhashchange = function () {
       m = b.isRecurring && e !== a.EventEditType.ThisOnly;
       b.isRecurring && e !== a.EventEditType.AllInSeries
         ? b.isRecurring && e === a.EventEditType.ThisOnly
-          ? (this.deleteEvent(b, a.EventEditType.ThisOnly, !0),
-            (b.isRecurring = !1),
+          ? (this.deleteEvent(b, a.EventEditType.ThisOnly, true),
+            (b.isRecurring = false),
             (b.rruleToSave = void 0),
-            this.addNewEvent(b, !1))
+            this.addNewEvent(b, false))
           : this.failedCallback(
               "This type of edit is not supported in OneView Calendar."
             )
@@ -10705,11 +10735,11 @@ window.onhashchange = function () {
     b.prototype.applyCalendarsVisibilitySettings = function () {};
     b.prototype.saveSettings = function () {};
     b.prototype.loadSettings = function () {
-      return !0;
+      return true;
     };
     b.prototype.analyticsInit = function () {
       0 == this.analyticsStarted &&
-        ((this.analyticsStarted = !0),
+        ((this.analyticsStarted = true),
         (this.analyticsSuccess = this.analyticsSuccess.bind(this)),
         (this.analyticsFail = this.analyticsFail.bind(this)),
         analytics.startTrackerWithId(
@@ -10765,19 +10795,19 @@ window.onhashchange = function () {
   var p = (function (d) {
     function b() {
       d.call(this);
-      this.enableMultipleCalendars = this.enableReload = !0;
+      this.enableMultipleCalendars = this.enableReload = true;
       this.enableShop =
         this.enableFakeData =
         this.enableGoogleLogout =
         this.enableGoogleLogin =
-          !1;
+          false;
       this.calendarDataProxyType = a.CalendarDataProxyType.Demo;
-      this.demoVideoSpecial = !0;
+      this.demoVideoSpecial = true;
       this.dbVersion = "demo0.52";
     }
     __extends(b, d);
     b.prototype.connectionOk = function () {
-      return !0;
+      return true;
     };
     b.prototype.login = function () {};
     b.prototype.logout = function () {};
@@ -10785,9 +10815,9 @@ window.onhashchange = function () {
       this.loadReadyCallback = c;
       this.calendarEvents = [];
       a.core.calendarEventHandler.clearAllEvents();
-      a.core.commonUserSettings.licenceColorPicker = !0;
-      a.core.commonUserSettings.licenceCandyTheme = !0;
-      a.core.commonUserSettings.licenceDarkTheme = !0;
+      a.core.commonUserSettings.licenceColorPicker = true;
+      a.core.commonUserSettings.licenceCandyTheme = true;
+      a.core.commonUserSettings.licenceDarkTheme = true;
       a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
       a.core.calendars = [];
       a.core.calendarPrimaryId = void 0;
@@ -10802,7 +10832,7 @@ window.onhashchange = function () {
         }),
         this.saveEventsToCache());
       this.finalizeLoad();
-      b.setLastSessionWasInDemoMode(!0);
+      b.setLastSessionWasInDemoMode(true);
     };
     b.prototype.saveSettings = function () {
       this.saveEventsToCache();
@@ -10822,8 +10852,8 @@ window.onhashchange = function () {
           [],
           0,
           a.VisibilityType.Visible,
-          !0,
-          !0
+          true,
+          true
         )
       );
       a.core.calendars.push(
@@ -10833,8 +10863,8 @@ window.onhashchange = function () {
           [],
           1,
           a.VisibilityType.Visible,
-          !0,
-          !0
+          true,
+          true
         )
       );
       a.core.calendars.push(
@@ -10844,14 +10874,14 @@ window.onhashchange = function () {
           [],
           2,
           a.VisibilityType.Visible,
-          !0,
-          !1
+          true,
+          false
         )
       );
       a.core.calendarPrimaryId = "My";
-      a.core.getCalendar("Work").allEventsAreFullDay = !1;
-      a.core.getCalendar("My").allEventsAreFullDay = !1;
-      a.core.getCalendar("Other").allEventsAreFullDay = !1;
+      a.core.getCalendar("Work").allEventsAreFullDay = false;
+      a.core.getCalendar("My").allEventsAreFullDay = false;
+      a.core.getCalendar("Other").allEventsAreFullDay = false;
       this.calendarEvents = [];
       var e = moment().startOf("week"),
         d = e.clone().add(1, "weeks").add(-28, "days"),
@@ -11340,10 +11370,10 @@ window.onhashchange = function () {
       a.core.calendarEventHandler.findCommonTimes();
       a.core.loadingHandler.stopLoading();
       this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     b.prototype.canEditRecurring = function (a) {
-      return !1;
+      return false;
     };
     b.prototype.deleteEvent = function (b, d, f) {
       if (b.isRecurring && d === a.EventEditType.AllInSeries)
@@ -11376,7 +11406,7 @@ window.onhashchange = function () {
       a.core.calendarEventHandler.addEventToCalendar(b);
       if (void 0 !== b.rruleToSave && null !== b.rruleToSave) {
         var c = b.endDateTime.getTime() - b.startDateTime.getTime();
-        b.isRecurring = !0;
+        b.isRecurring = true;
         for (var e = b.rruleToSave.all(), m = 1; m < e.length; m++) {
           var n = new Date(e[m].getTime() + c),
             n = new a.CalendarEventObject(
@@ -11388,7 +11418,7 @@ window.onhashchange = function () {
               b.calendarId,
               "" + Math.random()
             );
-          n.isRecurring = !0;
+          n.isRecurring = true;
           n.recurringEventId = b.id;
           this.calendarEvents.push(n);
           a.core.calendarEventHandler.addEventToCalendar(n);
@@ -11403,7 +11433,10 @@ window.onhashchange = function () {
     };
     b.prototype.saveEventsToCache = function () {
       this.localStorageSetItem("oneview_demo_verrsion", this.dbVersion);
-      this.localStorageSetItem("oneview_demo_saveComplete", JSON.stringify(!1));
+      this.localStorageSetItem(
+        "oneview_demo_saveComplete",
+        JSON.stringify(false)
+      );
       this.localStorageSetItem(
         "oneview_demo_allEvents",
         JSON.stringify(this.calendarEvents)
@@ -11416,14 +11449,17 @@ window.onhashchange = function () {
         "oneview_demo_primaryCalendarId",
         JSON.stringify(a.core.calendarPrimaryId)
       );
-      this.localStorageSetItem("oneview_demo_demo", JSON.stringify(!0));
-      this.localStorageSetItem("oneview_demo_saveComplete", JSON.stringify(!0));
+      this.localStorageSetItem("oneview_demo_demo", JSON.stringify(true));
+      this.localStorageSetItem(
+        "oneview_demo_saveComplete",
+        JSON.stringify(true)
+      );
     };
     b.getLastSessionWasInDemoMode = function () {
       var a = localStorage.getItem(
         "oneview_demo_last_session_was_in_demo_mode"
       );
-      return null == a || void 0 == a ? !0 : JSON.parse(a);
+      return null == a || void 0 == a ? true : JSON.parse(a);
     };
     b.setLastSessionWasInDemoMode = function (b) {
       new a.LocalStorage().localStorageSetItem(
@@ -11450,15 +11486,15 @@ window.onhashchange = function () {
         null == n ||
         void 0 == n
       )
-        return !1;
+        return false;
       try {
         (a.core.calendarPrimaryId = JSON.parse(m)),
           (this.calendarEvents = JSON.parse(f, this.dateTimeReviver)),
           (a.core.calendars = JSON.parse(g, this.dateTimeReviver));
       } catch (l) {
-        return !1;
+        return false;
       }
-      return !0;
+      return true;
     };
     b.prototype.persistCalendarsVisibilitySettings = function (b) {
       this.localStorageSetItem(
@@ -11502,13 +11538,13 @@ window.onhashchange = function () {
         this.enableShop =
         this.enableMultipleCalendars =
         this.enableReload =
-          !1;
-      this.enableFakeData = !0;
+          false;
+      this.enableFakeData = true;
       this.calendarDataProxyType = a.CalendarDataProxyType.Google;
-      this.forceReload = this.demoVideoSpecial = !1;
-      this.retryLogin = !0;
+      this.forceReload = this.demoVideoSpecial = false;
+      this.retryLogin = true;
       this.dbVersion = "google0.52";
-      this.analyticsStarted = !1;
+      this.analyticsStarted = false;
       -1 < document.URL.indexOf("grimbo") &&
         (this.clientId = "411250339629.apps.googleusercontent.com");
       -1 < document.URL.indexOf("oneviewcalendar.com") &&
@@ -11528,21 +11564,21 @@ window.onhashchange = function () {
       a.core.calendarEventHandler.clearAllEvents();
       a.core.calendars = [];
       a.core.calendarPrimaryId = void 0;
-      a.core.commonUserSettings.licenceColorPicker = !0;
-      a.core.commonUserSettings.licenceCandyTheme = !0;
-      a.core.commonUserSettings.licenceDarkTheme = !0;
+      a.core.commonUserSettings.licenceColorPicker = true;
+      a.core.commonUserSettings.licenceCandyTheme = true;
+      a.core.commonUserSettings.licenceDarkTheme = true;
       a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(!1);
+      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
       try {
         this.loadEventsFromCache()
-          ? ((this.forceReload = !1), this.finalizeLoad())
-          : (this.forceReload = !0),
+          ? ((this.forceReload = false), this.finalizeLoad())
+          : (this.forceReload = true),
           (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
           gapi.auth.authorize(
             {
               client_id: this.clientId,
               scope: this.scopes,
-              immediate: !0,
+              immediate: true,
             },
             this.handleAuthResult1
           );
@@ -11564,27 +11600,27 @@ window.onhashchange = function () {
           url:
             "https://web.archive.org/web/20190808203716/https://accounts.google.com/o/oauth2/revoke?token=" +
             b.access_token,
-          async: !1,
+          async: false,
           contentType: "application/json",
           dataType: "jsonp",
           success: function (a) {
-            d.enableGoogleLogin = !0;
-            d.enableGoogleLogout = !1;
+            d.enableGoogleLogin = true;
+            d.enableGoogleLogout = false;
           },
           error: function (a) {},
         });
       });
     };
     b.prototype.login = function () {
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(!1);
+      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
       if (-1 == document.URL.indexOf("oneviewcalendar.com"))
-        (this.forceReload = !0),
+        (this.forceReload = true),
           (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
           gapi.auth.authorize(
             {
               client_id: this.clientId,
               scope: this.scopes,
-              immediate: !1,
+              immediate: false,
             },
             this.handleAuthResult1
           );
@@ -11616,39 +11652,39 @@ window.onhashchange = function () {
     };
     b.prototype.handleAuthResult1 = function (b) {
       b && b.status.signed_in
-        ? ((this.enableGoogleLogin = !1),
+        ? ((this.enableGoogleLogin = false),
           (this.enableGoogleLogout =
             this.enableReload =
             this.enableMultipleCalendars =
-              !0),
-          (this.enableFakeData = !1),
+              true),
+          (this.enableFakeData = false),
           (this.access_token = b.access_token),
           this.makeApiCall())
         : (a.core.loadingHandler.stopLoadingWithError(),
-          !0 === this.retryLogin
-            ? ((this.retryLogin = !1), this.login())
+          true === this.retryLogin
+            ? ((this.retryLogin = false), this.login())
             : (this.clearCache(),
               (this.calendarEvents = []),
               a.core.calendarEventHandler.clearAllEvents(),
-              a.core.redraw(!0)),
-          (this.enableGoogleLogin = !0),
+              a.core.redraw(true)),
+          (this.enableGoogleLogin = true),
           (this.enableGoogleLogout =
             this.enableReload =
             this.enableMultipleCalendars =
-              !1),
-          (this.enableFakeData = !0));
+              false),
+          (this.enableFakeData = true));
     };
     b.prototype.reload = function () {
       this.clearCache();
       this.calendarEvents = [];
       a.core.loadingHandler.startLoading();
       a.core.calendarEventHandler.clearAllEvents();
-      a.core.redraw(!0);
-      this.forceReload = !0;
+      a.core.redraw(true);
+      this.forceReload = true;
       this.makeApiCall();
     };
     b.prototype.makeApiCall = function () {
-      this.doFullRefresh = !1;
+      this.doFullRefresh = false;
       this.refetchCalendars(this.forceReload);
     };
     b.prototype.refetchCalendars = function (b) {
@@ -11656,14 +11692,14 @@ window.onhashchange = function () {
       gapi.client.load("calendar", "v3", function () {
         var d;
         gapi.client.calendar.calendarList.list(void 0).execute(function (e) {
-          if (e.error && !b) c.refetchCalendars(!0);
+          if (e.error && !b) c.refetchCalendars(true);
           else {
             c.nextSyncTokenCalendars = e.nextSyncToken;
             for (d = 0; d < e.items.length; d++) {
-              var f = !0,
-                g = !1;
-              "reader" !== e.items[d].accessRole && (f = !1);
-              "owner" === e.items[d].accessRole && (g = !0);
+              var f = true,
+                g = false;
+              "reader" !== e.items[d].accessRole && (f = false);
+              "owner" === e.items[d].accessRole && (g = true);
               e.items[d].primary && (a.core.calendarPrimaryId = e.items[d].id);
               var l = [];
               if (e.items[d].defaultReminders) {
@@ -11690,7 +11726,7 @@ window.onhashchange = function () {
                 );
               else {
                 if (e.items[d].deleted) {
-                  c.refetchCalendars(!0);
+                  c.refetchCalendars(true);
                   return;
                 }
                 k.name = e.items[d].summary;
@@ -11718,7 +11754,7 @@ window.onhashchange = function () {
     };
     b.prototype.refetchCalendarEvents = function (b) {
       this.eventsChanged = b;
-      this.doFullRefresh = !1;
+      this.doFullRefresh = false;
       b && (this.calendarEvents = []);
       this.loadingCalendarCounter = a.core.calendars.length;
       for (var c = 0; c < a.core.calendars.length; c++)
@@ -11741,7 +11777,7 @@ window.onhashchange = function () {
           e = {
             calendarId: b,
             maxResults: 1e3,
-            singleEvents: !0,
+            singleEvents: true,
             showDeleted: !f,
             timeMin: e,
             timeMax: g,
@@ -11751,20 +11787,20 @@ window.onhashchange = function () {
           ((e = {
             calendarId: b,
             maxResults: 1e3,
-            singleEvents: !0,
-            showDeleted: !0,
+            singleEvents: true,
+            showDeleted: true,
           }),
           (e.syncToken = a.core.getCalendar(b).nextSyncTokenEvents));
         void 0 !== d && "" != d && (e.pageToken = d);
         var l, h;
         gapi.client.calendar.events.list(e).execute(function (e) {
-          e.error && !f && (c.doFullRefresh = !0);
-          c.oneview_was_connected_to_google = !0;
+          e.error && !f && (c.doFullRefresh = true);
+          c.oneview_was_connected_to_google = true;
           moment().add(3, "years").add(-10, "hours").toDate();
           d = e.nextPageToken;
           if (e.items && 0 < e.items.length)
             for (
-              c.eventsChanged = !0, c.eventCounter += e.items.length, l = 0;
+              c.eventsChanged = true, c.eventCounter += e.items.length, l = 0;
               l < e.items.length;
               l++
             )
@@ -11827,10 +11863,10 @@ window.onhashchange = function () {
       }
       a.core.loadingHandler.stopLoading();
       this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     b.prototype.canEditRecurring = function (a) {
-      return !0;
+      return true;
     };
     b.prototype.getRRuleObject = function (b, d) {
       if (b.isRecurring) {
@@ -11864,7 +11900,7 @@ window.onhashchange = function () {
         e = b.end.dateTime;
       void 0 === c
         ? (c = moment(b.start.date).toDate())
-        : ((a.core.getCalendar(d).allEventsAreFullDay = !1),
+        : ((a.core.getCalendar(d).allEventsAreFullDay = false),
           (c = a.core.helper.addUserTimeZoneSetting(this.dateFromString(c))));
       e =
         void 0 === e
@@ -11880,7 +11916,7 @@ window.onhashchange = function () {
         b.id
       );
       b.recurringEventId &&
-        ((c.isRecurring = !0), (c.recurringEventId = b.recurringEventId));
+        ((c.isRecurring = true), (c.recurringEventId = b.recurringEventId));
       b.extendedProperties &&
         b.extendedProperties["private"] &&
         b.extendedProperties["private"].extraColorId &&
@@ -11900,7 +11936,7 @@ window.onhashchange = function () {
       return c;
     };
     b.prototype.deleteEvent = function (b, d, f) {
-      void 0 === f && (f = !1);
+      void 0 === f && (f = false);
       var c = this,
         e = b.calendarId;
       gapi.client.load("calendar", "v3", function () {
@@ -11937,9 +11973,9 @@ window.onhashchange = function () {
       });
     };
     b.prototype.addNewEvent = function (a, b) {
-      void 0 === b && (b = !1);
+      void 0 === b && (b = false);
       var c = {};
-      this.syncCalendarEventToResource(a, c, !1);
+      this.syncCalendarEventToResource(a, c, false);
       var d = this;
       gapi.client.load("calendar", "v3", function () {
         gapi.client.calendar.events
@@ -11983,8 +12019,8 @@ window.onhashchange = function () {
                       var d = c.RespItemToCalendarEvent(a, e);
                       d.startDateTime.setTime(g.startDateTime.getTime() + l);
                       d.endDateTime.setTime(g.endDateTime.getTime() + h);
-                      c.syncCalendarEventToResource(d, a, !1);
-                      c.syncCalendarEventToResource(b, a, !0);
+                      c.syncCalendarEventToResource(d, a, false);
+                      c.syncCalendarEventToResource(b, a, true);
                       c.editExistingEventHelper(b.recurringEventId, a, e);
                     });
                 });
@@ -12003,12 +12039,12 @@ window.onhashchange = function () {
                         f.endDateTime,
                         -1
                       );
-                      c.syncCalendarEventToResource(b, d, !1);
+                      c.syncCalendarEventToResource(b, d, false);
                       c.editExistingEventHelper(b.recurringEventId, d, e);
                     });
                 }),
                 c.addNewEvent(b));
-            } else (f = f.result), c.syncCalendarEventToResource(b, f, !1), c.editExistingEventHelper(b.id, f, e);
+            } else (f = f.result), c.syncCalendarEventToResource(b, f, false), c.editExistingEventHelper(b.id, f, e);
           });
       });
     };
@@ -12057,7 +12093,7 @@ window.onhashchange = function () {
           },
         });
       d.reminders = {};
-      d.reminders.useDefault = !1;
+      d.reminders.useDefault = false;
       d.reminders.overrides = [];
       if (b.reminders)
         for (f = 0; f < b.reminders.length; f++) {
@@ -12082,7 +12118,10 @@ window.onhashchange = function () {
     b.prototype.saveEventsToCache = function () {
       try {
         this.localStorageSetItem("oneview_verrsion", this.dbVersion),
-          this.localStorageSetItem("oneview_saveComplete", JSON.stringify(!1)),
+          this.localStorageSetItem(
+            "oneview_saveComplete",
+            JSON.stringify(false)
+          ),
           this.localStorageSetItem(
             "oneview_allEvents",
             LZString.compress(JSON.stringify(this.calendarEvents))
@@ -12099,8 +12138,11 @@ window.onhashchange = function () {
             "oneview_nextSyncTokenCalendars",
             JSON.stringify(this.nextSyncTokenCalendars)
           ),
-          this.localStorageSetItem("oneview_google", JSON.stringify(!0)),
-          this.localStorageSetItem("oneview_saveComplete", JSON.stringify(!0));
+          this.localStorageSetItem("oneview_google", JSON.stringify(true)),
+          this.localStorageSetItem(
+            "oneview_saveComplete",
+            JSON.stringify(true)
+          );
       } catch (c) {}
     };
     b.prototype.loadEventsFromCache = function () {
@@ -12127,7 +12169,7 @@ window.onhashchange = function () {
         void 0 == n ||
         "undefined" == n
       )
-        return !1;
+        return false;
       try {
         (a.core.calendarPrimaryId = JSON.parse(m)),
           (this.calendarEvents = JSON.parse(
@@ -12137,9 +12179,9 @@ window.onhashchange = function () {
           (a.core.calendars = JSON.parse(g, this.dateTimeReviver)),
           (this.nextSyncTokenCalendars = l);
       } catch (h) {
-        return !1;
+        return false;
       }
-      return !0;
+      return true;
     };
     b.prototype.persistCalendarsVisibilitySettings = function (a) {
       this.localStorageSetItem("oneview_visibilitySettings", JSON.stringify(a));
@@ -12159,7 +12201,7 @@ window.onhashchange = function () {
     };
     b.prototype.analyticsInit = function () {
       0 == this.analyticsStarted &&
-        ((this.analyticsStarted = !0),
+        ((this.analyticsStarted = true),
         -1 < document.URL.indexOf("app.oneviewcalendar.com")
           ? ga.create("UA-69941766-2", "auto")
           : ga.create("UA-69941766-1", "auto"),
@@ -12213,15 +12255,18 @@ window.onhashchange = function () {
   var p = (function (d) {
     function b() {
       d.call(this);
-      this.enableReload = !1;
-      this.enableMultipleCalendars = !0;
-      this.enableGoogleLogout = this.enableGoogleLogin = this.enableShop = !1;
-      this.enableFakeData = !0;
+      this.enableReload = false;
+      this.enableMultipleCalendars = true;
+      this.enableGoogleLogout =
+        this.enableGoogleLogin =
+        this.enableShop =
+          false;
+      this.enableFakeData = true;
       this.calendarDataProxyType = a.CalendarDataProxyType.Google;
-      this.demoVideoSpecial = !1;
-      this.retryLogin = !0;
+      this.demoVideoSpecial = false;
+      this.retryLogin = true;
       this.dbVersion = "rio0.52";
-      this.analyticsStarted = !1;
+      this.analyticsStarted = false;
     }
     __extends(b, d);
     b.prototype.populateCalendarEvents = function (b) {
@@ -12231,7 +12276,7 @@ window.onhashchange = function () {
       a.core.calendarEventHandler.clearAllEvents();
       a.core.calendars = [];
       a.core.calendarPrimaryId = void 0;
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(!1);
+      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
       try {
         this.loadEventsFromCache() ? this.finalizeLoad() : this.makeApiCall();
       } catch (f) {
@@ -12245,10 +12290,10 @@ window.onhashchange = function () {
     };
     b.prototype.logout = function () {};
     b.prototype.login = function () {
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(!1);
-      this.enableGoogleLogin = !1;
-      this.enableReload = this.enableMultipleCalendars = !0;
-      this.enableFakeData = this.enableGoogleLogout = !1;
+      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+      this.enableGoogleLogin = false;
+      this.enableReload = this.enableMultipleCalendars = true;
+      this.enableFakeData = this.enableGoogleLogout = false;
       this.makeApiCall();
     };
     b.prototype.reload = function () {
@@ -12256,7 +12301,7 @@ window.onhashchange = function () {
       this.calendarEvents = [];
       a.core.loadingHandler.startLoading();
       a.core.calendarEventHandler.clearAllEvents();
-      a.core.redraw(!0);
+      a.core.redraw(true);
       this.makeApiCall();
     };
     b.prototype.makeApiCall = function () {
@@ -12277,14 +12322,14 @@ window.onhashchange = function () {
       a.core.calendarEventHandler.findCommonTimes();
       a.core.loadingHandler.stopLoading();
       this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(!0);
+      a.core.redraw(true);
     };
     b.prototype.canEditRecurring = function (a) {
-      return !1;
+      return false;
     };
     b.prototype.getRRuleObject = function (a, b) {};
     b.prototype.connectionOk = function () {
-      return !0;
+      return true;
     };
     b.prototype.deleteEvent = function (a, b, d) {};
     b.prototype.addNewEvent = function (a, b) {};
@@ -12308,7 +12353,10 @@ window.onhashchange = function () {
     b.prototype.saveEventsToCache = function () {
       try {
         this.localStorageSetItem("oneview_verrsion", this.dbVersion),
-          this.localStorageSetItem("oneview_saveComplete", JSON.stringify(!1)),
+          this.localStorageSetItem(
+            "oneview_saveComplete",
+            JSON.stringify(false)
+          ),
           this.localStorageSetItem(
             "oneview_allCalendars",
             JSON.stringify(a.core.calendars)
@@ -12321,8 +12369,11 @@ window.onhashchange = function () {
             "oneview_nextSyncTokenCalendars",
             JSON.stringify(this.nextSyncTokenCalendars)
           ),
-          this.localStorageSetItem("oneview_google", JSON.stringify(!0)),
-          this.localStorageSetItem("oneview_saveComplete", JSON.stringify(!0));
+          this.localStorageSetItem("oneview_google", JSON.stringify(true)),
+          this.localStorageSetItem(
+            "oneview_saveComplete",
+            JSON.stringify(true)
+          );
       } catch (c) {}
     };
     b.prototype.loadEventsFromCache = function () {
@@ -12345,16 +12396,16 @@ window.onhashchange = function () {
         void 0 == m ||
         "undefined" == m
       )
-        return !1;
+        return false;
       try {
         (a.core.calendarPrimaryId = JSON.parse(g)),
           this.loadEvents(),
           (a.core.calendars = JSON.parse(f, this.dateTimeReviver)),
           (this.nextSyncTokenCalendars = n);
       } catch (l) {
-        return !1;
+        return false;
       }
-      return !0;
+      return true;
     };
     b.prototype.loadCalendars = function () {
       a.core.calendars = JSON.parse(rioCalendars, this.dateTimeReviver);
@@ -12380,7 +12431,7 @@ window.onhashchange = function () {
     };
     b.prototype.analyticsInit = function () {
       0 == this.analyticsStarted &&
-        ((this.analyticsStarted = !0),
+        ((this.analyticsStarted = true),
         ga.create("UA-69941766-7", "auto"),
         ga("send", "pageview"));
     };
@@ -12436,7 +12487,7 @@ window.onhashchange = function () {
       this.candyThemeId = "oneview.calendar.theme.candy";
       this.pageHtml =
         '<div id="calendarsTopBar" class="topBar">    <button id="shopBack" class="topBarButton" style="width:50%"><img src="images/arrow-left.svg" class="topBarImage"/></span><span>{#Back#}</span></button>    <button id="emptyButton" class="topBarButton" style="width:50%"></button>    <div id="shopTitle" class="topBarTitle" style="width:100%">{#Shop#}</div></div><div id="shopArea" class="pageContent pageTopPadding">    <div id="darkThemeArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="darkThemeTitle" class="shopItemTitle"></div>            <div id="darkThemeDescription" class="shopItemDescription"></div>            <button id="darkThemePrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/darkTheme_mini.png">        </div>    </div>    <div id="candyThemeArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="candyThemeTitle" class="shopItemTitle"></div>            <div id="candyThemeDescription" class="shopItemDescription"></div>            <button id="candyThemePrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/candyTheme_mini.png">        </div>    </div>    <div id="colorPickerArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="colorPickerTitle" class="shopItemTitle"></div>            <div id="colorPickerDescription" class="shopItemDescription"></div>            <button id="colorPickerPrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/colorPicker_mini.png">        </div>    </div></div>';
-      this.alreadyRegistered = !1;
+      this.alreadyRegistered = false;
     }
     d.prototype.reloadShopItems = function () {
       this.text = "ok";
@@ -12462,7 +12513,7 @@ window.onhashchange = function () {
           alias: "Candy theme",
           type: "non consumable",
         }));
-      this.alreadyRegistered = !0;
+      this.alreadyRegistered = true;
       window.store.refresh();
       this.productColorPicker &&
         this.setupItem(this.productColorPicker, "colorPicker");
@@ -12510,24 +12561,24 @@ window.onhashchange = function () {
       this.productColorPicker = b;
       this.setupItem(b, "colorPicker");
       this.productOk(b)
-        ? (a.core.commonUserSettings.licenceColorPicker = !0)
-        : (a.core.commonUserSettings.licenceColorPicker = !1);
+        ? (a.core.commonUserSettings.licenceColorPicker = true)
+        : (a.core.commonUserSettings.licenceColorPicker = false);
       this.productNotFinished(b) && b.finish();
     };
     d.prototype.setupDarkTheme = function (b) {
       this.productDarkTheme = b;
       this.setupItem(b, "darkTheme");
       this.productOk(b)
-        ? (a.core.commonUserSettings.licenceDarkTheme = !0)
-        : (a.core.commonUserSettings.licenceDarkTheme = !1);
+        ? (a.core.commonUserSettings.licenceDarkTheme = true)
+        : (a.core.commonUserSettings.licenceDarkTheme = false);
       this.productNotFinished(b) && b.finish();
     };
     d.prototype.setupCandyTheme = function (b) {
       this.productCandyTheme = b;
       this.setupItem(b, "candyTheme");
       this.productOk(b)
-        ? (a.core.commonUserSettings.licenceCandyTheme = !0)
-        : (a.core.commonUserSettings.licenceCandyTheme = !1);
+        ? (a.core.commonUserSettings.licenceCandyTheme = true)
+        : (a.core.commonUserSettings.licenceCandyTheme = false);
       this.productNotFinished(b) && b.finish();
     };
     d.prototype.setupItem = function (a, c) {
@@ -12575,7 +12626,7 @@ window.onhashchange = function () {
           (document.getElementById("emptyButton").style.display = "none"));
     };
     d.prototype.hide = function () {
-      a.core.appStateHandler.shopControlIsShowing = !1;
+      a.core.appStateHandler.shopControlIsShowing = false;
       window.store.off(this.setupColorPicker);
       window.store.off(this.setupDarkTheme);
       window.store.off(this.setupCandyTheme);
