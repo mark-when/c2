@@ -34,288 +34,488 @@ var __extends =
   };
 })(oneview9 || (oneview9 = {}));
 
-namespace OneView {
-  // LocalStorage class
-  class LocalStorage {
-    constructor(readonly calendarEvents = []) {}
+const OneView: any = {};
 
-    dateTimeReviver(key: string, value: any) {
-      if (
-        typeof value === "string" &&
-        key.length > 4 &&
-        (key.substr(key.length - 4) === "Date" ||
-          key.substr(key.length - 4) === "Time")
-      ) {
-        return new Date(value);
-      }
-      return value;
-    }
+// LocalStorage class
+class LocalStorage {
+  constructor(readonly calendarEvents = []) {}
 
-    localStorageSetItem(key: string, value: any) {
-      try {
-        localStorage.setItem(key, value);
-      } catch (e) {}
+  dateTimeReviver(key: string, value: any) {
+    if (
+      typeof value === "string" &&
+      key.length > 4 &&
+      (key.substr(key.length - 4) === "Date" ||
+        key.substr(key.length - 4) === "Time")
+    ) {
+      return new Date(value);
     }
+    return value;
   }
 
-  class CommonUserSettings extends LocalStorage {
-    cachedTimeZoneDiffInMinutes = undefined;
-    cachedGrayDays: string | undefined = undefined;
-    cachedSavedCalendarColors = undefined;
-    cachedFirstDayOfWeek = undefined;
-    defaultUseWeek = false;
-    defaultUse24hFormat = false;
-
-    constructor() {
-      super();
-    }
-
-    get calendarIdLastAddedTo() {
-      var a = localStorage.getItem("oneview_settings_lastCalendarId");
-      if (void 0 !== a && null !== a) return JSON.parse(a);
-    }
-    set calendarIdLastAddedTo(a) {
-      this.localStorageSetItem(
-        "oneview_settings_lastCalendarId",
-        JSON.stringify(a)
-      );
-    }
-
-    get hasShownRemindersInfo() {
-      return this.getBoolean("oneview_settings_hasShownRemindersInfo", false);
-    }
-
-    set hasShownRemindersInfo(a) {
-      this.localStorageSetItem(
-        "oneview_settings_hasShownRemindersInfo",
-        JSON.stringify(a)
-      );
-    }
-
-    getDefaultUse24hFormat() {
-      return void 0 !== this.defaultUse24hFormat &&
-        null !== this.defaultUse24hFormat
-        ? this.defaultUse24hFormat
-        : (this.defaultUse24hFormat = !(
-            0 < moment().format("LT").indexOf(moment().format("A")) &&
-            0 < moment().format("A").length
-          ));
-    }
-
-    getDefaultUseWeek() {
-      if (void 0 !== this.defaultUseWeek && null !== this.defaultUseWeek)
-        return this.defaultUseWeek;
-      var a =
-        "AT AX BE CH CZ DE DK EE ES EU FI FO FR GB GL GR IE IM IS IT LI LU LV NL NO PL PT SE SJ".split(
-          " "
-        );
-      this.defaultUseWeek = false;
-      for (var b = 0; b < a.length; b++)
-        -1 < navigator.language.toUpperCase().indexOf(a[b]) &&
-          (this.defaultUseWeek = true);
-      return this.defaultUseWeek;
-    }
-
-    get showWeekNumbers() {
-      return this.getBoolean(
-        "oneview_settings_showWeekNumbers",
-        this.getDefaultUseWeek()
-      );
-    }
-
-    set showWeekNumbers(a) {
-      this.localStorageSetItem(
-        "oneview_settings_showWeekNumbers",
-        JSON.stringify(a)
-      );
-    }
-
-    get use24hFormat() {
-      return this.getBoolean(
-        "oneview_settings_use24hFormat",
-        this.getDefaultUse24hFormat()
-      );
-    }
-
-    set use24hFormat(a) {
-      this.localStorageSetItem(
-        "oneview_settings_use24hFormat",
-        JSON.stringify(a)
-      );
-    }
-
-    get timeZoneForSettingsPage() {
-      return this.getString("oneview_settings_timeZone", "-");
-    }
-
-    set timeZoneForSettingsPage(a) {
-      this.cachedTimeZoneDiffInMinutes = void 0;
-      this.localStorageSetItem("oneview_settings_timeZone", JSON.stringify(a));
-    }
-
-    get dataAmountToLoad() {
-      return this.getNumber("oneview_settings_dataAmountToLoad", 48, false);
-    }
-
-    set dataAmountToLoad(a) {
-      this.localStorageSetItem(
-        "oneview_settings_dataAmountToLoad",
-        JSON.stringify(a)
-      );
-    }
-
-    get language() {
-      var b;
-      b = moment.locale();
-      a.Translate.languageExists(b) || (b = "-");
-      return this.getString("oneview_settings_language", b);
-    }
-
-    set language(a) {
-      this.localStorageSetItem("oneview_settings_language", JSON.stringify(a));
-      this.updateAppWithLang();
-    }
-
-    updateAppWithLang() {
-      var b = this.language;
-      if ("" === b || "-" == b) b = navigator.language;
-      moment.locale(b);
-      OneView.core.translate = new OneView.Translate(b);
-      OneView.core.helper.monthesShort = new OneView.Hashtable();
-      OneView.core.helper.monthesLong = new OneView.Hashtable();
-      OneView.core.helper.weekdayShort = new OneView.Hashtable();
-      OneView.core.helper.weekdayLong = new OneView.Hashtable();
-    }
-
-    get theme() {
-      return this.getString("oneview_settings_theme", "0");
-    }
-
-    set theme(a) {
-      this.localStorageSetItem("oneview_settings_theme", JSON.stringify(a));
-    }
-
-    get licenseDarkTheme() {
-      return this.getBoolean("oneview_settings_licenceDarkTheme", false);
-    }
-
-    set licenseDarkTheme(a) {
-      this.localStorageSetItem(
-        "oneview_settings_licenceDarkTheme",
-        JSON.stringify(a)
-      );
-    }
-
-    get licenseCandyTheme() {
-      return this.getBoolean("oneview_settings_licenceCandyTheme", false);
-    }
-
-    set licenseCandyTheme(a) {
-      this.localStorageSetItem(
-        "oneview_settings_licenceCandyTheme",
-        JSON.stringify(a)
-      );
-    }
-
-    get licenseColorPicker() {
-      return this.getBoolean("oneview_settings_licenceColorPicker", false);
-    }
-
-    set licenseColorPicker(a) {
-      this.localStorageSetItem(
-        "oneview_settings_licenceColorPicker",
-        JSON.stringify(a)
-      );
-    }
-
-    get firstDayOfWeek() {
-      if (void 0 == this.cachedFirstDayOfWeek) {
-        var a = moment().startOf("week").isoWeekday();
-        this.cachedFirstDayOfWeek = this.correctWeekDayNumber(
-          Number(this.getString("oneview_settings_firstDayOfWeek", "" + a))
-        );
-      }
-      return this.cachedFirstDayOfWeek;
-    }
-
-    set firstDayOfWeek(a) {
-      this.cachedFirstDayOfWeek = void 0;
-      this.localStorageSetItem(
-        "oneview_settings_firstDayOfWeek",
-        JSON.stringify(this.correctWeekDayNumber(a))
-      );
-    }
-
-    get savedCalendarColors() {
-      if (void 0 == this.cachedSavedCalendarColors) {
-        var b = JSON.stringify(new a.Dictionary());
-        this.cachedSavedCalendarColors = new a.Dictionary();
-        b = JSON.parse(
-          this.getObjectData("oneview_saved_calendar_colors", "" + b)
-        );
-        this.cachedSavedCalendarColors.setup(b._keys, b._values);
-      }
-      return this.cachedSavedCalendarColors;
-    }
-
-    set savedCalendarColors(a) {
-      this.cachedSavedCalendarColors = void 0;
-      OneView.syncArrays();
-      this.localStorageSetItem(
-        "oneview_saved_calendar_colors",
-        JSON.stringify(a)
-      );
-    }
-
-    get grayDays() {
-      void 0 == this.cachedGrayDays &&
-        (this.cachedGrayDays = (
-          this.getString("oneview_settings_grayDays", "67") + ""
-        ).replace("0", "7"));
-      return this.cachedGrayDays;
-    }
-    set grayDays(a) {
-      this.cachedGrayDays = void 0;
-      this.localStorageSetItem(
-        "oneview_settings_grayDays",
-        JSON.stringify(a.replace("0", "7"))
-      );
-    }
-
-    getCachedTimeZoneDiffInMinutes() {
-      if (void 0 == this.cachedTimeZoneDiffInMinutes) {
-        var a = this.timeZoneForSettingsPage;
-        return void 0 == a || "-" == a
-          ? 0
-          : 60 * Number(a) + new Date().getTimezoneOffset();
-      }
-      return this.cachedTimeZoneDiffInMinutes;
-    }
-
-    getBoolean(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? JSON.parse(c) : b;
-    }
-    getObjectData(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? c : b;
-    }
-    getString(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? JSON.parse(c) : b;
-    }
-    getNumber(a, b, f) {
-      a = localStorage.getItem(a);
-      void 0 !== a && null !== a && (a = JSON.parse(a));
-      return void 0 !== a && null !== a ? (f || 0 != a ? a : b) : b;
-    }
-    correctWeekDayNumber(a) {
-      for (; 1 > a; ) a += 7;
-      for (; 7 < a; ) a -= 7;
-      return a;
-    }
+  localStorageSetItem(key: string, value: any) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {}
   }
 }
+OneView.LocalStorage = LocalStorage
+class CommonUserSettings extends LocalStorage {
+  cachedTimeZoneDiffInMinutes = undefined;
+  cachedGrayDays: string | undefined = undefined;
+  cachedSavedCalendarColors = undefined;
+  cachedFirstDayOfWeek = undefined;
+  defaultUseWeek = false;
+  defaultUse24hFormat = false;
+
+  constructor() {
+    super();
+  }
+
+  get calendarIdLastAddedTo() {
+    var a = localStorage.getItem("oneview_settings_lastCalendarId");
+    if (void 0 !== a && null !== a) return JSON.parse(a);
+  }
+  set calendarIdLastAddedTo(a) {
+    this.localStorageSetItem(
+      "oneview_settings_lastCalendarId",
+      JSON.stringify(a)
+    );
+  }
+
+  get hasShownRemindersInfo() {
+    return this.getBoolean("oneview_settings_hasShownRemindersInfo", false);
+  }
+
+  set hasShownRemindersInfo(a) {
+    this.localStorageSetItem(
+      "oneview_settings_hasShownRemindersInfo",
+      JSON.stringify(a)
+    );
+  }
+
+  getDefaultUse24hFormat() {
+    return void 0 !== this.defaultUse24hFormat &&
+      null !== this.defaultUse24hFormat
+      ? this.defaultUse24hFormat
+      : (this.defaultUse24hFormat = !(
+          0 < moment().format("LT").indexOf(moment().format("A")) &&
+          0 < moment().format("A").length
+        ));
+  }
+
+  getDefaultUseWeek() {
+    if (void 0 !== this.defaultUseWeek && null !== this.defaultUseWeek)
+      return this.defaultUseWeek;
+    var a =
+      "AT AX BE CH CZ DE DK EE ES EU FI FO FR GB GL GR IE IM IS IT LI LU LV NL NO PL PT SE SJ".split(
+        " "
+      );
+    this.defaultUseWeek = false;
+    for (var b = 0; b < a.length; b++)
+      -1 < navigator.language.toUpperCase().indexOf(a[b]) &&
+        (this.defaultUseWeek = true);
+    return this.defaultUseWeek;
+  }
+
+  get showWeekNumbers() {
+    return this.getBoolean(
+      "oneview_settings_showWeekNumbers",
+      this.getDefaultUseWeek()
+    );
+  }
+
+  set showWeekNumbers(a) {
+    this.localStorageSetItem(
+      "oneview_settings_showWeekNumbers",
+      JSON.stringify(a)
+    );
+  }
+
+  get use24hFormat() {
+    return this.getBoolean(
+      "oneview_settings_use24hFormat",
+      this.getDefaultUse24hFormat()
+    );
+  }
+
+  set use24hFormat(a) {
+    this.localStorageSetItem(
+      "oneview_settings_use24hFormat",
+      JSON.stringify(a)
+    );
+  }
+
+  get timeZoneForSettingsPage() {
+    return this.getString("oneview_settings_timeZone", "-");
+  }
+
+  set timeZoneForSettingsPage(a) {
+    this.cachedTimeZoneDiffInMinutes = void 0;
+    this.localStorageSetItem("oneview_settings_timeZone", JSON.stringify(a));
+  }
+
+  get dataAmountToLoad() {
+    return this.getNumber("oneview_settings_dataAmountToLoad", 48, false);
+  }
+
+  set dataAmountToLoad(a) {
+    this.localStorageSetItem(
+      "oneview_settings_dataAmountToLoad",
+      JSON.stringify(a)
+    );
+  }
+
+  get language() {
+    var b;
+    b = moment.locale();
+    a.Translate.languageExists(b) || (b = "-");
+    return this.getString("oneview_settings_language", b);
+  }
+
+  set language(a) {
+    this.localStorageSetItem("oneview_settings_language", JSON.stringify(a));
+    this.updateAppWithLang();
+  }
+
+  updateAppWithLang() {
+    var b = this.language;
+    if ("" === b || "-" == b) b = navigator.language;
+    moment.locale(b);
+    OneView.core.translate = new OneView.Translate(b);
+    OneView.core.helper.monthesShort = new OneView.Hashtable();
+    OneView.core.helper.monthesLong = new OneView.Hashtable();
+    OneView.core.helper.weekdayShort = new OneView.Hashtable();
+    OneView.core.helper.weekdayLong = new OneView.Hashtable();
+  }
+
+  get theme() {
+    return this.getString("oneview_settings_theme", "0");
+  }
+
+  set theme(a) {
+    this.localStorageSetItem("oneview_settings_theme", JSON.stringify(a));
+  }
+
+  get licenseDarkTheme() {
+    return this.getBoolean("oneview_settings_licenceDarkTheme", false);
+  }
+
+  set licenseDarkTheme(a) {
+    this.localStorageSetItem(
+      "oneview_settings_licenceDarkTheme",
+      JSON.stringify(a)
+    );
+  }
+
+  get licenseCandyTheme() {
+    return this.getBoolean("oneview_settings_licenceCandyTheme", false);
+  }
+
+  set licenseCandyTheme(a) {
+    this.localStorageSetItem(
+      "oneview_settings_licenceCandyTheme",
+      JSON.stringify(a)
+    );
+  }
+
+  get licenseColorPicker() {
+    return this.getBoolean("oneview_settings_licenceColorPicker", false);
+  }
+
+  set licenseColorPicker(a) {
+    this.localStorageSetItem(
+      "oneview_settings_licenceColorPicker",
+      JSON.stringify(a)
+    );
+  }
+
+  get firstDayOfWeek() {
+    if (void 0 == this.cachedFirstDayOfWeek) {
+      var a = moment().startOf("week").isoWeekday();
+      this.cachedFirstDayOfWeek = this.correctWeekDayNumber(
+        Number(this.getString("oneview_settings_firstDayOfWeek", "" + a))
+      );
+    }
+    return this.cachedFirstDayOfWeek;
+  }
+
+  set firstDayOfWeek(a) {
+    this.cachedFirstDayOfWeek = void 0;
+    this.localStorageSetItem(
+      "oneview_settings_firstDayOfWeek",
+      JSON.stringify(this.correctWeekDayNumber(a))
+    );
+  }
+
+  get savedCalendarColors() {
+    if (void 0 == this.cachedSavedCalendarColors) {
+      var b = JSON.stringify(new a.Dictionary());
+      this.cachedSavedCalendarColors = new a.Dictionary();
+      b = JSON.parse(
+        this.getObjectData("oneview_saved_calendar_colors", "" + b)
+      );
+      this.cachedSavedCalendarColors.setup(b._keys, b._values);
+    }
+    return this.cachedSavedCalendarColors;
+  }
+
+  set savedCalendarColors(a) {
+    this.cachedSavedCalendarColors = void 0;
+    OneView.syncArrays();
+    this.localStorageSetItem(
+      "oneview_saved_calendar_colors",
+      JSON.stringify(a)
+    );
+  }
+
+  get grayDays() {
+    void 0 == this.cachedGrayDays &&
+      (this.cachedGrayDays = (
+        this.getString("oneview_settings_grayDays", "67") + ""
+      ).replace("0", "7"));
+    return this.cachedGrayDays;
+  }
+  set grayDays(a) {
+    this.cachedGrayDays = void 0;
+    this.localStorageSetItem(
+      "oneview_settings_grayDays",
+      JSON.stringify(a.replace("0", "7"))
+    );
+  }
+
+  getCachedTimeZoneDiffInMinutes() {
+    if (void 0 == this.cachedTimeZoneDiffInMinutes) {
+      var a = this.timeZoneForSettingsPage;
+      return void 0 == a || "-" == a
+        ? 0
+        : 60 * Number(a) + new Date().getTimezoneOffset();
+    }
+    return this.cachedTimeZoneDiffInMinutes;
+  }
+
+  getBoolean(a, b) {
+    var c = localStorage.getItem(a);
+    return void 0 !== c && null !== c ? JSON.parse(c) : b;
+  }
+  getObjectData(a, b) {
+    var c = localStorage.getItem(a);
+    return void 0 !== c && null !== c ? c : b;
+  }
+  getString(a, b) {
+    var c = localStorage.getItem(a);
+    return void 0 !== c && null !== c ? JSON.parse(c) : b;
+  }
+  getNumber(a, b, f) {
+    a = localStorage.getItem(a);
+    void 0 !== a && null !== a && (a = JSON.parse(a));
+    return void 0 !== a && null !== a ? (f || 0 != a ? a : b) : b;
+  }
+  correctWeekDayNumber(a) {
+    for (; 1 > a; ) a += 7;
+    for (; 7 < a; ) a -= 7;
+    return a;
+  }
+}
+OneView.CommonUserSettings = CommonUserSettings
+class DrawArea {
+  previousFont = "";
+  canvasCache = new OneView.SpeedCache();
+
+  debugText(b) {
+    OneView.core.zopDrawArea.canvasContext.fillStyle = "#FF0000";
+    this.setFont(20);
+    OneView.core.zopDrawArea.canvasContext.fillText(b, 5, 30);
+  }
+  drawIcon(a, c, e, f, g) {
+    var b = this;
+    if (!(this.loadingIconNames && 0 <= this.loadingIconNames.indexOf(a)))
+      if (
+        ((c = Math.floor(c)),
+        (e = Math.floor(e)),
+        (f = Math.floor(f)),
+        (g = Math.floor(g)),
+        this.loadedIconNames && 0 <= this.loadedIconNames.indexOf(a))
+      )
+        this.drawPicture(
+          this.loadedIcons[this.loadedIconNames.indexOf(a)],
+          c,
+          e,
+          f,
+          g
+        );
+      else {
+        this.loadingIconNames || (this.loadingIconNames = []);
+        this.loadingIconNames.push(a);
+        var d = new Image();
+        d.onload = function () {
+          setTimeout(function () {
+            b.loadIcon(a, d, c, e, f, g);
+          }, 1);
+        };
+        d.src = "images/" + a + ".svg";
+      }
+  }
+  loadIcon(a, c, e, f, g, d) {
+    this.drawPicture(c, e, f, g, d);
+    this.loadingIconNames.splice(this.loadingIconNames.indexOf(a), 1);
+    this.loadedIconNames || (this.loadedIconNames = []);
+    this.loadedIcons || (this.loadedIcons = []);
+    this.loadedIconNames.push(a);
+    this.loadedIcons.push(c);
+  }
+  drawLoader(b) {
+    var c =
+        Math.min(
+          OneView.core.zopDrawArea.zopAreaWidth,
+          OneView.core.zopDrawArea.zopAreaHeight
+        ) / 32,
+      e = OneView.core.zopDrawArea.zopAreaWidth / 2,
+      f = OneView.core.zopDrawArea.zopAreaHeight / 2;
+    OneView.core.zopDrawArea.canvasContext.strokeStyle =
+      OneView.core.settings.theme.colorDark;
+    OneView.core.zopDrawArea.canvasContext.lineWidth = Math.max(
+      c / 2,
+      c / 6 + 12
+    );
+    OneView.core.zopDrawArea.canvasContext.lineCap = "butt";
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.arc(e, f, c, b, b + 2.5);
+    OneView.core.zopDrawArea.canvasContext.stroke();
+  }
+  drawPicture(b, c, e, f, g) {
+    c = Math.floor(c);
+    e = Math.floor(e);
+    f = Math.floor(f);
+    g = Math.floor(g);
+    OneView.core.zopDrawArea.canvasContext.drawImage(b, c, e, f, g);
+  }
+  drawPictureWithOffset(b, c, e, f, g, d, n) {
+    c = Math.floor(c);
+    e = Math.floor(e);
+    f = Math.floor(f);
+    g = Math.floor(g);
+    OneView.core.zopDrawArea.canvasContext.drawImage(b, d, n, f, g, c, e, f, g);
+  }
+  drawFilledRectangle(b, c, e, f, g, d) {
+    OneView.core.zopDrawArea.setShadow(d);
+    OneView.core.zopDrawArea.canvasContext.fillStyle = g;
+    OneView.core.zopDrawArea.canvasContext.fillRect(
+      Math.floor(b),
+      Math.floor(c),
+      Math.floor(e),
+      Math.floor(f)
+    );
+    OneView.core.zopDrawArea.removeShadow(d);
+  }
+  setFont(b, c, e, f) {
+    void 0 === c && (c = false);
+    void 0 === e && (e = false);
+    void 0 === f && (f = false);
+    c
+      ? ((c = b + "px " + OneView.core.settings.theme.titleBarFont),
+        f && (c = b + "px " + OneView.core.settings.theme.titleBarFontBold),
+        e && (c = b + "px " + OneView.core.settings.theme.textFont))
+      : (c = f
+          ? b + "px " + OneView.core.settings.theme.textFontBold
+          : e
+          ? b + "px " + OneView.core.settings.theme.textFontThin
+          : b + "px " + OneView.core.settings.theme.textFont);
+    OneView.core.zopDrawArea.canvasContext.font !== c &&
+      (OneView.core.zopDrawArea.canvasContext.font = c);
+  }
+  drawTriangle(b, c, e, f, g, d, n, l) {
+    OneView.core.zopDrawArea.setShadow(l);
+    f = c + f;
+    d = c + d;
+    OneView.core.zopDrawArea.canvasContext.fillStyle = n;
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.moveTo(b, c);
+    OneView.core.zopDrawArea.canvasContext.lineTo(b + e, f);
+    OneView.core.zopDrawArea.canvasContext.lineTo(b + g, d);
+    OneView.core.zopDrawArea.canvasContext.closePath();
+    OneView.core.zopDrawArea.canvasContext.fill();
+    OneView.core.zopDrawArea.removeShadow(l);
+  }
+  drawLine2(a, c, e, f, g, d, n) {
+    this.drawLine(a, c, e - a, f - c, g, d, n);
+  }
+  startLines(b, c, e, f) {
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.lineWidth = e;
+    OneView.core.zopDrawArea.canvasContext.moveTo(b, c);
+    OneView.core.zopDrawArea.canvasContext.strokeStyle = f;
+    OneView.core.zopDrawArea.canvasContext.lineCap = "round";
+    OneView.core.zopDrawArea.canvasContext.lineJoin = "round";
+  }
+  continueLines(b, c) {
+    OneView.core.zopDrawArea.canvasContext.lineTo(b, c);
+  }
+  endLines() {
+    OneView.core.zopDrawArea.canvasContext.stroke();
+  }
+  drawLine(b, c, e, f, g, d, n) {
+    OneView.core.zopDrawArea.setShadow(n);
+    f = c + f;
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.lineCap = "square";
+    OneView.core.zopDrawArea.canvasContext.lineWidth = g;
+    OneView.core.zopDrawArea.canvasContext.moveTo(b, c);
+    OneView.core.zopDrawArea.canvasContext.lineTo(b + e, f);
+    OneView.core.zopDrawArea.canvasContext.strokeStyle = d;
+    OneView.core.zopDrawArea.canvasContext.stroke();
+    OneView.core.zopDrawArea.removeShadow(n);
+  }
+  drawHorizontalLineNotZOP(b, c, e, f, g, d) {
+    OneView.core.zopDrawArea.setShadow(d);
+    c = Math.floor(c);
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.lineWidth = g;
+    OneView.core.zopDrawArea.canvasContext.lineCap = "square";
+    OneView.core.zopDrawArea.canvasContext.moveTo(b, c);
+    OneView.core.zopDrawArea.canvasContext.lineTo(b + e, c);
+    OneView.core.zopDrawArea.canvasContext.strokeStyle = f;
+    OneView.core.zopDrawArea.canvasContext.stroke();
+    OneView.core.zopDrawArea.removeShadow(d);
+  }
+  drawVerticalLineNotZOP(b, c, e, f, g) {
+    b = Math.floor(b) + 0.5;
+    OneView.core.zopDrawArea.canvasContext.beginPath();
+    OneView.core.zopDrawArea.canvasContext.lineWidth = g;
+    OneView.core.zopDrawArea.canvasContext.lineCap = "square";
+    OneView.core.zopDrawArea.canvasContext.moveTo(b, c);
+    OneView.core.zopDrawArea.canvasContext.lineTo(b, e);
+    OneView.core.zopDrawArea.canvasContext.strokeStyle = f;
+    OneView.core.zopDrawArea.canvasContext.stroke();
+  }
+  drawCenteredText(b, c, e, f, g, d, n, l, h) {
+    void 0 === h && (h = false);
+    for (
+      n = Math.max(
+        0,
+        (f - OneView.core.zopDrawArea.measureTextWidth(b, g, l, false)) / 2
+      );
+      OneView.core.zopDrawArea.measureTextWidth(b, g, l, false) > f;
+
+    )
+      b = b.substring(0, b.length - 1);
+    OneView.core.drawArea.drawText(b, c + n, e, g, d, false, l, h, false);
+  }
+  startNewRound() {
+    this.canvasCache.startNewRound();
+  }
+  drawText(b, c, e, f, g, d, n, l, h) {
+    void 0 === l && (l = false);
+    void 0 === h && (h = false);
+    this.setFont(f, n, l, h);
+    OneView.core.zopDrawArea.canvasContext.fillStyle = g;
+    OneView.core.zopDrawArea.canvasContext.fillText(
+      b,
+      Math.floor(c) + 0.45,
+      Math.floor(e + f) + 0.45
+    );
+  }
+}
+OneView.DrawArea = DrawArea
 
 OneView.CalendarDataProxyType = {
   0: "Google",
@@ -326,354 +526,150 @@ OneView.CalendarDataProxyType = {
   Android: 2,
 };
 
-(function (a) {
-  var p = (function () {
-    function d() {
-      this.previousFont = "";
-      this.canvasCache = new a.SpeedCache();
-    }
-    d.prototype.debugText = function (b) {
-      a.core.zopDrawArea.canvasContext.fillStyle = "#FF0000";
-      this.setFont(20);
-      a.core.zopDrawArea.canvasContext.fillText(b, 5, 30);
-    };
-    d.prototype.drawIcon = function (a, c, e, f, g) {
-      var b = this;
-      if (!(this.loadingIconNames && 0 <= this.loadingIconNames.indexOf(a)))
-        if (
-          ((c = Math.floor(c)),
-          (e = Math.floor(e)),
-          (f = Math.floor(f)),
-          (g = Math.floor(g)),
-          this.loadedIconNames && 0 <= this.loadedIconNames.indexOf(a))
-        )
-          this.drawPicture(
-            this.loadedIcons[this.loadedIconNames.indexOf(a)],
-            c,
-            e,
-            f,
-            g
-          );
-        else {
-          this.loadingIconNames || (this.loadingIconNames = []);
-          this.loadingIconNames.push(a);
-          var d = new Image();
-          d.onload = function () {
-            setTimeout(function () {
-              b.loadIcon(a, d, c, e, f, g);
-            }, 1);
-          };
-          d.src = "images/" + a + ".svg";
-        }
-    };
-    d.prototype.loadIcon = function (a, c, e, f, g, d) {
-      this.drawPicture(c, e, f, g, d);
-      this.loadingIconNames.splice(this.loadingIconNames.indexOf(a), 1);
-      this.loadedIconNames || (this.loadedIconNames = []);
-      this.loadedIcons || (this.loadedIcons = []);
-      this.loadedIconNames.push(a);
-      this.loadedIcons.push(c);
-    };
-    d.prototype.drawLoader = function (b) {
-      var c =
-          Math.min(
-            a.core.zopDrawArea.zopAreaWidth,
-            a.core.zopDrawArea.zopAreaHeight
-          ) / 32,
-        e = a.core.zopDrawArea.zopAreaWidth / 2,
-        f = a.core.zopDrawArea.zopAreaHeight / 2;
-      a.core.zopDrawArea.canvasContext.strokeStyle =
-        a.core.settings.theme.colorDark;
-      a.core.zopDrawArea.canvasContext.lineWidth = Math.max(c / 2, c / 6 + 12);
-      a.core.zopDrawArea.canvasContext.lineCap = "butt";
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.arc(e, f, c, b, b + 2.5);
-      a.core.zopDrawArea.canvasContext.stroke();
-    };
-    d.prototype.drawPicture = function (b, c, e, f, g) {
-      c = Math.floor(c);
-      e = Math.floor(e);
-      f = Math.floor(f);
-      g = Math.floor(g);
-      a.core.zopDrawArea.canvasContext.drawImage(b, c, e, f, g);
-    };
-    d.prototype.drawPictureWithOffset = function (b, c, e, f, g, d, n) {
-      c = Math.floor(c);
-      e = Math.floor(e);
-      f = Math.floor(f);
-      g = Math.floor(g);
-      a.core.zopDrawArea.canvasContext.drawImage(b, d, n, f, g, c, e, f, g);
-    };
-    d.prototype.drawFilledRectangle = function (b, c, e, f, g, d) {
-      a.core.zopDrawArea.setShadow(d);
-      a.core.zopDrawArea.canvasContext.fillStyle = g;
-      a.core.zopDrawArea.canvasContext.fillRect(
-        Math.floor(b),
-        Math.floor(c),
-        Math.floor(e),
-        Math.floor(f)
-      );
-      a.core.zopDrawArea.removeShadow(d);
-    };
-    d.prototype.setFont = function (b, c, e, f) {
-      void 0 === c && (c = false);
-      void 0 === e && (e = false);
-      void 0 === f && (f = false);
-      c
-        ? ((c = b + "px " + a.core.settings.theme.titleBarFont),
-          f && (c = b + "px " + a.core.settings.theme.titleBarFontBold),
-          e && (c = b + "px " + a.core.settings.theme.textFont))
-        : (c = f
-            ? b + "px " + a.core.settings.theme.textFontBold
-            : e
-            ? b + "px " + a.core.settings.theme.textFontThin
-            : b + "px " + a.core.settings.theme.textFont);
-      a.core.zopDrawArea.canvasContext.font !== c &&
-        (a.core.zopDrawArea.canvasContext.font = c);
-    };
-    d.prototype.drawTriangle = function (b, c, e, f, g, d, n, l) {
-      a.core.zopDrawArea.setShadow(l);
-      f = c + f;
-      d = c + d;
-      a.core.zopDrawArea.canvasContext.fillStyle = n;
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.moveTo(b, c);
-      a.core.zopDrawArea.canvasContext.lineTo(b + e, f);
-      a.core.zopDrawArea.canvasContext.lineTo(b + g, d);
-      a.core.zopDrawArea.canvasContext.closePath();
-      a.core.zopDrawArea.canvasContext.fill();
-      a.core.zopDrawArea.removeShadow(l);
-    };
-    d.prototype.drawLine2 = function (a, c, e, f, g, d, n) {
-      this.drawLine(a, c, e - a, f - c, g, d, n);
-    };
-    d.prototype.startLines = function (b, c, e, f) {
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.lineWidth = e;
-      a.core.zopDrawArea.canvasContext.moveTo(b, c);
-      a.core.zopDrawArea.canvasContext.strokeStyle = f;
-      a.core.zopDrawArea.canvasContext.lineCap = "round";
-      a.core.zopDrawArea.canvasContext.lineJoin = "round";
-    };
-    d.prototype.continueLines = function (b, c) {
-      a.core.zopDrawArea.canvasContext.lineTo(b, c);
-    };
-    d.prototype.endLines = function () {
-      a.core.zopDrawArea.canvasContext.stroke();
-    };
-    d.prototype.drawLine = function (b, c, e, f, g, d, n) {
-      a.core.zopDrawArea.setShadow(n);
-      f = c + f;
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.lineCap = "square";
-      a.core.zopDrawArea.canvasContext.lineWidth = g;
-      a.core.zopDrawArea.canvasContext.moveTo(b, c);
-      a.core.zopDrawArea.canvasContext.lineTo(b + e, f);
-      a.core.zopDrawArea.canvasContext.strokeStyle = d;
-      a.core.zopDrawArea.canvasContext.stroke();
-      a.core.zopDrawArea.removeShadow(n);
-    };
-    d.prototype.drawHorizontalLineNotZOP = function (b, c, e, f, g, d) {
-      a.core.zopDrawArea.setShadow(d);
-      c = Math.floor(c);
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.lineWidth = g;
-      a.core.zopDrawArea.canvasContext.lineCap = "square";
-      a.core.zopDrawArea.canvasContext.moveTo(b, c);
-      a.core.zopDrawArea.canvasContext.lineTo(b + e, c);
-      a.core.zopDrawArea.canvasContext.strokeStyle = f;
-      a.core.zopDrawArea.canvasContext.stroke();
-      a.core.zopDrawArea.removeShadow(d);
-    };
-    d.prototype.drawVerticalLineNotZOP = function (b, c, e, f, g) {
-      b = Math.floor(b) + 0.5;
-      a.core.zopDrawArea.canvasContext.beginPath();
-      a.core.zopDrawArea.canvasContext.lineWidth = g;
-      a.core.zopDrawArea.canvasContext.lineCap = "square";
-      a.core.zopDrawArea.canvasContext.moveTo(b, c);
-      a.core.zopDrawArea.canvasContext.lineTo(b, e);
-      a.core.zopDrawArea.canvasContext.strokeStyle = f;
-      a.core.zopDrawArea.canvasContext.stroke();
-    };
-    d.prototype.drawCenteredText = function (b, c, e, f, g, d, n, l, h) {
-      void 0 === h && (h = false);
-      for (
-        n = Math.max(
-          0,
-          (f - a.core.zopDrawArea.measureTextWidth(b, g, l, false)) / 2
-        );
-        a.core.zopDrawArea.measureTextWidth(b, g, l, false) > f;
+class DrawAreaEffects {
+  preparingScrollCounter = 0;
+  previousScrollSpeed = 0;
+  scrollSpeed = 0;
+  speedSlowDown = 0.013;
 
-      )
-        b = b.substring(0, b.length - 1);
-      a.core.drawArea.drawText(b, c + n, e, g, d, false, l, h, false);
-    };
-    d.prototype.startNewRound = function () {
-      this.canvasCache.startNewRound();
-    };
-    d.prototype.drawText = function (b, c, e, f, g, d, n, l, h) {
-      void 0 === l && (l = false);
-      void 0 === h && (h = false);
-      this.setFont(f, n, l, h);
-      a.core.zopDrawArea.canvasContext.fillStyle = g;
-      a.core.zopDrawArea.canvasContext.fillText(
-        b,
-        Math.floor(c) + 0.45,
-        Math.floor(e + f) + 0.45
-      );
-    };
-    return d;
-  })();
-  a.DrawArea = p;
-  (function () {
-    return function (a) {
-      this.canvas = a;
-      this.context = a.getContext("2d");
-    };
-  })();
-})(OneView || (OneView = {}));
-(function (a) {
-  var p = (function () {
-    function d() {
-      this.preparingScrollCounter =
-        this.previousScrollSpeed =
-        this.scrollSpeed =
-          0;
-      this.speedSlowDown = 0.013;
-    }
-    d.prototype.startAutoZoom = function (b, c, e, f) {
-      this.azGoalTopZOP = b;
-      this.azGoalBottomZOP = c;
-      this.speedModifier = (this.megaSlowZoom = e) ? 4e6 : 6e3;
-      this.azTopZOPSpeed = this.getAzTopZopSpeed();
-      this.azBottomZOPSpeed = this.getAzBottomZopSpeed();
-      this.azTopZOPSpeed_Linear =
-        this.azGoalTopZOP > a.core.zopHandler.topZOP
-          ? this.azTopZOPSpeed / 2e3
-          : this.azTopZOPSpeed / 20;
-      this.azBottomZOPSpeed_Linear =
-        this.azGoalBottomZOP < a.core.zopHandler.bottomZOP
-          ? this.azBottomZOPSpeed / 3e3
-          : this.azBottomZOPSpeed / 20;
-      this.azLastZoomTime = a.core.getTimeStamp();
-      this.azRunning = true;
-      this.azCallBack = f;
-      a.core.redraw(false);
-    };
-    d.prototype.runAutoZoom = function () {
-      if (!this.azRunning) return false;
-      var b = a.core.getTimeStamp() - this.azLastZoomTime;
-      if (0 === b) return false;
-      var c = a.core.zopHandler.topZOP + this.azTopZOPSpeed * b;
-      if (
-        (0 <= this.azTopZOPSpeed && c > this.azGoalTopZOP) ||
-        (0 > this.azTopZOPSpeed && c < this.azGoalTopZOP)
-      )
-        (c = this.azGoalTopZOP), (this.azTopZOPSpeed = 0);
-      b = a.core.zopHandler.bottomZOP + this.azBottomZOPSpeed * b;
-      if (
-        (0 <= this.azBottomZOPSpeed && b > this.azGoalBottomZOP) ||
-        (0 > this.azBottomZOPSpeed && b < this.azGoalBottomZOP)
-      )
-        (b = this.azGoalBottomZOP), (this.azBottomZOPSpeed = 0);
-      a.core.zopHandler.setZoom(
-        c,
-        b,
-        a.core.zopHandler.topPixel,
-        a.core.zopHandler.bottomPixel
-      );
-      if (0 == this.azTopZOPSpeed && 0 == this.azBottomZOPSpeed)
-        return this.stopAutoZoom(), false;
-      this.megaSlowZoom
-        ? ((this.azTopZOPSpeed = this.getAzTopZopSpeed() / 2),
-          (this.azBottomZOPSpeed = this.getAzBottomZopSpeed() / 2))
-        : ((this.azTopZOPSpeed =
-            (this.getAzTopZopSpeed() + this.azTopZOPSpeed_Linear) / 2),
-          (this.azBottomZOPSpeed =
-            (this.getAzBottomZopSpeed() + this.azBottomZOPSpeed_Linear) / 2));
+  azGoalTopZOP: any;
+  azGoalBottomZOP: any;
+  speedModifier: any;
+  megaSlowZoom: any;
+
+  startAutoZoom(b, c, e, f) {
+    this.azGoalTopZOP = b;
+    this.azGoalBottomZOP = c;
+    this.speedModifier = (this.megaSlowZoom = e) ? 4e6 : 6e3;
+    this.azTopZOPSpeed = this.getAzTopZopSpeed();
+    this.azBottomZOPSpeed = this.getAzBottomZopSpeed();
+    this.azTopZOPSpeed_Linear =
+      this.azGoalTopZOP > a.core.zopHandler.topZOP
+        ? this.azTopZOPSpeed / 2e3
+        : this.azTopZOPSpeed / 20;
+    this.azBottomZOPSpeed_Linear =
+      this.azGoalBottomZOP < a.core.zopHandler.bottomZOP
+        ? this.azBottomZOPSpeed / 3e3
+        : this.azBottomZOPSpeed / 20;
+    this.azLastZoomTime = OneView.core.getTimeStamp();
+    this.azRunning = true;
+    this.azCallBack = f;
+    OneView.core.redraw(false);
+  }
+  runAutoZoom() {
+    if (!this.azRunning) return false;
+    var b = OneView.core.getTimeStamp() - this.azLastZoomTime;
+    if (0 === b) return false;
+    var c = OneView.core.zopHandler.topZOP + this.azTopZOPSpeed * b;
+    if (
+      (0 <= this.azTopZOPSpeed && c > this.azGoalTopZOP) ||
+      (0 > this.azTopZOPSpeed && c < this.azGoalTopZOP)
+    )
+      (c = this.azGoalTopZOP), (this.azTopZOPSpeed = 0);
+    b = OneView.core.zopHandler.bottomZOP + this.azBottomZOPSpeed * b;
+    if (
+      (0 <= this.azBottomZOPSpeed && b > this.azGoalBottomZOP) ||
+      (0 > this.azBottomZOPSpeed && b < this.azGoalBottomZOP)
+    )
+      (b = this.azGoalBottomZOP), (this.azBottomZOPSpeed = 0);
+    OneView.core.zopHandler.setZoom(
+      c,
+      b,
+      OneView.core.zopHandler.topPixel,
+      OneView.core.zopHandler.bottomPixel
+    );
+    if (0 == this.azTopZOPSpeed && 0 == this.azBottomZOPSpeed)
+      return this.stopAutoZoom(), false;
+    this.megaSlowZoom
+      ? ((this.azTopZOPSpeed = this.getAzTopZopSpeed() / 2),
+        (this.azBottomZOPSpeed = this.getAzBottomZopSpeed() / 2))
+      : ((this.azTopZOPSpeed =
+          (this.getAzTopZopSpeed() + this.azTopZOPSpeed_Linear) / 2),
+        (this.azBottomZOPSpeed =
+          (this.getAzBottomZopSpeed() + this.azBottomZOPSpeed_Linear) / 2));
+    return true;
+  }
+  getAzTopZopSpeed() {
+    return (
+      (this.azGoalTopZOP - OneView.core.zopHandler.topZOP) / this.speedModifier
+    );
+  }
+  getAzBottomZopSpeed() {
+    return (
+      (this.azGoalBottomZOP - OneView.core.zopHandler.bottomZOP) /
+      this.speedModifier
+    );
+  }
+  runEffects() {
+    return this.runAutoScroll() || this.runAutoZoom();
+  }
+  prepareAutoScroll(b, c) {
+    void 0 === c && (c = 0);
+    var e = OneView.core.getTimeStamp(),
+      f = e - this.lastScrollTime;
+    f <= c ||
+      ((this.previousScrollSpeed = this.scrollSpeed),
+      1 < this.preparingScrollCounter
+        ? ((this.scrollSpeed = (b - this.lastScrollYPixel) / f),
+          this.scrollSpeed > OneView.core.zopHandler.maxScrollSpeed &&
+            (this.scrollSpeed = OneView.core.zopHandler.maxScrollSpeed),
+          this.scrollSpeed < -OneView.core.zopHandler.maxScrollSpeed &&
+            (this.scrollSpeed = -OneView.core.zopHandler.maxScrollSpeed))
+        : (this.scrollSpeed = 0),
+      this.preparingScrollCounter++,
+      (this.lastScrollTime = e),
+      (this.lastScrollYPixel = b));
+  }
+  startAutoScroll(b) {
+    OneView.core.zopHandler.startScroll(b);
+    0 != this.previousScrollSpeed &&
+      0 != this.scrollSpeed &&
+      (this.scrollSpeed =
+        ((this.scrollSpeed + this.previousScrollSpeed) / 2) * 1.2);
+    this.preparingScrollCounter = this.previousScrollSpeed = 0;
+  }
+  runAutoScroll() {
+    if (0 != this.scrollSpeed && 0 === this.preparingScrollCounter) {
+      var b = OneView.core.getTimeStamp(),
+        c = b - this.lastScrollTime;
+      if (0 === c) return false;
+      var e = this.lastScrollYPixel + this.scrollSpeed * c;
+      this.lastScrollYPixel = e;
+      this.lastScrollTime = b;
+      OneView.core.zopHandler.continueScroll(e);
+      OneView.core.zopHandler.endScroll();
+      OneView.core.zopHandler.startScroll(e);
+      this.speedSlowDown = (c * OneView.core.zopHandler.maxScrollSpeed) / 2200;
+      this.scrollSpeed =
+        this.scrollSpeed > 2 * this.speedSlowDown
+          ? this.scrollSpeed - this.speedSlowDown
+          : this.scrollSpeed < 2 * -this.speedSlowDown
+          ? this.scrollSpeed + this.speedSlowDown
+          : 0;
+      0 === this.scrollSpeed && OneView.core.zopHandler.endScroll();
       return true;
-    };
-    d.prototype.getAzTopZopSpeed = function () {
-      return (
-        (this.azGoalTopZOP - a.core.zopHandler.topZOP) / this.speedModifier
-      );
-    };
-    d.prototype.getAzBottomZopSpeed = function () {
-      return (
-        (this.azGoalBottomZOP - a.core.zopHandler.bottomZOP) /
-        this.speedModifier
-      );
-    };
-    d.prototype.runEffects = function () {
-      return this.runAutoScroll() || this.runAutoZoom();
-    };
-    d.prototype.prepareAutoScroll = function (b, c) {
-      void 0 === c && (c = 0);
-      var e = a.core.getTimeStamp(),
-        f = e - this.lastScrollTime;
-      f <= c ||
-        ((this.previousScrollSpeed = this.scrollSpeed),
-        1 < this.preparingScrollCounter
-          ? ((this.scrollSpeed = (b - this.lastScrollYPixel) / f),
-            this.scrollSpeed > a.core.zopHandler.maxScrollSpeed &&
-              (this.scrollSpeed = a.core.zopHandler.maxScrollSpeed),
-            this.scrollSpeed < -a.core.zopHandler.maxScrollSpeed &&
-              (this.scrollSpeed = -a.core.zopHandler.maxScrollSpeed))
-          : (this.scrollSpeed = 0),
-        this.preparingScrollCounter++,
-        (this.lastScrollTime = e),
-        (this.lastScrollYPixel = b));
-    };
-    d.prototype.startAutoScroll = function (b) {
-      a.core.zopHandler.startScroll(b);
-      0 != this.previousScrollSpeed &&
-        0 != this.scrollSpeed &&
-        (this.scrollSpeed =
-          ((this.scrollSpeed + this.previousScrollSpeed) / 2) * 1.2);
-      this.preparingScrollCounter = this.previousScrollSpeed = 0;
-    };
-    d.prototype.runAutoScroll = function () {
-      if (0 != this.scrollSpeed && 0 === this.preparingScrollCounter) {
-        var b = a.core.getTimeStamp(),
-          c = b - this.lastScrollTime;
-        if (0 === c) return false;
-        var e = this.lastScrollYPixel + this.scrollSpeed * c;
-        this.lastScrollYPixel = e;
-        this.lastScrollTime = b;
-        a.core.zopHandler.continueScroll(e);
-        a.core.zopHandler.endScroll();
-        a.core.zopHandler.startScroll(e);
-        this.speedSlowDown = (c * a.core.zopHandler.maxScrollSpeed) / 2200;
-        this.scrollSpeed =
-          this.scrollSpeed > 2 * this.speedSlowDown
-            ? this.scrollSpeed - this.speedSlowDown
-            : this.scrollSpeed < 2 * -this.speedSlowDown
-            ? this.scrollSpeed + this.speedSlowDown
-            : 0;
-        0 === this.scrollSpeed && a.core.zopHandler.endScroll();
-        return true;
-      }
-      return false;
-    };
-    d.prototype.isScrollingOrZooming = function () {
-      return 1 < this.scrollSpeed || true === this.azRunning;
-    };
-    d.prototype.stopAllEffects = function () {
-      this.previousScrollSpeed = this.scrollSpeed = 0;
-      a.core.zopHandler.endScroll();
-      this.stopAutoZoom();
-      a.core.redraw(false);
-    };
-    d.prototype.stopAutoZoom = function () {
-      this.azRunning = false;
-      this.azBottomZOPSpeed = this.azTopZOPSpeed = 0;
-      this.azCallBack && (this.azCallBack(), (this.azCallBack = void 0));
-      a.core.redraw(false);
-    };
-    return d;
-  })();
-  a.DrawAreaEffects = p;
-})(OneView || (OneView = {}));
+    }
+    return false;
+  }
+  isScrollingOrZooming() {
+    return 1 < this.scrollSpeed || true === this.azRunning;
+  }
+  stopAllEffects() {
+    this.previousScrollSpeed = this.scrollSpeed = 0;
+    OneView.core.zopHandler.endScroll();
+    this.stopAutoZoom();
+    OneView.core.redraw(false);
+  }
+  stopAutoZoom() {
+    this.azRunning = false;
+    this.azBottomZOPSpeed = this.azTopZOPSpeed = 0;
+    this.azCallBack && (this.azCallBack(), (this.azCallBack = void 0));
+    OneView.core.redraw(false);
+  }
+}
+
+OneView.DrawAreaEffects = DrawAreaEffects;
+
 (function (a) {
   var p = (function () {
     function b() {
@@ -10339,2118 +10335,2118 @@ window.onhashchange = function () {
       };
     })();
 })(OneView || (OneView = {}));
-(function (a) {
-  var p = (function (d) {
-    function b() {
-      d.call(this);
-      this.enableReload = true;
-      this.enableFakeData =
-        this.enableGoogleLogout =
-        this.enableGoogleLogin =
-          false;
-      this.enableShop = this.enableMultipleCalendars = true;
-      this.calendarDataProxyType = a.CalendarDataProxyType.Android;
-      this.demoVideoSpecial = false;
-      this.rrulesDictionary = new a.Dictionary();
-      this.analyticsStarted = false;
-      a.core.dynamicallyLoadFile("libs/rrule.js", "js", function () {});
-    }
-    __extends(b, d);
-    b.prototype.connectionOk = function () {
-      return true;
-    };
-    b.prototype.calendarsLoaded = function (b) {
-      if (void 0 === b || void 0 === b[0].name) this.delayedReload();
-      else {
-        this.calendarsLoadedMsg = b;
-        this.eventsLoaded = this.eventsLoaded.bind(this);
-        this.eventsLoadedFailed = this.eventsLoadedFailed.bind(this);
-        b = moment()
-          .add(
-            -((1 * a.core.commonUserSettings.dataAmountToLoad) / 4),
-            "months"
-          )
-          .toDate();
-        var c = moment()
-          .add((3 * a.core.commonUserSettings.dataAmountToLoad) / 4, "months")
-          .toDate();
-        window.plugins.calendar.listEventsInRange(
-          b,
-          c,
-          this.eventsLoaded,
-          this.eventsLoadedFailed
-        );
-      }
-    };
-    b.prototype.calendarsLoadedFailed = function (a) {
-      this.clearAllData();
-      this.analyticsEvent("Error", "Load calendars failed");
-      this.calendarsLoadedCallback();
-    };
-    b.prototype.populateCalendarEvents = function (b) {
-      this.startLoadingTime = a.core.getTimeStamp();
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
-      this.calendarsLoaded = this.calendarsLoaded.bind(this);
-      this.calendarsLoadedFailed = this.calendarsLoadedFailed.bind(this);
-      this.calendarsLoadedCallback = b;
-      window.plugins.calendar.listCalendars(
-        this.calendarsLoaded,
-        this.calendarsLoadedFailed
-      );
-    };
-    b.prototype.clearAllData = function () {
-      this.calendarEvents = [];
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.calendars = [];
-      a.core.calendarPrimaryId = void 0;
-    };
-    b.prototype.handleCalendarsLoadedData = function () {
-      var b;
-      for (b = 0; b < this.calendarsLoadedMsg.length; b++) {
-        var e = a.VisibilityType.Visible;
-        0 === +this.calendarsLoadedMsg[b].visible &&
-          (e = a.VisibilityType.Hidden);
-        void 0 != a.core.calendarPrimaryId ||
-          this.calendarsLoadedMsg[b].isReadOnly ||
-          (a.core.calendarPrimaryId = this.calendarsLoadedMsg[b].id);
-        this.calendarsLoadedMsg[b].isPrimary &&
-          !this.calendarsLoadedMsg[b].isReadOnly &&
-          (a.core.calendarPrimaryId = this.calendarsLoadedMsg[b].id);
-        e = new a.CalendarObject(
-          this.calendarsLoadedMsg[b].id,
-          this.calendarsLoadedMsg[b].name,
-          [],
-          b,
-          e,
-          !this.calendarsLoadedMsg[b].isReadOnly,
-          !this.calendarsLoadedMsg[b].isReadOnly
-        );
-        a.core.calendars.push(e);
-        "molyneux.peter@gmail.com" == e.name &&
-          ((a.core.commonUserSettings.licenceColorPicker = true),
-          (a.core.commonUserSettings.licenceCandyTheme = true),
-          (a.core.commonUserSettings.licenceDarkTheme = true));
-      }
-    };
-    b.prototype.eventsLoaded = function (a) {
-      if (
-        void 0 === a ||
-        (a.length <= this.calendarsLoadedMsg.length &&
-          void 0 === a[0].startDate)
-      )
-        this.delayedReload();
-      else {
-        this.clearAllData();
-        this.handleCalendarsLoadedData();
-        var b;
-        for (b = 0; b < a.length; b++) {
-          var c = this.convertToEvent(a[b]);
-          this.calendarEvents.push(c);
-        }
-        this.finalizeLoad();
-      }
-    };
-    b.prototype.convertToEvent = function (b) {
-      var c = new Date(0 + b.startDate),
-        d = new Date(0 + b.endDate);
-      1 == b.allday
-        ? ((c = new Date(c.getTime() + 6e4 * c.getTimezoneOffset())),
-          (d = new Date(d.getTime() + 6e4 * d.getTimezoneOffset())))
-        : ((c = a.core.helper.addUserTimeZoneSetting(c)),
-          (d = a.core.helper.addUserTimeZoneSetting(d)));
-      d.getDate() === c.getDate() &&
-        (a.core.getCalendar(b.calendarId).allEventsAreFullDay = false);
-      a.core.getCalendar(b.calendarId);
-      var g = b.eventId + "#" + b.id,
-        c = new a.CalendarEventObject(
-          b.title,
-          b.description,
-          b.location,
-          c,
-          d,
-          b.calendarId,
-          g
-        );
-      c.isRecurring =
-        !a.core.helper.isNullOrEmpty(b.rRule) ||
-        !a.core.helper.isNullOrEmpty(b.rDate);
-      c.recurringEventId = b.eventId;
-      void 0 != b.color && "" != b.color && (c.androidColorNum = b.color);
-      c.reminders = [];
-      for (d = 0; b.reminders && d < b.reminders.length; d++)
-        c.reminders.push(new a.Reminder(b.reminders[d]));
-      a.core.helper.isNullOrEmpty(b.rRule) ||
-        this.rrulesDictionary.add(g, b.rRule);
-      return c;
-    };
-    b.prototype.eventsLoadedFailed = function (a) {
-      this.clearAllData();
-      this.analyticsEvent("Error", "Load events failed");
-      this.calendarsLoadedCallback();
-    };
-    b.prototype.finalizeLoad = function () {
-      var b;
-      a.core.helper.sortCalendars();
-      a.core.calendarEventHandler.gradeCalendarEvents(this.calendarEvents);
-      a.core.calendarEventHandler.clearAllEvents();
-      for (b = 0; b < this.calendarEvents.length; b++)
-        a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
-          a.VisibilityType.Visible &&
-          a.core.calendarEventHandler.addEventToCalendar(
-            this.calendarEvents[b]
-          );
-      a.core.calendarEventHandler.findCommonTimes();
-      a.core.redraw(true);
-      this.loadSettings();
-      this.analyticsValue(
-        "Value",
-        "Start",
-        "Events loaded",
-        this.calendarEvents.length
-      );
-      this.analyticsValue(
-        "Value",
-        "Start",
-        "Data amount to load",
-        a.core.commonUserSettings.dataAmountToLoad
-      );
-      this.analyticsTiming(
-        "Loadtime",
-        a.core.getTimeStamp() - this.startLoadingTime
-      );
-      this.calendarsLoadedCallback();
-    };
-    b.prototype.canEditRecurring = function (a) {
-      return this.rrulesDictionary.containsKey(a.id);
-    };
-    b.prototype.getRRuleObject = function (a, b) {
-      var c;
-      this.rrulesDictionary.containsKey(a.id) &&
-        (c = RRule.fromString(this.rrulesDictionary[a.id]));
-      b(c);
-    };
-    b.prototype.login = function () {};
-    b.prototype.logout = function () {};
-    b.prototype.delayedReload = function () {
-      var a = this;
-      window.setTimeout(function () {
-        a.reload();
-      }, 1e3);
-    };
-    b.prototype.reload = function () {
-      a.core.populateCalendars();
-    };
-    b.prototype.deleteEvent = function (b, e, d) {
-      this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
-      this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
-      this.successCallback = this.successCallback.bind(this);
-      this.failedCallback = this.failedCallback.bind(this);
-      b.isRecurring && e !== a.EventEditType.AllInSeries
-        ? b.isRecurring && e === a.EventEditType.ThisOnly
-          ? ((e = b.startDateTime),
-            (e =
-              0 == b.startDateTime.getHours() && 0 == b.endDateTime.getHours()
-                ? new Date(e.getTime() - 6e4 * e.getTimezoneOffset())
-                : a.core.helper.removeUserTimeZoneSetting(e)),
-            a.core.calendarEventHandler.removeCalendarEvent(b),
-            window.plugins.calendar.deleteSingleEventFromRecurring(
-              +b.recurringEventId,
-              e,
-              this.silentSuccessCallback,
-              this.failedCallback
-            ))
-          : this.failedCallback(
-              "This type of delete is not supported in OneView Calendar."
-            )
-        : (a.core.calendarEventHandler.removeCalendarEvent(b),
-          window.plugins.calendar.deleteEvent(
-            +b.recurringEventId,
-            b.isRecurring
-              ? this.delayedSuccessCallback
-              : this.silentSuccessCallback,
-            this.failedCallback
-          ));
-    };
-    b.prototype.failedCallback = function (a) {
-      console.log(a);
-      this.reload();
-    };
-    b.prototype.silentSuccessCallback = function (a) {};
-    b.prototype.returnIdCallback = function (a) {
-      this.calendarEventThatNeedsNewId.recurringEventId = a;
-    };
-    b.prototype.quickSuccessCallback = function (a) {
-      var b = this;
-      window.setTimeout(function () {
-        b.reload();
-      }, 1);
-    };
-    b.prototype.successCallback = function (a) {
-      var b = this;
-      window.setTimeout(function () {
-        b.reload();
-      }, 1);
-    };
-    b.prototype.delayedSuccessCallback = function (a) {
-      var b = this;
-      this.successCallback(a);
-      window.setTimeout(function () {
-        b.reload();
-      }, 1);
-    };
-    b.prototype.getAndroidColorNum = function (b) {
-      if (null != b.extraColorId) {
-        if (
-          b.androidColorNum &&
-          a.core.helper.getColorIdFromAndroidNum(b.androidColorNum) ==
-            b.extraColorId
-        )
-          return +b.androidColorNum;
-        b = a.core.helper.getEventColor2(b);
-        return a.core.helper.getAndroidNumFromColor(b);
-      }
-    };
-    b.prototype.addNewEvent = function (b, e) {
-      void 0 === e && (e = false);
-      for (var c = null, d = [], m = 0; m < b.reminders.length; m++)
-        d.push(b.reminders[m].minutes);
-      b.rruleToSave && (c = RRule.optionsToString2(b.rruleToSave.options));
-      c = {
-        calendarId: +b.calendarId,
-        rrule: c,
-        color: this.getAndroidColorNum(b),
-      };
-      this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
-      this.quickSuccessCallback = this.quickSuccessCallback.bind(this);
-      this.returnIdCallback = this.returnIdCallback.bind(this);
-      this.failedCallback = this.failedCallback.bind(this);
-      this.calendarEventThatNeedsNewId = b;
-      window.plugins.calendar.createEventWithOptions(
-        b.summary,
-        b.location,
-        b.description,
-        a.core.helper.removeUserTimeZoneSetting(b.startDateTime),
-        a.core.helper.removeUserTimeZoneSetting(b.endDateTime),
-        d,
-        c,
-        b.isRecurring || e
-          ? this.delayedSuccessCallback
-          : this.returnIdCallback,
-        this.failedCallback
-      );
-      a.core.calendarEventHandler.addEventToCalendar(b);
-    };
-    b.prototype.getFirstRecurringEvent = function (a) {
-      return this.calendarEvents.filter(function (b) {
-        return b.recurringEventId === a.recurringEventId;
-      })[0];
-    };
-    b.prototype.editExistingEvent = function (b, e) {
-      for (var c = null, d = [], m = 0; m < b.reminders.length; m++)
-        d.push(b.reminders[m].minutes);
-      b.rruleToSave && (c = RRule.optionsToString2(b.rruleToSave.options));
-      c = {
-        calendarId: +b.calendarId,
-        rrule: c,
-        color: this.getAndroidColorNum(b),
-      };
-      this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
-      this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
-      this.failedCallback = this.failedCallback.bind(this);
-      m = b.isRecurring && e !== a.EventEditType.ThisOnly;
-      b.isRecurring && e !== a.EventEditType.AllInSeries
-        ? b.isRecurring && e === a.EventEditType.ThisOnly
-          ? (this.deleteEvent(b, a.EventEditType.ThisOnly, true),
-            (b.isRecurring = false),
-            (b.rruleToSave = void 0),
-            this.addNewEvent(b, false))
-          : this.failedCallback(
-              "This type of edit is not supported in OneView Calendar."
-            )
-        : (window.plugins.calendar.modifyEventWithOptions(
-            +b.recurringEventId,
-            b.summary,
-            b.location,
-            b.description,
-            a.core.helper.removeUserTimeZoneSetting(b.startDateTime),
-            a.core.helper.removeUserTimeZoneSetting(b.endDateTime),
-            d,
-            c,
-            m ? this.delayedSuccessCallback : this.silentSuccessCallback,
-            this.failedCallback
-          ),
-          m ||
-            (a.core.calendarEventHandler.removeCalendarEvent(b),
-            a.core.calendarEventHandler.addEventToCalendar(b)));
-    };
-    b.prototype.persistCalendarsVisibilitySettings = function (b) {
-      for (var c = 0; c < b.length; c++)
-        b[c].oldVisibility === b[c].newVisibility && (b.splice(c, 1), c--);
-      for (var d = 0; d < a.core.calendars.length; d++)
-        for (c = 0; c < b.length; c++)
-          if (b[c].id == a.core.calendars[d].id) {
-            var g = 1;
-            b[c].newVisibility === a.VisibilityType.Hidden && (g = 0);
-            this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
-            this.successCallback = this.successCallback.bind(this);
-            this.failedCallback = this.failedCallback.bind(this);
-            window.plugins.calendar.updateCalendarVisibility(
-              +a.core.calendars[d].id,
-              g,
-              c < b.length - 1
-                ? this.silentSuccessCallback
-                : this.successCallback,
-              this.failedCallback
-            );
-          }
-    };
-    b.prototype.applyCalendarsVisibilitySettings = function () {};
-    b.prototype.saveSettings = function () {};
-    b.prototype.loadSettings = function () {
-      return true;
-    };
-    b.prototype.analyticsInit = function () {
-      0 == this.analyticsStarted &&
-        ((this.analyticsStarted = true),
-        (this.analyticsSuccess = this.analyticsSuccess.bind(this)),
-        (this.analyticsFail = this.analyticsFail.bind(this)),
-        analytics.startTrackerWithId(
-          "UA-69941766-3",
-          this.analyticsSuccess,
-          this.analyticsFail
-        ));
-    };
-    b.prototype.analyticsEvent = function (a, b) {
-      this.analyticsInit();
-      analytics.trackEvent(
-        a,
-        b,
-        null,
-        null,
-        this.analyticsSuccess,
-        this.analyticsFail
-      );
-    };
-    b.prototype.analyticsPage = function (a) {
-      this.analyticsInit();
-      analytics.trackView(a, this.analyticsSuccess, this.analyticsFail);
-    };
-    b.prototype.analyticsValue = function (a, b, d, g) {
-      this.analyticsInit();
-      analytics.trackEvent(
-        a,
-        b,
-        d,
-        g,
-        this.analyticsSuccess,
-        this.analyticsFail
-      );
-    };
-    b.prototype.analyticsTiming = function (a, b) {
-      this.analyticsInit();
-      analytics.trackTiming(
-        "Category",
-        b,
-        a,
-        a,
-        this.analyticsSuccess,
-        this.analyticsFail
-      );
-    };
-    b.prototype.analyticsSuccess = function (a) {};
-    b.prototype.analyticsFail = function (a) {};
-    return b;
-  })(a.LocalStorage);
-  a.AndroidCalendarDataProxy = p;
-})(OneView || (OneView = {}));
-(function (a) {
-  var p = (function (d) {
-    function b() {
-      d.call(this);
-      this.enableMultipleCalendars = this.enableReload = true;
-      this.enableShop =
-        this.enableFakeData =
-        this.enableGoogleLogout =
-        this.enableGoogleLogin =
-          false;
-      this.calendarDataProxyType = a.CalendarDataProxyType.Demo;
-      this.demoVideoSpecial = true;
-      this.dbVersion = "demo0.52";
-    }
-    __extends(b, d);
-    b.prototype.connectionOk = function () {
-      return true;
-    };
-    b.prototype.login = function () {};
-    b.prototype.logout = function () {};
-    b.prototype.populateCalendarEvents = function (c) {
-      this.loadReadyCallback = c;
-      this.calendarEvents = [];
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.commonUserSettings.licenceColorPicker = true;
-      a.core.commonUserSettings.licenceCandyTheme = true;
-      a.core.commonUserSettings.licenceDarkTheme = true;
-      a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
-      a.core.calendars = [];
-      a.core.calendarPrimaryId = void 0;
-      (this.loadEventsFromCache() &&
-        void 0 != a.core.calendars &&
-        0 != a.core.calendars.length) ||
-        (this.fakeData(),
-        a.core.helper.sortCalendars(),
-        a.core.calendarEventHandler.gradeCalendarEvents(this.calendarEvents),
-        this.calendarEvents.sort(function (a, b) {
-          return a.startZOP - b.startZOP;
-        }),
-        this.saveEventsToCache());
-      this.finalizeLoad();
-      b.setLastSessionWasInDemoMode(true);
-    };
-    b.prototype.saveSettings = function () {
-      this.saveEventsToCache();
-    };
-    b.prototype.reload = function () {
-      var b = this.dbVersion;
-      this.dbVersion = "XXX";
-      a.core.populateCalendars();
-      this.dbVersion = b;
-    };
-    b.prototype.fakeData = function () {
-      var b;
-      a.core.calendars.push(
-        new a.CalendarObject(
-          "Work",
-          "Work Calendar",
-          [],
-          0,
-          a.VisibilityType.Visible,
-          true,
-          true
-        )
-      );
-      a.core.calendars.push(
-        new a.CalendarObject(
-          "My",
-          "My Calendar",
-          [],
-          1,
-          a.VisibilityType.Visible,
-          true,
-          true
-        )
-      );
-      a.core.calendars.push(
-        new a.CalendarObject(
-          "Other",
-          "Partners calendar",
-          [],
-          2,
-          a.VisibilityType.Visible,
-          true,
-          false
-        )
-      );
-      a.core.calendarPrimaryId = "My";
-      a.core.getCalendar("Work").allEventsAreFullDay = false;
-      a.core.getCalendar("My").allEventsAreFullDay = false;
-      a.core.getCalendar("Other").allEventsAreFullDay = false;
-      this.calendarEvents = [];
-      var e = moment().startOf("week"),
-        d = e.clone().add(1, "weeks").add(-28, "days"),
-        g,
-        m;
-      for (b = 0; 30 > b; b++)
-        (g = d
-          .clone()
-          .add(-80 + 21 * b, "days")
-          .add(17, "hours")
-          .toDate()),
-          (m = d
-            .clone()
-            .add(-80 + 21 * b, "days")
-            .add(19.5, "hours")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Hockey with kids",
-            "If you can't make it call Eddies dad: 043-423213",
-            "Weaver hall",
-            g,
-            m,
-            "My",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      for (b = 0; 20 > b; b++)
-        3 === b && b++,
-          (g = d
-            .clone()
-            .add(-100 + 28 * b, "days")
-            .add(18, "hours")
-            .toDate()),
-          (m = d
-            .clone()
-            .add(-100 + 28 * b, "days")
-            .add(22, "hours")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Walk n talk with Jim",
-            "Time for reflection",
-            "The park",
-            g,
-            m,
-            "My",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-200, "months").toDate();
-      m = moment().startOf("week").add(-199, "months").toDate();
-      g = new a.CalendarEventObject(
-        "School starts",
-        "",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-150, "months").toDate();
-      m = moment().startOf("week").add(-130, "months").toDate();
-      g = new a.CalendarEventObject(
-        "First girlfriend",
-        "",
-        "",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-100, "months").toDate();
-      m = moment().startOf("week").add(-99, "months").toDate();
-      g = new a.CalendarEventObject(
-        "16th birthday",
-        "",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-86, "months").toDate();
-      m = moment().startOf("week").add(-50, "months").toDate();
-      g = new a.CalendarEventObject(
-        "University",
-        "",
-        "",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-48, "months").toDate();
-      m = moment().startOf("week").add(-36, "months").toDate();
-      g = new a.CalendarEventObject(
-        "Year in London",
-        "",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(-32, "months").toDate();
-      m = moment().startOf("week").add(-30, "months").toDate();
-      g = new a.CalendarEventObject(
-        "Wedding!!",
-        "",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(4, "days").toDate();
-      m = moment().startOf("week").add(5, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Jims birthday",
-        "",
-        "",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(7, "days").toDate();
-      m = moment().startOf("week").add(8, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Release",
-        "On the menu there is an option to connect to Google. This will enable you to see your real calendar.",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = moment().startOf("week").add(9, "days").toDate();
-      m = moment().startOf("week").add(10, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Lisas birthday",
-        "",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-22, "days").toDate();
-      m = e.clone().add(1, "weeks").add(10, "days").toDate();
-      g = new a.CalendarEventObject(
-        "On diet",
-        "Calorie drought",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-63, "weeks").add(-22, "days").toDate();
-      m = e.clone().add(-54, "weeks").add(10, "days").toDate();
-      g = new a.CalendarEventObject(
-        "On diet",
-        "Calorie drought",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(13, "days").toDate();
-      m = e.clone().add(1, "weeks").add(18, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Rent a car",
-        "Abis",
-        "",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      for (b = 0; 40 > b; b++)
-        5 === b && b++,
-          (g = d
-            .clone()
-            .add(-120 + 14 * b, "days")
-            .add(17, "hours")
-            .toDate()),
-          (m = d
-            .clone()
-            .add(-120 + 14 * b, "days")
-            .add(20, "hours")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Gym",
-            "",
-            "Wassits",
-            g,
-            m,
-            "Other",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      for (b = 0; 60 > b; b++)
-        5 === b && b++,
-          (g = d
-            .clone()
-            .add(-127 + 14 * b, "days")
-            .add(7, "hours")
-            .toDate()),
-          (m = d
-            .clone()
-            .add(-127 + 14 * b, "days")
-            .add(8, "hours")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Morning swim",
-            "Be on time",
-            "Lake",
-            g,
-            m,
-            "My",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      g = e.clone().add(-52, "weeks").add(1, "days").toDate();
-      m = e.clone().add(-52, "weeks").add(31, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Family holiday",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(10, "days").toDate();
-      m = e.clone().add(1, "weeks").add(23, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Family holiday",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(30, "weeks").toDate();
-      m = e.clone().add(40, "weeks").toDate();
-      g = new a.CalendarEventObject(
-        "Course",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-100, "weeks").toDate();
-      m = e.clone().add(-28, "weeks").toDate();
-      g = new a.CalendarEventObject(
-        "Previous job",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-27, "weeks").toDate();
-      m = e.clone().add(-18, "weeks").toDate();
-      g = new a.CalendarEventObject(
-        "Intro period",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "My",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-17, "weeks").toDate();
-      m = e.clone().add(-14, "weeks").toDate();
-      g = new a.CalendarEventObject(
-        "IT Course",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-13, "weeks").toDate();
-      m = e.clone().add(-8, "weeks").toDate();
-      g = new a.CalendarEventObject(
-        "Smile project",
-        "Double check the hotel booking",
-        "Saxapahaw",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(5, "days").add(18, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(8, "days").add(22, "hours").toDate();
-      g = new a.CalendarEventObject(
-        "Visit my parents",
-        "",
-        "Sutton Bonnington",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(14, "days").toDate();
-      m = e.clone().add(1, "weeks").add(16, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Trip to mountains",
-        "Bring tent",
-        "",
-        g,
-        m,
-        "Other",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      for (b = 0; 30 > b; b++)
-        (g = e
-          .clone()
-          .add(-15, "weeks")
-          .add(2 + 7 * b - 21, "days")
-          .add(9, "hours")
-          .toDate()),
-          (m = e
-            .clone()
-            .add(-15, "weeks")
-            .add(2 + 7 * b - 21, "days")
-            .add(9, "hours")
-            .add(20, "minutes")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Morning briefing",
-            "",
-            "Work",
-            g,
-            m,
-            "Work",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      for (b = 0; 15 > b; b++)
-        (g = e
-          .clone()
-          .add(1, "weeks")
-          .add(4 + 7 * b - 21, "days")
-          .add(9, "hours")
-          .toDate()),
-          (m = e
-            .clone()
-            .add(1, "weeks")
-            .add(4 + 7 * b - 21, "days")
-            .add(9, "hours")
-            .add(20, "minutes")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "Morning briefing",
-            "",
-            "Work",
-            g,
-            m,
-            "Work",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-7, "days").toDate();
-      m = e.clone().add(1, "weeks").add(0, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Annual wrap-up",
-        "Close all ongoing cases",
-        "",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(-23, "weeks").add(-7, "days").toDate();
-      m = e.clone().add(-23, "weeks").add(0, "days").toDate();
-      g = new a.CalendarEventObject(
-        "Annual wrap-up",
-        "Close all ongoing cases",
-        "",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      for (b = 0; 10 > b; b++)
-        7 === b && (b += 2),
-          (g = d
-            .clone()
-            .add(-3 + 7 * b, "days")
-            .add(7, "hours")
-            .add(30, "minutes")
-            .toDate()),
-          (m = d
-            .clone()
-            .add(-3 + 7 * b, "days")
-            .add(10, "hours")
-            .toDate()),
-          (g = new a.CalendarEventObject(
-            "My breakfast-day",
-            "Have everything prepared by 7.30",
-            "Work",
-            g,
-            m,
-            "Work",
-            this.calendarEvents.length.toString()
-          )),
-          this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-4, "days").add(11, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(-4, "days").add(13, "hours").toDate();
-      g = new a.CalendarEventObject(
-        "Meeting with R.P",
-        "Your turn to take the bill",
-        "Jackie's Besty Diner",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(3, "days").add(13, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(3, "days").add(16, "hours").toDate();
-      g = new a.CalendarEventObject(
-        "Meeting with R.P",
-        "Bring the files",
-        "Office on Winfall BLVD",
-        g,
-        m,
-        "Work",
-        this.calendarEvents.length.toString()
-      );
-      this.calendarEvents.push(g);
-    };
-    b.prototype.getCleanRedirectURI = function () {
-      return window.location.protocol + "//" + window.location.host;
-    };
-    b.prototype.getRRuleObject = function (a, b) {
-      b(void 0);
-    };
-    b.prototype.getFirstRecurringEvent = function (a) {
-      return this.calendarEvents.filter(function (b) {
-        return b.recurringEventId === a.recurringEventId;
-      })[0];
-    };
-    b.prototype.finalizeLoad = function () {
-      var b;
-      this.applyCalendarsVisibilitySettings();
-      a.core.calendarEventHandler.clearAllEvents();
-      for (b = 0; b < this.calendarEvents.length; b++)
-        a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
-          a.VisibilityType.Visible &&
-          a.core.calendarEventHandler.addEventToCalendar(
-            this.calendarEvents[b]
-          );
-      a.core.calendarEventHandler.findCommonTimes();
-      a.core.loadingHandler.stopLoading();
-      this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(true);
-    };
-    b.prototype.canEditRecurring = function (a) {
-      return false;
-    };
-    b.prototype.deleteEvent = function (b, d, f) {
-      if (b.isRecurring && d === a.EventEditType.AllInSeries)
-        for (
-          d = a.core.calendarEventHandler.getCalendarEventsByIdAndRecurringId(
-            b.recurringEventId
-          ),
-            b = 0;
-          b < d.length;
-          b++
-        )
-          this.removeEventFromFromDemoData(d[b]),
-            a.core.calendarEventHandler.removeCalendarEvent(d[b]);
-      else
-        this.removeEventFromFromDemoData(b),
-          a.core.calendarEventHandler.removeCalendarEvent(b);
-      this.saveEventsToCache();
-    };
-    b.prototype.removeEventFromFromDemoData = function (a) {
-      var b;
-      for (b = 0; b < this.calendarEvents.length; b++)
-        if (this.calendarEvents[b] === a) {
-          this.calendarEvents.splice(b, 1);
-          break;
-        }
-    };
-    b.prototype.addNewEvent = function (b, d) {
-      b.id = "" + Math.random();
-      this.calendarEvents.push(b);
-      a.core.calendarEventHandler.addEventToCalendar(b);
-      if (void 0 !== b.rruleToSave && null !== b.rruleToSave) {
-        var c = b.endDateTime.getTime() - b.startDateTime.getTime();
-        b.isRecurring = true;
-        for (var e = b.rruleToSave.all(), m = 1; m < e.length; m++) {
-          var n = new Date(e[m].getTime() + c),
-            n = new a.CalendarEventObject(
-              b.summary,
-              b.description,
-              b.location,
-              e[m],
-              n,
-              b.calendarId,
-              "" + Math.random()
-            );
-          n.isRecurring = true;
-          n.recurringEventId = b.id;
-          this.calendarEvents.push(n);
-          a.core.calendarEventHandler.addEventToCalendar(n);
-        }
-      }
-      this.saveEventsToCache();
-    };
-    b.prototype.editExistingEvent = function (b, d) {
-      a.core.calendarEventHandler.removeCalendarEvent(b);
-      a.core.calendarEventHandler.addEventToCalendar(b);
-      this.saveEventsToCache();
-    };
-    b.prototype.saveEventsToCache = function () {
-      this.localStorageSetItem("oneview_demo_verrsion", this.dbVersion);
-      this.localStorageSetItem(
-        "oneview_demo_saveComplete",
-        JSON.stringify(false)
-      );
-      this.localStorageSetItem(
-        "oneview_demo_allEvents",
-        JSON.stringify(this.calendarEvents)
-      );
-      this.localStorageSetItem(
-        "oneview_demo_allCalendars",
-        JSON.stringify(a.core.calendars)
-      );
-      this.localStorageSetItem(
-        "oneview_demo_primaryCalendarId",
-        JSON.stringify(a.core.calendarPrimaryId)
-      );
-      this.localStorageSetItem("oneview_demo_demo", JSON.stringify(true));
-      this.localStorageSetItem(
-        "oneview_demo_saveComplete",
-        JSON.stringify(true)
-      );
-    };
-    b.getLastSessionWasInDemoMode = function () {
-      var a = localStorage.getItem(
-        "oneview_demo_last_session_was_in_demo_mode"
-      );
-      return null == a || void 0 == a ? true : JSON.parse(a);
-    };
-    b.setLastSessionWasInDemoMode = function (b) {
-      new a.LocalStorage().localStorageSetItem(
-        "oneview_demo_last_session_was_in_demo_mode",
-        JSON.stringify(b)
-      );
-    };
-    b.prototype.loadEventsFromCache = function () {
-      var b = localStorage.getItem("oneview_demo_verrsion"),
-        d = localStorage.getItem("oneview_demo_saveComplete"),
-        f = localStorage.getItem("oneview_demo_allEvents"),
-        g = localStorage.getItem("oneview_demo_allCalendars"),
-        m = localStorage.getItem("oneview_demo_primaryCalendarId"),
-        n = localStorage.getItem("oneview_demo_demo");
-      if (
-        b !== this.dbVersion ||
-        "true" != d ||
-        null == g ||
-        void 0 == g ||
-        null == f ||
-        void 0 == f ||
-        null == m ||
-        void 0 == m ||
-        null == n ||
-        void 0 == n
-      )
-        return false;
-      try {
-        (a.core.calendarPrimaryId = JSON.parse(m)),
-          (this.calendarEvents = JSON.parse(f, this.dateTimeReviver)),
-          (a.core.calendars = JSON.parse(g, this.dateTimeReviver));
-      } catch (l) {
-        return false;
-      }
-      return true;
-    };
-    b.prototype.persistCalendarsVisibilitySettings = function (b) {
-      this.localStorageSetItem(
-        "oneview_demo_visibilitySettings",
-        JSON.stringify(b)
-      );
-      this.saveEventsToCache();
-      a.core.populateCalendars();
-    };
-    b.prototype.applyCalendarsVisibilitySettings = function () {
-      var b = localStorage.getItem("oneview_demo_visibilitySettings");
-      if (null !== b && void 0 !== b)
-        for (
-          var b = JSON.parse(b, this.dateTimeReviver), d = 0;
-          d < a.core.calendars.length;
-          d++
-        )
-          for (var f = 0; f < b.length; f++)
-            b[f].id == a.core.calendars[d].id &&
-              (a.core.calendars[d].visibility = b[f].newVisibility);
-    };
-    b.prototype.analyticsEvent = function (a, b) {};
-    b.prototype.analyticsPage = function (a) {};
-    b.prototype.analyticsValue = function (a, b, d, g) {};
-    b.prototype.analyticsTiming = function (a, b) {};
-    return b;
-  })(a.LocalStorage);
-  a.DemoCalendarDataProxy = p;
-})(OneView || (OneView = {}));
-(function (a) {
-  var p = (function (d) {
-    function b() {
-      d.call(this);
-      this.clientId = "";
-      this.scopes =
-        "https://web.archive.org/web/20190808203716/https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar";
-      this.okEventCounter = this.eventCounter = this.loadingCalendarCounter = 0;
-      this.access_token = "";
-      this.enableGoogleLogout =
-        this.enableGoogleLogin =
-        this.enableShop =
-        this.enableMultipleCalendars =
-        this.enableReload =
-          false;
-      this.enableFakeData = true;
-      this.calendarDataProxyType = a.CalendarDataProxyType.Google;
-      this.forceReload = this.demoVideoSpecial = false;
-      this.retryLogin = true;
-      this.dbVersion = "google0.52";
-      this.analyticsStarted = false;
-      -1 < document.URL.indexOf("grimbo") &&
-        (this.clientId = "411250339629.apps.googleusercontent.com");
-      -1 < document.URL.indexOf("oneviewcalendar.com") &&
-        (this.clientId = "411250339629.apps.googleusercontent.com");
-      if (
-        -1 < document.URL.indexOf("50888") ||
-        -1 < document.URL.indexOf("4400")
-      )
-        this.clientId =
-          "411250339629-42jail8mmh7or403q79j6fcjd53n703s.apps.googleusercontent.com";
-    }
-    __extends(b, d);
-    b.prototype.populateCalendarEvents = function (b) {
-      var c = this;
-      this.loadReadyCallback = b;
-      this.calendarEvents = [];
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.calendars = [];
-      a.core.calendarPrimaryId = void 0;
-      a.core.commonUserSettings.licenceColorPicker = true;
-      a.core.commonUserSettings.licenceCandyTheme = true;
-      a.core.commonUserSettings.licenceDarkTheme = true;
-      a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
-      try {
-        this.loadEventsFromCache()
-          ? ((this.forceReload = false), this.finalizeLoad())
-          : (this.forceReload = true),
-          (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
-          gapi.auth.authorize(
-            {
-              client_id: this.clientId,
-              scope: this.scopes,
-              immediate: true,
-            },
-            this.handleAuthResult1
-          );
-      } catch (f) {
-        window.setTimeout(function () {
-          c.populateCalendarEvents(b);
-        }, 200);
-      }
-    };
-    b.prototype.saveSettings = function () {
-      this.saveEventsToCache();
-    };
-    b.prototype.logout = function () {
-      var b = this,
-        d = this;
-      a.core.dynamicallyLoadFile("libs/jquery.js", "js", function () {
-        $.ajax({
-          type: "GET",
-          url:
-            "https://web.archive.org/web/20190808203716/https://accounts.google.com/o/oauth2/revoke?token=" +
-            b.access_token,
-          async: false,
-          contentType: "application/json",
-          dataType: "jsonp",
-          success: function (a) {
-            d.enableGoogleLogin = true;
-            d.enableGoogleLogout = false;
-          },
-          error: function (a) {},
-        });
-      });
-    };
-    b.prototype.login = function () {
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
-      if (-1 == document.URL.indexOf("oneviewcalendar.com"))
-        (this.forceReload = true),
-          (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
-          gapi.auth.authorize(
-            {
-              client_id: this.clientId,
-              scope: this.scopes,
-              immediate: false,
-            },
-            this.handleAuthResult1
-          );
-      else {
-        var b =
-          "https://web.archive.org/web/20190808203716/http://m.oneviewcalendar.com";
-        -1 != document.URL.indexOf("www.oneviewcalendar.com") &&
-          (b =
-            "https://web.archive.org/web/20190808203716/http://www.oneviewcalendar.com");
-        -1 != document.URL.indexOf("app.oneviewcalendar.com") &&
-          (b =
-            "https://web.archive.org/web/20190808203716/http://app.oneviewcalendar.com");
-        window.location.assign(
-          "https://web.archive.org/web/20190808203716/https://accounts.google.com/o/oauth2/auth?" +
-            ("client_id=" +
-              this.clientId +
-              "&scope=" +
-              this.scopes +
-              "&immediate=false&include_granted_scopes=true&redirect_uri=" +
-              b +
-              "&origin=" +
-              b +
-              "&response_type=token&authuser=0")
-        );
-      }
-    };
-    b.prototype.getCleanRedirectURI = function () {
-      return window.location.protocol + "//" + window.location.host;
-    };
-    b.prototype.handleAuthResult1 = function (b) {
-      b && b.status.signed_in
-        ? ((this.enableGoogleLogin = false),
-          (this.enableGoogleLogout =
-            this.enableReload =
-            this.enableMultipleCalendars =
-              true),
-          (this.enableFakeData = false),
-          (this.access_token = b.access_token),
-          this.makeApiCall())
-        : (a.core.loadingHandler.stopLoadingWithError(),
-          true === this.retryLogin
-            ? ((this.retryLogin = false), this.login())
-            : (this.clearCache(),
-              (this.calendarEvents = []),
-              a.core.calendarEventHandler.clearAllEvents(),
-              a.core.redraw(true)),
-          (this.enableGoogleLogin = true),
-          (this.enableGoogleLogout =
-            this.enableReload =
-            this.enableMultipleCalendars =
-              false),
-          (this.enableFakeData = true));
-    };
-    b.prototype.reload = function () {
-      this.clearCache();
-      this.calendarEvents = [];
-      a.core.loadingHandler.startLoading();
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.redraw(true);
-      this.forceReload = true;
-      this.makeApiCall();
-    };
-    b.prototype.makeApiCall = function () {
-      this.doFullRefresh = false;
-      this.refetchCalendars(this.forceReload);
-    };
-    b.prototype.refetchCalendars = function (b) {
-      var c = this;
-      gapi.client.load("calendar", "v3", function () {
-        var d;
-        gapi.client.calendar.calendarList.list(void 0).execute(function (e) {
-          if (e.error && !b) c.refetchCalendars(true);
-          else {
-            c.nextSyncTokenCalendars = e.nextSyncToken;
-            for (d = 0; d < e.items.length; d++) {
-              var f = true,
-                g = false;
-              "reader" !== e.items[d].accessRole && (f = false);
-              "owner" === e.items[d].accessRole && (g = true);
-              e.items[d].primary && (a.core.calendarPrimaryId = e.items[d].id);
-              var l = [];
-              if (e.items[d].defaultReminders) {
-                var h;
-                for (h = 0; h < e.items[d].defaultReminders.length; h++)
-                  l.push(
-                    new a.Reminder(e.items[d].defaultReminders[h].minutes)
-                  );
-              }
-              h = a.VisibilityType.Visible;
-              0 == e.items[d].selected && (h = a.VisibilityType.Hidden);
-              var k = a.core.getCalendar(e.items[d].id);
-              if (void 0 == k || "NoneZ" == k.id)
-                a.core.calendars.push(
-                  new a.CalendarObject(
-                    e.items[d].id,
-                    e.items[d].summary,
-                    l,
-                    a.core.calendars.length,
-                    h,
-                    g,
-                    !f
-                  )
-                );
-              else {
-                if (e.items[d].deleted) {
-                  c.refetchCalendars(true);
-                  return;
-                }
-                k.name = e.items[d].summary;
-                k.defaultReminders = e.items[d].defaultReminders;
-                k.visibility = h;
-                k.canEditCalendar = g;
-                k.canEditCalendarEvents = !f;
-              }
-            }
-            c.refetchCalendarEvents(b);
-          }
-        });
-      });
-    };
-    b.prototype.dateFromString = function (a) {
-      var b = a.split(/[-T:+]/g),
-        c = new Date(parseInt(b[0]), parseInt(b[1]) - 1, parseInt(b[2]));
-      b[5] = b[5].replace("Z", "");
-      c.setHours(parseInt(b[3]), parseInt(b[4]), parseInt(b[5]));
-      6 < b.length &&
-        ((b = 60 * parseInt(b[6]) + Number(b[7])),
-        (b = 0 + ("-" == (/\d\d-\d\d:\d\d$/.test(a) ? "-" : "+") ? -1 * b : b)),
-        c.setMinutes(c.getMinutes() - b - c.getTimezoneOffset()));
-      return c;
-    };
-    b.prototype.refetchCalendarEvents = function (b) {
-      this.eventsChanged = b;
-      this.doFullRefresh = false;
-      b && (this.calendarEvents = []);
-      this.loadingCalendarCounter = a.core.calendars.length;
-      for (var c = 0; c < a.core.calendars.length; c++)
-        this.getCalendarEvents(a.core.calendars[c].id, null, b);
-    };
-    b.prototype.getCalendarEvents = function (b, d, f) {
-      var c = this;
-      gapi.client.load("calendar", "v3", function () {
-        var e = moment()
-            .add(
-              -((1 * a.core.commonUserSettings.dataAmountToLoad) / 4),
-              "months"
-            )
-            .toDate()
-            .toISOString(),
-          g = moment()
-            .add((3 * a.core.commonUserSettings.dataAmountToLoad) / 4, "months")
-            .toDate()
-            .toISOString(),
-          e = {
-            calendarId: b,
-            maxResults: 1e3,
-            singleEvents: true,
-            showDeleted: !f,
-            timeMin: e,
-            timeMax: g,
-          };
-        !f &&
-          a.core.getCalendar(b) &&
-          ((e = {
-            calendarId: b,
-            maxResults: 1e3,
-            singleEvents: true,
-            showDeleted: true,
-          }),
-          (e.syncToken = a.core.getCalendar(b).nextSyncTokenEvents));
-        void 0 !== d && "" != d && (e.pageToken = d);
-        var l, h;
-        gapi.client.calendar.events.list(e).execute(function (e) {
-          e.error && !f && (c.doFullRefresh = true);
-          c.oneview_was_connected_to_google = true;
-          moment().add(3, "years").add(-10, "hours").toDate();
-          d = e.nextPageToken;
-          if (e.items && 0 < e.items.length)
-            for (
-              c.eventsChanged = true, c.eventCounter += e.items.length, l = 0;
-              l < e.items.length;
-              l++
-            )
-              if (e.items[l].start && e.items[l].end)
-                if (
-                  (c.okEventCounter++,
-                  a.core.getCalendar(b).countEvents++,
-                  (h = c.RespItemToCalendarEvent(e.items[l], b)),
-                  f)
-                )
-                  "cancelled" !== e.items[l].status && c.calendarEvents.push(h);
-                else {
-                  var g = c.calendarEvents.filter(function (a) {
-                    return a.calendarId == b && a.id == e.items[l].id;
-                  });
-                  1 == g.length
-                    ? "cancelled" == e.items[l].status
-                      ? c.calendarEvents.splice(
-                          c.calendarEvents.indexOf(g[0]),
-                          1
-                        )
-                      : (c.calendarEvents[c.calendarEvents.indexOf(g[0])] = h)
-                    : "cancelled" !== e.items[l].status &&
-                      c.calendarEvents.push(h);
-                }
-          void 0 !== d && "" != d
-            ? c.getCalendarEvents(b, d, f)
-            : ((a.core.getCalendar(b).nextSyncTokenEvents = e.nextSyncToken),
-              c.loadingCalendarCounter--,
-              0 === c.loadingCalendarCounter &&
-              (c.eventsChanged || c.doFullRefresh)
-                ? (a.core.helper.sortCalendars(),
-                  a.core.calendarEventHandler.gradeCalendarEvents(
-                    c.calendarEvents
-                  ),
-                  c.calendarEvents.sort(function (a, b) {
-                    return a.startZOP - b.startZOP;
-                  }),
-                  c.saveEventsToCache(),
-                  c.finalizeLoad())
-                : 0 === c.loadingCalendarCounter && c.finalizeLoad());
-        });
-      });
-    };
-    b.prototype.finalizeLoad = function () {
-      var b;
-      JSON.stringify(a.core.calendars);
-      JSON.stringify(this.calendarEvents);
-      this.applyCalendarsVisibilitySettings();
-      a.core.calendarEventHandler.clearAllEvents();
-      if (this.doFullRefresh) this.reload();
-      else {
-        for (b = 0; b < this.calendarEvents.length; b++)
-          a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
-            a.VisibilityType.Visible &&
-            a.core.calendarEventHandler.addEventToCalendar(
-              this.calendarEvents[b]
-            );
-        a.core.calendarEventHandler.findCommonTimes();
-      }
-      a.core.loadingHandler.stopLoading();
-      this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(true);
-    };
-    b.prototype.canEditRecurring = function (a) {
-      return true;
-    };
-    b.prototype.getRRuleObject = function (b, d) {
-      if (b.isRecurring) {
-        var c = this;
-        a.core.dynamicallyLoadFile("libs/rrule.js", "js", function () {
-          var a = b.calendarId,
-            e;
-          gapi.client.load("calendar", "v3", function () {
-            gapi.client.calendar.events
-              .get({
-                calendarId: a,
-                eventId: b.recurringEventId,
-              })
-              .execute(function (b) {
-                b.result &&
-                  ((b = b.result),
-                  c.RespItemToCalendarEvent(b, a),
-                  (b = b.recurrence[0].substr(6)),
-                  (e = RRule.fromString(b)));
-                d(e);
-              });
-          });
-        });
-      }
-    };
-    b.prototype.connectionOk = function () {
-      return navigator.onLine;
-    };
-    b.prototype.RespItemToCalendarEvent = function (b, d) {
-      var c = b.start.dateTime,
-        e = b.end.dateTime;
-      void 0 === c
-        ? (c = moment(b.start.date).toDate())
-        : ((a.core.getCalendar(d).allEventsAreFullDay = false),
-          (c = a.core.helper.addUserTimeZoneSetting(this.dateFromString(c))));
-      e =
-        void 0 === e
-          ? moment(b.end.date).toDate()
-          : a.core.helper.addUserTimeZoneSetting(this.dateFromString(e));
-      c = new a.CalendarEventObject(
-        b.summary,
-        b.description,
-        b.location,
-        c,
-        e,
-        d,
-        b.id
-      );
-      b.recurringEventId &&
-        ((c.isRecurring = true), (c.recurringEventId = b.recurringEventId));
-      b.extendedProperties &&
-        b.extendedProperties["private"] &&
-        b.extendedProperties["private"].extraColorId &&
-        (c.extraColorId = b.extendedProperties["private"].extraColorId);
-      c.reminders = [];
-      if (b.reminders && b.reminders.useDefault)
-        for (
-          var m = a.core.getCalendar(d), e = 0;
-          e < m.defaultReminders.length;
-          e++
-        )
-          c.reminders.push(m.defaultReminders[e]);
-      if (b.reminders && b.reminders.overrides)
-        for (e = 0; e < b.reminders.overrides.length; e++)
-          c.reminders.push(new a.Reminder(b.reminders.overrides[e].minutes));
-      c.timeZoneName = b.start.timeZone;
-      return c;
-    };
-    b.prototype.deleteEvent = function (b, d, f) {
-      void 0 === f && (f = false);
-      var c = this,
-        e = b.calendarId;
-      gapi.client.load("calendar", "v3", function () {
-        gapi.client.calendar.events
-          .get({
-            calendarId: e,
-            eventId: b.id,
-          })
-          .execute(function (f) {
-            b.isRecurring &&
-            d !== a.EventEditType.ThisOnly &&
-            b.recurringEventId
-              ? d === a.EventEditType.AllInSeries &&
-                3 < b.recurringEventId.length &&
-                b.recurringEventId &&
-                !(3 >= b.recurringEventId.length) &&
-                ((f = googleDelete({
-                  calendarId: e,
-                  eventId: b.recurringEventId,
-                })),
-                f.execute(function (a) {
-                  c.populateCalendarEvents(void 0);
-                }))
-              : !b.id ||
-                3 >= b.id.length ||
-                ((f = googleDelete({
-                  calendarId: e,
-                  eventId: b.id,
-                })),
-                f.execute(function (a) {
-                  c.populateCalendarEvents(void 0);
-                }));
-          });
-      });
-    };
-    b.prototype.addNewEvent = function (a, b) {
-      void 0 === b && (b = false);
-      var c = {};
-      this.syncCalendarEventToResource(a, c, false);
-      var d = this;
-      gapi.client.load("calendar", "v3", function () {
-        gapi.client.calendar.events
-          .insert({
-            calendarId: a.calendarId,
-            resource: c,
-          })
-          .execute(function (a) {
-            d.populateCalendarEvents(void 0);
-          });
-      });
-    };
-    b.prototype.getFirstRecurringEvent = function (a) {
-      return this.calendarEvents.filter(function (b) {
-        return b.recurringEventId === a.recurringEventId;
-      })[0];
-    };
-    b.prototype.editExistingEvent = function (b, d) {
-      var c = this,
-        e = b.calendarId;
-      gapi.client.load("calendar", "v3", function () {
-        gapi.client.calendar.events
-          .get({
-            calendarId: e,
-            eventId: b.id,
-          })
-          .execute(function (f) {
-            if (b.isRecurring && d !== a.EventEditType.ThisOnly) {
-              if (d === a.EventEditType.AllInSeries) {
-                var g = c.RespItemToCalendarEvent(f.result, e),
-                  l = b.startDateTime.getTime() - g.startDateTime.getTime(),
-                  h = b.endDateTime.getTime() - g.endDateTime.getTime();
-                gapi.client.load("calendar", "v3", function () {
-                  gapi.client.calendar.events
-                    .get({
-                      calendarId: e,
-                      eventId: b.recurringEventId,
-                    })
-                    .execute(function (a) {
-                      a = a.result;
-                      var d = c.RespItemToCalendarEvent(a, e);
-                      d.startDateTime.setTime(g.startDateTime.getTime() + l);
-                      d.endDateTime.setTime(g.endDateTime.getTime() + h);
-                      c.syncCalendarEventToResource(d, a, false);
-                      c.syncCalendarEventToResource(b, a, true);
-                      c.editExistingEventHelper(b.recurringEventId, a, e);
-                    });
-                });
-              }
-              d === a.EventEditType.ThisAndFuture &&
-                (gapi.client.load("calendar", "v3", function () {
-                  gapi.client.calendar.events
-                    .get({
-                      calendarId: e,
-                      eventId: b.recurringEventId,
-                    })
-                    .execute(function (d) {
-                      d = d.result;
-                      var f = c.RespItemToCalendarEvent(d, e);
-                      f.endDateTime = a.core.calendarDateHandler.addMinutes(
-                        f.endDateTime,
-                        -1
-                      );
-                      c.syncCalendarEventToResource(b, d, false);
-                      c.editExistingEventHelper(b.recurringEventId, d, e);
-                    });
-                }),
-                c.addNewEvent(b));
-            } else (f = f.result), c.syncCalendarEventToResource(b, f, false), c.editExistingEventHelper(b.id, f, e);
-          });
-      });
-    };
-    b.prototype.editExistingEventHelper = function (b, d, f) {
-      var c = this;
-      gapi.client.calendar.events
-        .update({
-          calendarId: f,
-          eventId: b,
-          resource: d,
-        })
-        .execute(function (b) {
-          c.populateCalendarEvents(void 0);
-          b.message && (a.core.debugtext = b.message);
-        });
-    };
-    b.prototype.syncCalendarEventToResource = function (b, d, f) {
-      d.summary = b.summary;
-      d.description = b.description;
-      d.location = b.location;
-      f ||
-        (a.core.calendarEventHandler.isFullDayEvent(b)
-          ? ((d.start = {
-              date: moment(b.startDateTime).format("YYYY-MM-DD"),
-            }),
-            (d.end = {
-              date: moment(b.endDateTime).format("YYYY-MM-DD"),
-            }))
-          : ((d.start = {
-              dateTime: moment(
-                a.core.helper.removeUserTimeZoneSetting(b.startDateTime)
-              ).format("YYYY-MM-DDTHH:mm:ssZ"),
-            }),
-            (d.end = {
-              dateTime: moment(
-                a.core.helper.removeUserTimeZoneSetting(b.endDateTime)
-              ).format("YYYY-MM-DDTHH:mm:ssZ"),
-            })),
-        b.timeZoneName &&
-          ((d.start.timeZone = b.timeZoneName),
-          (d.end.timeZone = b.timeZoneName)));
-      b.extraColorId &&
-        (d.extendedProperties = {
-          private: {
-            extraColorId: b.extraColorId,
-          },
-        });
-      d.reminders = {};
-      d.reminders.useDefault = false;
-      d.reminders.overrides = [];
-      if (b.reminders)
-        for (f = 0; f < b.reminders.length; f++) {
-          var c = {
-            method: "popup",
-          };
-          c.minutes = b.reminders[f].minutes;
-          d.reminders.overrides.push(c);
-        }
-    };
-    b.prototype.clearCache = function () {
-      this.localStorageSetItem("oneview_verrsion", void 0);
-      this.localStorageSetItem("oneview_saveComplete", void 0);
-      this.localStorageSetItem("oneview_allEvents", void 0);
-      this.localStorageSetItem("oneview_allCalendars", void 0);
-      this.localStorageSetItem("oneview_primaryCalendarId", void 0);
-      this.localStorageSetItem("oneview_lastCalendarId", void 0);
-      this.localStorageSetItem("oneview_nextSyncTokenCalendars", void 0);
-      this.localStorageSetItem("oneview_google", void 0);
-      this.localStorageSetItem("oneview_saveComplete", void 0);
-    };
-    b.prototype.saveEventsToCache = function () {
-      try {
-        this.localStorageSetItem("oneview_verrsion", this.dbVersion),
-          this.localStorageSetItem(
-            "oneview_saveComplete",
-            JSON.stringify(false)
-          ),
-          this.localStorageSetItem(
-            "oneview_allEvents",
-            LZString.compress(JSON.stringify(this.calendarEvents))
-          ),
-          this.localStorageSetItem(
-            "oneview_allCalendars",
-            JSON.stringify(a.core.calendars)
-          ),
-          this.localStorageSetItem(
-            "oneview_primaryCalendarId",
-            JSON.stringify(a.core.calendarPrimaryId)
-          ),
-          this.localStorageSetItem(
-            "oneview_nextSyncTokenCalendars",
-            JSON.stringify(this.nextSyncTokenCalendars)
-          ),
-          this.localStorageSetItem("oneview_google", JSON.stringify(true)),
-          this.localStorageSetItem(
-            "oneview_saveComplete",
-            JSON.stringify(true)
-          );
-      } catch (c) {}
-    };
-    b.prototype.loadEventsFromCache = function () {
-      var b = localStorage.getItem("oneview_verrsion"),
-        d = localStorage.getItem("oneview_saveComplete"),
-        f = localStorage.getItem("oneview_allEvents"),
-        g = localStorage.getItem("oneview_allCalendars"),
-        m = localStorage.getItem("oneview_primaryCalendarId"),
-        n = localStorage.getItem("oneview_google"),
-        l = localStorage.getItem("oneview_nextSyncTokenCalendars");
-      if (
-        b !== this.dbVersion ||
-        "true" != d ||
-        null == g ||
-        void 0 == g ||
-        "undefined" == g ||
-        null == f ||
-        void 0 == f ||
-        "undefined" == f ||
-        null == m ||
-        void 0 == m ||
-        "undefined" == m ||
-        null == n ||
-        void 0 == n ||
-        "undefined" == n
-      )
-        return false;
-      try {
-        (a.core.calendarPrimaryId = JSON.parse(m)),
-          (this.calendarEvents = JSON.parse(
-            LZString.decompress(f),
-            this.dateTimeReviver
-          )),
-          (a.core.calendars = JSON.parse(g, this.dateTimeReviver)),
-          (this.nextSyncTokenCalendars = l);
-      } catch (h) {
-        return false;
-      }
-      return true;
-    };
-    b.prototype.persistCalendarsVisibilitySettings = function (a) {
-      this.localStorageSetItem("oneview_visibilitySettings", JSON.stringify(a));
-      this.reload();
-    };
-    b.prototype.applyCalendarsVisibilitySettings = function () {
-      var b = localStorage.getItem("oneview_visibilitySettings");
-      if (null !== b && void 0 !== b)
-        for (
-          var b = JSON.parse(b, this.dateTimeReviver), d = 0;
-          d < a.core.calendars.length;
-          d++
-        )
-          for (var f = 0; f < b.length; f++)
-            b[f].id == a.core.calendars[d].id &&
-              (a.core.calendars[d].visibility = b[f].newVisibility);
-    };
-    b.prototype.analyticsInit = function () {
-      0 == this.analyticsStarted &&
-        ((this.analyticsStarted = true),
-        -1 < document.URL.indexOf("app.oneviewcalendar.com")
-          ? ga.create("UA-69941766-2", "auto")
-          : ga.create("UA-69941766-1", "auto"),
-        ga("send", "pageview"));
-    };
-    b.prototype.analyticsEvent = function (a, b) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", {
-            hitType: "event",
-            eventCategory: a,
-            eventAction: b,
-            eventLabel: b,
-          }));
-      } catch (f) {}
-    };
-    b.prototype.analyticsPage = function (a) {
-      try {
-        ga && (this.analyticsInit(), ga("send", "pageview", "/" + a));
-      } catch (e) {}
-    };
-    b.prototype.analyticsValue = function (a, b, d, g) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", {
-            hitType: "event",
-            eventCategory: a,
-            eventAction: b,
-            eventLabel: d + "=" + g,
-          }));
-      } catch (m) {}
-    };
-    b.prototype.analyticsTiming = function (a, b) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", "timing", {
-            timingCategory: "Category",
-            timingVar: a,
-            timingValue: b,
-          }));
-      } catch (f) {}
-    };
-    return b;
-  })(a.LocalStorage);
-  a.GoogleCalendarDataProxy = p;
-})(OneView || (OneView = {}));
-(function (a) {
-  var p = (function (d) {
-    function b() {
-      d.call(this);
-      this.enableReload = false;
-      this.enableMultipleCalendars = true;
-      this.enableGoogleLogout =
-        this.enableGoogleLogin =
-        this.enableShop =
-          false;
-      this.enableFakeData = true;
-      this.calendarDataProxyType = a.CalendarDataProxyType.Google;
-      this.demoVideoSpecial = false;
-      this.retryLogin = true;
-      this.dbVersion = "rio0.52";
-      this.analyticsStarted = false;
-    }
-    __extends(b, d);
-    b.prototype.populateCalendarEvents = function (b) {
-      var c = this;
-      this.loadReadyCallback = b;
-      this.calendarEvents = [];
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.calendars = [];
-      a.core.calendarPrimaryId = void 0;
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
-      try {
-        this.loadEventsFromCache() ? this.finalizeLoad() : this.makeApiCall();
-      } catch (f) {
-        window.setTimeout(function () {
-          c.populateCalendarEvents(b);
-        }, 200);
-      }
-    };
-    b.prototype.saveSettings = function () {
-      this.saveEventsToCache();
-    };
-    b.prototype.logout = function () {};
-    b.prototype.login = function () {
-      a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
-      this.enableGoogleLogin = false;
-      this.enableReload = this.enableMultipleCalendars = true;
-      this.enableFakeData = this.enableGoogleLogout = false;
-      this.makeApiCall();
-    };
-    b.prototype.reload = function () {
-      this.clearCache();
-      this.calendarEvents = [];
-      a.core.loadingHandler.startLoading();
-      a.core.calendarEventHandler.clearAllEvents();
-      a.core.redraw(true);
-      this.makeApiCall();
-    };
-    b.prototype.makeApiCall = function () {
-      this.loadCalendars();
-      this.loadEvents();
-      this.finalizeLoad();
-    };
-    b.prototype.finalizeLoad = function () {
-      var b;
-      this.applyCalendarsVisibilitySettings();
-      a.core.calendarEventHandler.clearAllEvents();
-      for (b = 0; b < this.calendarEvents.length; b++)
-        a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
-          a.VisibilityType.Visible &&
-          a.core.calendarEventHandler.addEventToCalendar(
-            this.calendarEvents[b]
-          );
-      a.core.calendarEventHandler.findCommonTimes();
-      a.core.loadingHandler.stopLoading();
-      this.loadReadyCallback && this.loadReadyCallback();
-      a.core.redraw(true);
-    };
-    b.prototype.canEditRecurring = function (a) {
-      return false;
-    };
-    b.prototype.getRRuleObject = function (a, b) {};
-    b.prototype.connectionOk = function () {
-      return true;
-    };
-    b.prototype.deleteEvent = function (a, b, d) {};
-    b.prototype.addNewEvent = function (a, b) {};
-    b.prototype.getFirstRecurringEvent = function (a) {
-      return this.calendarEvents.filter(function (b) {
-        return b.recurringEventId === a.recurringEventId;
-      })[0];
-    };
-    b.prototype.editExistingEvent = function (a, b) {};
-    b.prototype.clearCache = function () {
-      this.localStorageSetItem("oneview_verrsion", void 0);
-      this.localStorageSetItem("oneview_saveComplete", void 0);
-      this.localStorageSetItem("oneview_allEvents", void 0);
-      this.localStorageSetItem("oneview_allCalendars", void 0);
-      this.localStorageSetItem("oneview_primaryCalendarId", void 0);
-      this.localStorageSetItem("oneview_lastCalendarId", void 0);
-      this.localStorageSetItem("oneview_nextSyncTokenCalendars", void 0);
-      this.localStorageSetItem("oneview_google", void 0);
-      this.localStorageSetItem("oneview_saveComplete", void 0);
-    };
-    b.prototype.saveEventsToCache = function () {
-      try {
-        this.localStorageSetItem("oneview_verrsion", this.dbVersion),
-          this.localStorageSetItem(
-            "oneview_saveComplete",
-            JSON.stringify(false)
-          ),
-          this.localStorageSetItem(
-            "oneview_allCalendars",
-            JSON.stringify(a.core.calendars)
-          ),
-          this.localStorageSetItem(
-            "oneview_primaryCalendarId",
-            JSON.stringify(a.core.calendarPrimaryId)
-          ),
-          this.localStorageSetItem(
-            "oneview_nextSyncTokenCalendars",
-            JSON.stringify(this.nextSyncTokenCalendars)
-          ),
-          this.localStorageSetItem("oneview_google", JSON.stringify(true)),
-          this.localStorageSetItem(
-            "oneview_saveComplete",
-            JSON.stringify(true)
-          );
-      } catch (c) {}
-    };
-    b.prototype.loadEventsFromCache = function () {
-      var b = localStorage.getItem("oneview_verrsion"),
-        d = localStorage.getItem("oneview_saveComplete"),
-        f = localStorage.getItem("oneview_allCalendars"),
-        g = localStorage.getItem("oneview_primaryCalendarId"),
-        m = localStorage.getItem("oneview_google"),
-        n = localStorage.getItem("oneview_nextSyncTokenCalendars");
-      if (
-        b !== this.dbVersion ||
-        "true" != d ||
-        null == f ||
-        void 0 == f ||
-        "undefined" == f ||
-        null == g ||
-        void 0 == g ||
-        "undefined" == g ||
-        null == m ||
-        void 0 == m ||
-        "undefined" == m
-      )
-        return false;
-      try {
-        (a.core.calendarPrimaryId = JSON.parse(g)),
-          this.loadEvents(),
-          (a.core.calendars = JSON.parse(f, this.dateTimeReviver)),
-          (this.nextSyncTokenCalendars = n);
-      } catch (l) {
-        return false;
-      }
-      return true;
-    };
-    b.prototype.loadCalendars = function () {
-      a.core.calendars = JSON.parse(rioCalendars, this.dateTimeReviver);
-    };
-    b.prototype.loadEvents = function () {
-      this.calendarEvents = JSON.parse(rioEvents, this.dateTimeReviver);
-    };
-    b.prototype.persistCalendarsVisibilitySettings = function (a) {
-      this.localStorageSetItem("oneview_visibilitySettings", JSON.stringify(a));
-      this.reload();
-    };
-    b.prototype.applyCalendarsVisibilitySettings = function () {
-      var b = localStorage.getItem("oneview_visibilitySettings");
-      if (null !== b && void 0 !== b)
-        for (
-          var b = JSON.parse(b, this.dateTimeReviver), d = 0;
-          d < a.core.calendars.length;
-          d++
-        )
-          for (var f = 0; f < b.length; f++)
-            b[f].id == a.core.calendars[d].id &&
-              (a.core.calendars[d].visibility = b[f].newVisibility);
-    };
-    b.prototype.analyticsInit = function () {
-      0 == this.analyticsStarted &&
-        ((this.analyticsStarted = true),
-        ga.create("UA-69941766-7", "auto"),
-        ga("send", "pageview"));
-    };
-    b.prototype.analyticsEvent = function (a, b) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", {
-            hitType: "event",
-            eventCategory: a,
-            eventAction: b,
-            eventLabel: b,
-          }));
-      } catch (f) {}
-    };
-    b.prototype.analyticsPage = function (a) {
-      try {
-        ga && (this.analyticsInit(), ga("send", "pageview", "/" + a));
-      } catch (e) {}
-    };
-    b.prototype.analyticsValue = function (a, b, d, g) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", {
-            hitType: "event",
-            eventCategory: a,
-            eventAction: b,
-            eventLabel: d + "=" + g,
-          }));
-      } catch (m) {}
-    };
-    b.prototype.analyticsTiming = function (a, b) {
-      try {
-        ga &&
-          (this.analyticsInit(),
-          ga("send", "timing", {
-            timingCategory: "Category",
-            timingVar: a,
-            timingValue: b,
-          }));
-      } catch (f) {}
-    };
-    return b;
-  })(a.LocalStorage);
-  a.RioCalendarDataProxy = p;
-})(OneView || (OneView = {}));
+// (function (a) {
+//   var p = (function (d) {
+//     function b() {
+//       d.call(this);
+//       this.enableReload = true;
+//       this.enableFakeData =
+//         this.enableGoogleLogout =
+//         this.enableGoogleLogin =
+//           false;
+//       this.enableShop = this.enableMultipleCalendars = true;
+//       this.calendarDataProxyType = a.CalendarDataProxyType.Android;
+//       this.demoVideoSpecial = false;
+//       this.rrulesDictionary = new a.Dictionary();
+//       this.analyticsStarted = false;
+//       a.core.dynamicallyLoadFile("libs/rrule.js", "js", function () {});
+//     }
+//     __extends(b, d);
+//     b.prototype.connectionOk = function () {
+//       return true;
+//     };
+//     b.prototype.calendarsLoaded = function (b) {
+//       if (void 0 === b || void 0 === b[0].name) this.delayedReload();
+//       else {
+//         this.calendarsLoadedMsg = b;
+//         this.eventsLoaded = this.eventsLoaded.bind(this);
+//         this.eventsLoadedFailed = this.eventsLoadedFailed.bind(this);
+//         b = moment()
+//           .add(
+//             -((1 * a.core.commonUserSettings.dataAmountToLoad) / 4),
+//             "months"
+//           )
+//           .toDate();
+//         var c = moment()
+//           .add((3 * a.core.commonUserSettings.dataAmountToLoad) / 4, "months")
+//           .toDate();
+//         window.plugins.calendar.listEventsInRange(
+//           b,
+//           c,
+//           this.eventsLoaded,
+//           this.eventsLoadedFailed
+//         );
+//       }
+//     };
+//     b.prototype.calendarsLoadedFailed = function (a) {
+//       this.clearAllData();
+//       this.analyticsEvent("Error", "Load calendars failed");
+//       this.calendarsLoadedCallback();
+//     };
+//     b.prototype.populateCalendarEvents = function (b) {
+//       this.startLoadingTime = a.core.getTimeStamp();
+//       a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+//       this.calendarsLoaded = this.calendarsLoaded.bind(this);
+//       this.calendarsLoadedFailed = this.calendarsLoadedFailed.bind(this);
+//       this.calendarsLoadedCallback = b;
+//       window.plugins.calendar.listCalendars(
+//         this.calendarsLoaded,
+//         this.calendarsLoadedFailed
+//       );
+//     };
+//     b.prototype.clearAllData = function () {
+//       this.calendarEvents = [];
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.calendars = [];
+//       a.core.calendarPrimaryId = void 0;
+//     };
+//     b.prototype.handleCalendarsLoadedData = function () {
+//       var b;
+//       for (b = 0; b < this.calendarsLoadedMsg.length; b++) {
+//         var e = a.VisibilityType.Visible;
+//         0 === +this.calendarsLoadedMsg[b].visible &&
+//           (e = a.VisibilityType.Hidden);
+//         void 0 != a.core.calendarPrimaryId ||
+//           this.calendarsLoadedMsg[b].isReadOnly ||
+//           (a.core.calendarPrimaryId = this.calendarsLoadedMsg[b].id);
+//         this.calendarsLoadedMsg[b].isPrimary &&
+//           !this.calendarsLoadedMsg[b].isReadOnly &&
+//           (a.core.calendarPrimaryId = this.calendarsLoadedMsg[b].id);
+//         e = new a.CalendarObject(
+//           this.calendarsLoadedMsg[b].id,
+//           this.calendarsLoadedMsg[b].name,
+//           [],
+//           b,
+//           e,
+//           !this.calendarsLoadedMsg[b].isReadOnly,
+//           !this.calendarsLoadedMsg[b].isReadOnly
+//         );
+//         a.core.calendars.push(e);
+//         "molyneux.peter@gmail.com" == e.name &&
+//           ((a.core.commonUserSettings.licenceColorPicker = true),
+//           (a.core.commonUserSettings.licenceCandyTheme = true),
+//           (a.core.commonUserSettings.licenceDarkTheme = true));
+//       }
+//     };
+//     b.prototype.eventsLoaded = function (a) {
+//       if (
+//         void 0 === a ||
+//         (a.length <= this.calendarsLoadedMsg.length &&
+//           void 0 === a[0].startDate)
+//       )
+//         this.delayedReload();
+//       else {
+//         this.clearAllData();
+//         this.handleCalendarsLoadedData();
+//         var b;
+//         for (b = 0; b < a.length; b++) {
+//           var c = this.convertToEvent(a[b]);
+//           this.calendarEvents.push(c);
+//         }
+//         this.finalizeLoad();
+//       }
+//     };
+//     b.prototype.convertToEvent = function (b) {
+//       var c = new Date(0 + b.startDate),
+//         d = new Date(0 + b.endDate);
+//       1 == b.allday
+//         ? ((c = new Date(c.getTime() + 6e4 * c.getTimezoneOffset())),
+//           (d = new Date(d.getTime() + 6e4 * d.getTimezoneOffset())))
+//         : ((c = a.core.helper.addUserTimeZoneSetting(c)),
+//           (d = a.core.helper.addUserTimeZoneSetting(d)));
+//       d.getDate() === c.getDate() &&
+//         (a.core.getCalendar(b.calendarId).allEventsAreFullDay = false);
+//       a.core.getCalendar(b.calendarId);
+//       var g = b.eventId + "#" + b.id,
+//         c = new a.CalendarEventObject(
+//           b.title,
+//           b.description,
+//           b.location,
+//           c,
+//           d,
+//           b.calendarId,
+//           g
+//         );
+//       c.isRecurring =
+//         !a.core.helper.isNullOrEmpty(b.rRule) ||
+//         !a.core.helper.isNullOrEmpty(b.rDate);
+//       c.recurringEventId = b.eventId;
+//       void 0 != b.color && "" != b.color && (c.androidColorNum = b.color);
+//       c.reminders = [];
+//       for (d = 0; b.reminders && d < b.reminders.length; d++)
+//         c.reminders.push(new a.Reminder(b.reminders[d]));
+//       a.core.helper.isNullOrEmpty(b.rRule) ||
+//         this.rrulesDictionary.add(g, b.rRule);
+//       return c;
+//     };
+//     b.prototype.eventsLoadedFailed = function (a) {
+//       this.clearAllData();
+//       this.analyticsEvent("Error", "Load events failed");
+//       this.calendarsLoadedCallback();
+//     };
+//     b.prototype.finalizeLoad = function () {
+//       var b;
+//       a.core.helper.sortCalendars();
+//       a.core.calendarEventHandler.gradeCalendarEvents(this.calendarEvents);
+//       a.core.calendarEventHandler.clearAllEvents();
+//       for (b = 0; b < this.calendarEvents.length; b++)
+//         a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
+//           a.VisibilityType.Visible &&
+//           a.core.calendarEventHandler.addEventToCalendar(
+//             this.calendarEvents[b]
+//           );
+//       a.core.calendarEventHandler.findCommonTimes();
+//       a.core.redraw(true);
+//       this.loadSettings();
+//       this.analyticsValue(
+//         "Value",
+//         "Start",
+//         "Events loaded",
+//         this.calendarEvents.length
+//       );
+//       this.analyticsValue(
+//         "Value",
+//         "Start",
+//         "Data amount to load",
+//         a.core.commonUserSettings.dataAmountToLoad
+//       );
+//       this.analyticsTiming(
+//         "Loadtime",
+//         a.core.getTimeStamp() - this.startLoadingTime
+//       );
+//       this.calendarsLoadedCallback();
+//     };
+//     b.prototype.canEditRecurring = function (a) {
+//       return this.rrulesDictionary.containsKey(a.id);
+//     };
+//     b.prototype.getRRuleObject = function (a, b) {
+//       var c;
+//       this.rrulesDictionary.containsKey(a.id) &&
+//         (c = RRule.fromString(this.rrulesDictionary[a.id]));
+//       b(c);
+//     };
+//     b.prototype.login = function () {};
+//     b.prototype.logout = function () {};
+//     b.prototype.delayedReload = function () {
+//       var a = this;
+//       window.setTimeout(function () {
+//         a.reload();
+//       }, 1e3);
+//     };
+//     b.prototype.reload = function () {
+//       a.core.populateCalendars();
+//     };
+//     b.prototype.deleteEvent = function (b, e, d) {
+//       this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
+//       this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
+//       this.successCallback = this.successCallback.bind(this);
+//       this.failedCallback = this.failedCallback.bind(this);
+//       b.isRecurring && e !== a.EventEditType.AllInSeries
+//         ? b.isRecurring && e === a.EventEditType.ThisOnly
+//           ? ((e = b.startDateTime),
+//             (e =
+//               0 == b.startDateTime.getHours() && 0 == b.endDateTime.getHours()
+//                 ? new Date(e.getTime() - 6e4 * e.getTimezoneOffset())
+//                 : a.core.helper.removeUserTimeZoneSetting(e)),
+//             a.core.calendarEventHandler.removeCalendarEvent(b),
+//             window.plugins.calendar.deleteSingleEventFromRecurring(
+//               +b.recurringEventId,
+//               e,
+//               this.silentSuccessCallback,
+//               this.failedCallback
+//             ))
+//           : this.failedCallback(
+//               "This type of delete is not supported in OneView Calendar."
+//             )
+//         : (a.core.calendarEventHandler.removeCalendarEvent(b),
+//           window.plugins.calendar.deleteEvent(
+//             +b.recurringEventId,
+//             b.isRecurring
+//               ? this.delayedSuccessCallback
+//               : this.silentSuccessCallback,
+//             this.failedCallback
+//           ));
+//     };
+//     b.prototype.failedCallback = function (a) {
+//       console.log(a);
+//       this.reload();
+//     };
+//     b.prototype.silentSuccessCallback = function (a) {};
+//     b.prototype.returnIdCallback = function (a) {
+//       this.calendarEventThatNeedsNewId.recurringEventId = a;
+//     };
+//     b.prototype.quickSuccessCallback = function (a) {
+//       var b = this;
+//       window.setTimeout(function () {
+//         b.reload();
+//       }, 1);
+//     };
+//     b.prototype.successCallback = function (a) {
+//       var b = this;
+//       window.setTimeout(function () {
+//         b.reload();
+//       }, 1);
+//     };
+//     b.prototype.delayedSuccessCallback = function (a) {
+//       var b = this;
+//       this.successCallback(a);
+//       window.setTimeout(function () {
+//         b.reload();
+//       }, 1);
+//     };
+//     b.prototype.getAndroidColorNum = function (b) {
+//       if (null != b.extraColorId) {
+//         if (
+//           b.androidColorNum &&
+//           a.core.helper.getColorIdFromAndroidNum(b.androidColorNum) ==
+//             b.extraColorId
+//         )
+//           return +b.androidColorNum;
+//         b = a.core.helper.getEventColor2(b);
+//         return a.core.helper.getAndroidNumFromColor(b);
+//       }
+//     };
+//     b.prototype.addNewEvent = function (b, e) {
+//       void 0 === e && (e = false);
+//       for (var c = null, d = [], m = 0; m < b.reminders.length; m++)
+//         d.push(b.reminders[m].minutes);
+//       b.rruleToSave && (c = RRule.optionsToString2(b.rruleToSave.options));
+//       c = {
+//         calendarId: +b.calendarId,
+//         rrule: c,
+//         color: this.getAndroidColorNum(b),
+//       };
+//       this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
+//       this.quickSuccessCallback = this.quickSuccessCallback.bind(this);
+//       this.returnIdCallback = this.returnIdCallback.bind(this);
+//       this.failedCallback = this.failedCallback.bind(this);
+//       this.calendarEventThatNeedsNewId = b;
+//       window.plugins.calendar.createEventWithOptions(
+//         b.summary,
+//         b.location,
+//         b.description,
+//         a.core.helper.removeUserTimeZoneSetting(b.startDateTime),
+//         a.core.helper.removeUserTimeZoneSetting(b.endDateTime),
+//         d,
+//         c,
+//         b.isRecurring || e
+//           ? this.delayedSuccessCallback
+//           : this.returnIdCallback,
+//         this.failedCallback
+//       );
+//       a.core.calendarEventHandler.addEventToCalendar(b);
+//     };
+//     b.prototype.getFirstRecurringEvent = function (a) {
+//       return this.calendarEvents.filter(function (b) {
+//         return b.recurringEventId === a.recurringEventId;
+//       })[0];
+//     };
+//     b.prototype.editExistingEvent = function (b, e) {
+//       for (var c = null, d = [], m = 0; m < b.reminders.length; m++)
+//         d.push(b.reminders[m].minutes);
+//       b.rruleToSave && (c = RRule.optionsToString2(b.rruleToSave.options));
+//       c = {
+//         calendarId: +b.calendarId,
+//         rrule: c,
+//         color: this.getAndroidColorNum(b),
+//       };
+//       this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
+//       this.delayedSuccessCallback = this.delayedSuccessCallback.bind(this);
+//       this.failedCallback = this.failedCallback.bind(this);
+//       m = b.isRecurring && e !== a.EventEditType.ThisOnly;
+//       b.isRecurring && e !== a.EventEditType.AllInSeries
+//         ? b.isRecurring && e === a.EventEditType.ThisOnly
+//           ? (this.deleteEvent(b, a.EventEditType.ThisOnly, true),
+//             (b.isRecurring = false),
+//             (b.rruleToSave = void 0),
+//             this.addNewEvent(b, false))
+//           : this.failedCallback(
+//               "This type of edit is not supported in OneView Calendar."
+//             )
+//         : (window.plugins.calendar.modifyEventWithOptions(
+//             +b.recurringEventId,
+//             b.summary,
+//             b.location,
+//             b.description,
+//             a.core.helper.removeUserTimeZoneSetting(b.startDateTime),
+//             a.core.helper.removeUserTimeZoneSetting(b.endDateTime),
+//             d,
+//             c,
+//             m ? this.delayedSuccessCallback : this.silentSuccessCallback,
+//             this.failedCallback
+//           ),
+//           m ||
+//             (a.core.calendarEventHandler.removeCalendarEvent(b),
+//             a.core.calendarEventHandler.addEventToCalendar(b)));
+//     };
+//     b.prototype.persistCalendarsVisibilitySettings = function (b) {
+//       for (var c = 0; c < b.length; c++)
+//         b[c].oldVisibility === b[c].newVisibility && (b.splice(c, 1), c--);
+//       for (var d = 0; d < a.core.calendars.length; d++)
+//         for (c = 0; c < b.length; c++)
+//           if (b[c].id == a.core.calendars[d].id) {
+//             var g = 1;
+//             b[c].newVisibility === a.VisibilityType.Hidden && (g = 0);
+//             this.silentSuccessCallback = this.silentSuccessCallback.bind(this);
+//             this.successCallback = this.successCallback.bind(this);
+//             this.failedCallback = this.failedCallback.bind(this);
+//             window.plugins.calendar.updateCalendarVisibility(
+//               +a.core.calendars[d].id,
+//               g,
+//               c < b.length - 1
+//                 ? this.silentSuccessCallback
+//                 : this.successCallback,
+//               this.failedCallback
+//             );
+//           }
+//     };
+//     b.prototype.applyCalendarsVisibilitySettings = function () {};
+//     b.prototype.saveSettings = function () {};
+//     b.prototype.loadSettings = function () {
+//       return true;
+//     };
+//     b.prototype.analyticsInit = function () {
+//       0 == this.analyticsStarted &&
+//         ((this.analyticsStarted = true),
+//         (this.analyticsSuccess = this.analyticsSuccess.bind(this)),
+//         (this.analyticsFail = this.analyticsFail.bind(this)),
+//         analytics.startTrackerWithId(
+//           "UA-69941766-3",
+//           this.analyticsSuccess,
+//           this.analyticsFail
+//         ));
+//     };
+//     b.prototype.analyticsEvent = function (a, b) {
+//       this.analyticsInit();
+//       analytics.trackEvent(
+//         a,
+//         b,
+//         null,
+//         null,
+//         this.analyticsSuccess,
+//         this.analyticsFail
+//       );
+//     };
+//     b.prototype.analyticsPage = function (a) {
+//       this.analyticsInit();
+//       analytics.trackView(a, this.analyticsSuccess, this.analyticsFail);
+//     };
+//     b.prototype.analyticsValue = function (a, b, d, g) {
+//       this.analyticsInit();
+//       analytics.trackEvent(
+//         a,
+//         b,
+//         d,
+//         g,
+//         this.analyticsSuccess,
+//         this.analyticsFail
+//       );
+//     };
+//     b.prototype.analyticsTiming = function (a, b) {
+//       this.analyticsInit();
+//       analytics.trackTiming(
+//         "Category",
+//         b,
+//         a,
+//         a,
+//         this.analyticsSuccess,
+//         this.analyticsFail
+//       );
+//     };
+//     b.prototype.analyticsSuccess = function (a) {};
+//     b.prototype.analyticsFail = function (a) {};
+//     return b;
+//   })(a.LocalStorage);
+//   a.AndroidCalendarDataProxy = p;
+// })(OneView || (OneView = {}));
+// (function (a) {
+//   var p = (function (d) {
+//     function b() {
+//       d.call(this);
+//       this.enableMultipleCalendars = this.enableReload = true;
+//       this.enableShop =
+//         this.enableFakeData =
+//         this.enableGoogleLogout =
+//         this.enableGoogleLogin =
+//           false;
+//       this.calendarDataProxyType = a.CalendarDataProxyType.Demo;
+//       this.demoVideoSpecial = true;
+//       this.dbVersion = "demo0.52";
+//     }
+//     __extends(b, d);
+//     b.prototype.connectionOk = function () {
+//       return true;
+//     };
+//     b.prototype.login = function () {};
+//     b.prototype.logout = function () {};
+//     b.prototype.populateCalendarEvents = function (c) {
+//       this.loadReadyCallback = c;
+//       this.calendarEvents = [];
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.commonUserSettings.licenceColorPicker = true;
+//       a.core.commonUserSettings.licenceCandyTheme = true;
+//       a.core.commonUserSettings.licenceDarkTheme = true;
+//       a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
+//       a.core.calendars = [];
+//       a.core.calendarPrimaryId = void 0;
+//       (this.loadEventsFromCache() &&
+//         void 0 != a.core.calendars &&
+//         0 != a.core.calendars.length) ||
+//         (this.fakeData(),
+//         a.core.helper.sortCalendars(),
+//         a.core.calendarEventHandler.gradeCalendarEvents(this.calendarEvents),
+//         this.calendarEvents.sort(function (a, b) {
+//           return a.startZOP - b.startZOP;
+//         }),
+//         this.saveEventsToCache());
+//       this.finalizeLoad();
+//       b.setLastSessionWasInDemoMode(true);
+//     };
+//     b.prototype.saveSettings = function () {
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.reload = function () {
+//       var b = this.dbVersion;
+//       this.dbVersion = "XXX";
+//       a.core.populateCalendars();
+//       this.dbVersion = b;
+//     };
+//     b.prototype.fakeData = function () {
+//       var b;
+//       a.core.calendars.push(
+//         new a.CalendarObject(
+//           "Work",
+//           "Work Calendar",
+//           [],
+//           0,
+//           a.VisibilityType.Visible,
+//           true,
+//           true
+//         )
+//       );
+//       a.core.calendars.push(
+//         new a.CalendarObject(
+//           "My",
+//           "My Calendar",
+//           [],
+//           1,
+//           a.VisibilityType.Visible,
+//           true,
+//           true
+//         )
+//       );
+//       a.core.calendars.push(
+//         new a.CalendarObject(
+//           "Other",
+//           "Partners calendar",
+//           [],
+//           2,
+//           a.VisibilityType.Visible,
+//           true,
+//           false
+//         )
+//       );
+//       a.core.calendarPrimaryId = "My";
+//       a.core.getCalendar("Work").allEventsAreFullDay = false;
+//       a.core.getCalendar("My").allEventsAreFullDay = false;
+//       a.core.getCalendar("Other").allEventsAreFullDay = false;
+//       this.calendarEvents = [];
+//       var e = moment().startOf("week"),
+//         d = e.clone().add(1, "weeks").add(-28, "days"),
+//         g,
+//         m;
+//       for (b = 0; 30 > b; b++)
+//         (g = d
+//           .clone()
+//           .add(-80 + 21 * b, "days")
+//           .add(17, "hours")
+//           .toDate()),
+//           (m = d
+//             .clone()
+//             .add(-80 + 21 * b, "days")
+//             .add(19.5, "hours")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Hockey with kids",
+//             "If you can't make it call Eddies dad: 043-423213",
+//             "Weaver hall",
+//             g,
+//             m,
+//             "My",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       for (b = 0; 20 > b; b++)
+//         3 === b && b++,
+//           (g = d
+//             .clone()
+//             .add(-100 + 28 * b, "days")
+//             .add(18, "hours")
+//             .toDate()),
+//           (m = d
+//             .clone()
+//             .add(-100 + 28 * b, "days")
+//             .add(22, "hours")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Walk n talk with Jim",
+//             "Time for reflection",
+//             "The park",
+//             g,
+//             m,
+//             "My",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-200, "months").toDate();
+//       m = moment().startOf("week").add(-199, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "School starts",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-150, "months").toDate();
+//       m = moment().startOf("week").add(-130, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "First girlfriend",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-100, "months").toDate();
+//       m = moment().startOf("week").add(-99, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "16th birthday",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-86, "months").toDate();
+//       m = moment().startOf("week").add(-50, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "University",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-48, "months").toDate();
+//       m = moment().startOf("week").add(-36, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "Year in London",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(-32, "months").toDate();
+//       m = moment().startOf("week").add(-30, "months").toDate();
+//       g = new a.CalendarEventObject(
+//         "Wedding!!",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(4, "days").toDate();
+//       m = moment().startOf("week").add(5, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Jims birthday",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(7, "days").toDate();
+//       m = moment().startOf("week").add(8, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Release",
+//         "On the menu there is an option to connect to Google. This will enable you to see your real calendar.",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = moment().startOf("week").add(9, "days").toDate();
+//       m = moment().startOf("week").add(10, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Lisas birthday",
+//         "",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(-22, "days").toDate();
+//       m = e.clone().add(1, "weeks").add(10, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "On diet",
+//         "Calorie drought",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-63, "weeks").add(-22, "days").toDate();
+//       m = e.clone().add(-54, "weeks").add(10, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "On diet",
+//         "Calorie drought",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(13, "days").toDate();
+//       m = e.clone().add(1, "weeks").add(18, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Rent a car",
+//         "Abis",
+//         "",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       for (b = 0; 40 > b; b++)
+//         5 === b && b++,
+//           (g = d
+//             .clone()
+//             .add(-120 + 14 * b, "days")
+//             .add(17, "hours")
+//             .toDate()),
+//           (m = d
+//             .clone()
+//             .add(-120 + 14 * b, "days")
+//             .add(20, "hours")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Gym",
+//             "",
+//             "Wassits",
+//             g,
+//             m,
+//             "Other",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       for (b = 0; 60 > b; b++)
+//         5 === b && b++,
+//           (g = d
+//             .clone()
+//             .add(-127 + 14 * b, "days")
+//             .add(7, "hours")
+//             .toDate()),
+//           (m = d
+//             .clone()
+//             .add(-127 + 14 * b, "days")
+//             .add(8, "hours")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Morning swim",
+//             "Be on time",
+//             "Lake",
+//             g,
+//             m,
+//             "My",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       g = e.clone().add(-52, "weeks").add(1, "days").toDate();
+//       m = e.clone().add(-52, "weeks").add(31, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Family holiday",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(10, "days").toDate();
+//       m = e.clone().add(1, "weeks").add(23, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Family holiday",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(30, "weeks").toDate();
+//       m = e.clone().add(40, "weeks").toDate();
+//       g = new a.CalendarEventObject(
+//         "Course",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-100, "weeks").toDate();
+//       m = e.clone().add(-28, "weeks").toDate();
+//       g = new a.CalendarEventObject(
+//         "Previous job",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-27, "weeks").toDate();
+//       m = e.clone().add(-18, "weeks").toDate();
+//       g = new a.CalendarEventObject(
+//         "Intro period",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "My",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-17, "weeks").toDate();
+//       m = e.clone().add(-14, "weeks").toDate();
+//       g = new a.CalendarEventObject(
+//         "IT Course",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-13, "weeks").toDate();
+//       m = e.clone().add(-8, "weeks").toDate();
+//       g = new a.CalendarEventObject(
+//         "Smile project",
+//         "Double check the hotel booking",
+//         "Saxapahaw",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(5, "days").add(18, "hours").toDate();
+//       m = e.clone().add(1, "weeks").add(8, "days").add(22, "hours").toDate();
+//       g = new a.CalendarEventObject(
+//         "Visit my parents",
+//         "",
+//         "Sutton Bonnington",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(14, "days").toDate();
+//       m = e.clone().add(1, "weeks").add(16, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Trip to mountains",
+//         "Bring tent",
+//         "",
+//         g,
+//         m,
+//         "Other",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       for (b = 0; 30 > b; b++)
+//         (g = e
+//           .clone()
+//           .add(-15, "weeks")
+//           .add(2 + 7 * b - 21, "days")
+//           .add(9, "hours")
+//           .toDate()),
+//           (m = e
+//             .clone()
+//             .add(-15, "weeks")
+//             .add(2 + 7 * b - 21, "days")
+//             .add(9, "hours")
+//             .add(20, "minutes")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Morning briefing",
+//             "",
+//             "Work",
+//             g,
+//             m,
+//             "Work",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       for (b = 0; 15 > b; b++)
+//         (g = e
+//           .clone()
+//           .add(1, "weeks")
+//           .add(4 + 7 * b - 21, "days")
+//           .add(9, "hours")
+//           .toDate()),
+//           (m = e
+//             .clone()
+//             .add(1, "weeks")
+//             .add(4 + 7 * b - 21, "days")
+//             .add(9, "hours")
+//             .add(20, "minutes")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "Morning briefing",
+//             "",
+//             "Work",
+//             g,
+//             m,
+//             "Work",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(-7, "days").toDate();
+//       m = e.clone().add(1, "weeks").add(0, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Annual wrap-up",
+//         "Close all ongoing cases",
+//         "",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(-23, "weeks").add(-7, "days").toDate();
+//       m = e.clone().add(-23, "weeks").add(0, "days").toDate();
+//       g = new a.CalendarEventObject(
+//         "Annual wrap-up",
+//         "Close all ongoing cases",
+//         "",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       for (b = 0; 10 > b; b++)
+//         7 === b && (b += 2),
+//           (g = d
+//             .clone()
+//             .add(-3 + 7 * b, "days")
+//             .add(7, "hours")
+//             .add(30, "minutes")
+//             .toDate()),
+//           (m = d
+//             .clone()
+//             .add(-3 + 7 * b, "days")
+//             .add(10, "hours")
+//             .toDate()),
+//           (g = new a.CalendarEventObject(
+//             "My breakfast-day",
+//             "Have everything prepared by 7.30",
+//             "Work",
+//             g,
+//             m,
+//             "Work",
+//             this.calendarEvents.length.toString()
+//           )),
+//           this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(-4, "days").add(11, "hours").toDate();
+//       m = e.clone().add(1, "weeks").add(-4, "days").add(13, "hours").toDate();
+//       g = new a.CalendarEventObject(
+//         "Meeting with R.P",
+//         "Your turn to take the bill",
+//         "Jackie's Besty Diner",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//       g = e.clone().add(1, "weeks").add(3, "days").add(13, "hours").toDate();
+//       m = e.clone().add(1, "weeks").add(3, "days").add(16, "hours").toDate();
+//       g = new a.CalendarEventObject(
+//         "Meeting with R.P",
+//         "Bring the files",
+//         "Office on Winfall BLVD",
+//         g,
+//         m,
+//         "Work",
+//         this.calendarEvents.length.toString()
+//       );
+//       this.calendarEvents.push(g);
+//     };
+//     b.prototype.getCleanRedirectURI = function () {
+//       return window.location.protocol + "//" + window.location.host;
+//     };
+//     b.prototype.getRRuleObject = function (a, b) {
+//       b(void 0);
+//     };
+//     b.prototype.getFirstRecurringEvent = function (a) {
+//       return this.calendarEvents.filter(function (b) {
+//         return b.recurringEventId === a.recurringEventId;
+//       })[0];
+//     };
+//     b.prototype.finalizeLoad = function () {
+//       var b;
+//       this.applyCalendarsVisibilitySettings();
+//       a.core.calendarEventHandler.clearAllEvents();
+//       for (b = 0; b < this.calendarEvents.length; b++)
+//         a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
+//           a.VisibilityType.Visible &&
+//           a.core.calendarEventHandler.addEventToCalendar(
+//             this.calendarEvents[b]
+//           );
+//       a.core.calendarEventHandler.findCommonTimes();
+//       a.core.loadingHandler.stopLoading();
+//       this.loadReadyCallback && this.loadReadyCallback();
+//       a.core.redraw(true);
+//     };
+//     b.prototype.canEditRecurring = function (a) {
+//       return false;
+//     };
+//     b.prototype.deleteEvent = function (b, d, f) {
+//       if (b.isRecurring && d === a.EventEditType.AllInSeries)
+//         for (
+//           d = a.core.calendarEventHandler.getCalendarEventsByIdAndRecurringId(
+//             b.recurringEventId
+//           ),
+//             b = 0;
+//           b < d.length;
+//           b++
+//         )
+//           this.removeEventFromFromDemoData(d[b]),
+//             a.core.calendarEventHandler.removeCalendarEvent(d[b]);
+//       else
+//         this.removeEventFromFromDemoData(b),
+//           a.core.calendarEventHandler.removeCalendarEvent(b);
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.removeEventFromFromDemoData = function (a) {
+//       var b;
+//       for (b = 0; b < this.calendarEvents.length; b++)
+//         if (this.calendarEvents[b] === a) {
+//           this.calendarEvents.splice(b, 1);
+//           break;
+//         }
+//     };
+//     b.prototype.addNewEvent = function (b, d) {
+//       b.id = "" + Math.random();
+//       this.calendarEvents.push(b);
+//       a.core.calendarEventHandler.addEventToCalendar(b);
+//       if (void 0 !== b.rruleToSave && null !== b.rruleToSave) {
+//         var c = b.endDateTime.getTime() - b.startDateTime.getTime();
+//         b.isRecurring = true;
+//         for (var e = b.rruleToSave.all(), m = 1; m < e.length; m++) {
+//           var n = new Date(e[m].getTime() + c),
+//             n = new a.CalendarEventObject(
+//               b.summary,
+//               b.description,
+//               b.location,
+//               e[m],
+//               n,
+//               b.calendarId,
+//               "" + Math.random()
+//             );
+//           n.isRecurring = true;
+//           n.recurringEventId = b.id;
+//           this.calendarEvents.push(n);
+//           a.core.calendarEventHandler.addEventToCalendar(n);
+//         }
+//       }
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.editExistingEvent = function (b, d) {
+//       a.core.calendarEventHandler.removeCalendarEvent(b);
+//       a.core.calendarEventHandler.addEventToCalendar(b);
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.saveEventsToCache = function () {
+//       this.localStorageSetItem("oneview_demo_verrsion", this.dbVersion);
+//       this.localStorageSetItem(
+//         "oneview_demo_saveComplete",
+//         JSON.stringify(false)
+//       );
+//       this.localStorageSetItem(
+//         "oneview_demo_allEvents",
+//         JSON.stringify(this.calendarEvents)
+//       );
+//       this.localStorageSetItem(
+//         "oneview_demo_allCalendars",
+//         JSON.stringify(a.core.calendars)
+//       );
+//       this.localStorageSetItem(
+//         "oneview_demo_primaryCalendarId",
+//         JSON.stringify(a.core.calendarPrimaryId)
+//       );
+//       this.localStorageSetItem("oneview_demo_demo", JSON.stringify(true));
+//       this.localStorageSetItem(
+//         "oneview_demo_saveComplete",
+//         JSON.stringify(true)
+//       );
+//     };
+//     b.getLastSessionWasInDemoMode = function () {
+//       var a = localStorage.getItem(
+//         "oneview_demo_last_session_was_in_demo_mode"
+//       );
+//       return null == a || void 0 == a ? true : JSON.parse(a);
+//     };
+//     b.setLastSessionWasInDemoMode = function (b) {
+//       new a.LocalStorage().localStorageSetItem(
+//         "oneview_demo_last_session_was_in_demo_mode",
+//         JSON.stringify(b)
+//       );
+//     };
+//     b.prototype.loadEventsFromCache = function () {
+//       var b = localStorage.getItem("oneview_demo_verrsion"),
+//         d = localStorage.getItem("oneview_demo_saveComplete"),
+//         f = localStorage.getItem("oneview_demo_allEvents"),
+//         g = localStorage.getItem("oneview_demo_allCalendars"),
+//         m = localStorage.getItem("oneview_demo_primaryCalendarId"),
+//         n = localStorage.getItem("oneview_demo_demo");
+//       if (
+//         b !== this.dbVersion ||
+//         "true" != d ||
+//         null == g ||
+//         void 0 == g ||
+//         null == f ||
+//         void 0 == f ||
+//         null == m ||
+//         void 0 == m ||
+//         null == n ||
+//         void 0 == n
+//       )
+//         return false;
+//       try {
+//         (a.core.calendarPrimaryId = JSON.parse(m)),
+//           (this.calendarEvents = JSON.parse(f, this.dateTimeReviver)),
+//           (a.core.calendars = JSON.parse(g, this.dateTimeReviver));
+//       } catch (l) {
+//         return false;
+//       }
+//       return true;
+//     };
+//     b.prototype.persistCalendarsVisibilitySettings = function (b) {
+//       this.localStorageSetItem(
+//         "oneview_demo_visibilitySettings",
+//         JSON.stringify(b)
+//       );
+//       this.saveEventsToCache();
+//       a.core.populateCalendars();
+//     };
+//     b.prototype.applyCalendarsVisibilitySettings = function () {
+//       var b = localStorage.getItem("oneview_demo_visibilitySettings");
+//       if (null !== b && void 0 !== b)
+//         for (
+//           var b = JSON.parse(b, this.dateTimeReviver), d = 0;
+//           d < a.core.calendars.length;
+//           d++
+//         )
+//           for (var f = 0; f < b.length; f++)
+//             b[f].id == a.core.calendars[d].id &&
+//               (a.core.calendars[d].visibility = b[f].newVisibility);
+//     };
+//     b.prototype.analyticsEvent = function (a, b) {};
+//     b.prototype.analyticsPage = function (a) {};
+//     b.prototype.analyticsValue = function (a, b, d, g) {};
+//     b.prototype.analyticsTiming = function (a, b) {};
+//     return b;
+//   })(a.LocalStorage);
+//   a.DemoCalendarDataProxy = p;
+// })(OneView || (OneView = {}));
+// (function (a) {
+//   var p = (function (d) {
+//     function b() {
+//       d.call(this);
+//       this.clientId = "";
+//       this.scopes =
+//         "https://web.archive.org/web/20190808203716/https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/calendar";
+//       this.okEventCounter = this.eventCounter = this.loadingCalendarCounter = 0;
+//       this.access_token = "";
+//       this.enableGoogleLogout =
+//         this.enableGoogleLogin =
+//         this.enableShop =
+//         this.enableMultipleCalendars =
+//         this.enableReload =
+//           false;
+//       this.enableFakeData = true;
+//       this.calendarDataProxyType = a.CalendarDataProxyType.Google;
+//       this.forceReload = this.demoVideoSpecial = false;
+//       this.retryLogin = true;
+//       this.dbVersion = "google0.52";
+//       this.analyticsStarted = false;
+//       -1 < document.URL.indexOf("grimbo") &&
+//         (this.clientId = "411250339629.apps.googleusercontent.com");
+//       -1 < document.URL.indexOf("oneviewcalendar.com") &&
+//         (this.clientId = "411250339629.apps.googleusercontent.com");
+//       if (
+//         -1 < document.URL.indexOf("50888") ||
+//         -1 < document.URL.indexOf("4400")
+//       )
+//         this.clientId =
+//           "411250339629-42jail8mmh7or403q79j6fcjd53n703s.apps.googleusercontent.com";
+//     }
+//     __extends(b, d);
+//     b.prototype.populateCalendarEvents = function (b) {
+//       var c = this;
+//       this.loadReadyCallback = b;
+//       this.calendarEvents = [];
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.calendars = [];
+//       a.core.calendarPrimaryId = void 0;
+//       a.core.commonUserSettings.licenceColorPicker = true;
+//       a.core.commonUserSettings.licenceCandyTheme = true;
+//       a.core.commonUserSettings.licenceDarkTheme = true;
+//       a.core.settings.reloadThemesSettings(a.core.commonUserSettings);
+//       a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+//       try {
+//         this.loadEventsFromCache()
+//           ? ((this.forceReload = false), this.finalizeLoad())
+//           : (this.forceReload = true),
+//           (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
+//           gapi.auth.authorize(
+//             {
+//               client_id: this.clientId,
+//               scope: this.scopes,
+//               immediate: true,
+//             },
+//             this.handleAuthResult1
+//           );
+//       } catch (f) {
+//         window.setTimeout(function () {
+//           c.populateCalendarEvents(b);
+//         }, 200);
+//       }
+//     };
+//     b.prototype.saveSettings = function () {
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.logout = function () {
+//       var b = this,
+//         d = this;
+//       a.core.dynamicallyLoadFile("libs/jquery.js", "js", function () {
+//         $.ajax({
+//           type: "GET",
+//           url:
+//             "https://web.archive.org/web/20190808203716/https://accounts.google.com/o/oauth2/revoke?token=" +
+//             b.access_token,
+//           async: false,
+//           contentType: "application/json",
+//           dataType: "jsonp",
+//           success: function (a) {
+//             d.enableGoogleLogin = true;
+//             d.enableGoogleLogout = false;
+//           },
+//           error: function (a) {},
+//         });
+//       });
+//     };
+//     b.prototype.login = function () {
+//       a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+//       if (-1 == document.URL.indexOf("oneviewcalendar.com"))
+//         (this.forceReload = true),
+//           (this.handleAuthResult1 = this.handleAuthResult1.bind(this)),
+//           gapi.auth.authorize(
+//             {
+//               client_id: this.clientId,
+//               scope: this.scopes,
+//               immediate: false,
+//             },
+//             this.handleAuthResult1
+//           );
+//       else {
+//         var b =
+//           "https://web.archive.org/web/20190808203716/http://m.oneviewcalendar.com";
+//         -1 != document.URL.indexOf("www.oneviewcalendar.com") &&
+//           (b =
+//             "https://web.archive.org/web/20190808203716/http://www.oneviewcalendar.com");
+//         -1 != document.URL.indexOf("app.oneviewcalendar.com") &&
+//           (b =
+//             "https://web.archive.org/web/20190808203716/http://app.oneviewcalendar.com");
+//         window.location.assign(
+//           "https://web.archive.org/web/20190808203716/https://accounts.google.com/o/oauth2/auth?" +
+//             ("client_id=" +
+//               this.clientId +
+//               "&scope=" +
+//               this.scopes +
+//               "&immediate=false&include_granted_scopes=true&redirect_uri=" +
+//               b +
+//               "&origin=" +
+//               b +
+//               "&response_type=token&authuser=0")
+//         );
+//       }
+//     };
+//     b.prototype.getCleanRedirectURI = function () {
+//       return window.location.protocol + "//" + window.location.host;
+//     };
+//     b.prototype.handleAuthResult1 = function (b) {
+//       b && b.status.signed_in
+//         ? ((this.enableGoogleLogin = false),
+//           (this.enableGoogleLogout =
+//             this.enableReload =
+//             this.enableMultipleCalendars =
+//               true),
+//           (this.enableFakeData = false),
+//           (this.access_token = b.access_token),
+//           this.makeApiCall())
+//         : (a.core.loadingHandler.stopLoadingWithError(),
+//           true === this.retryLogin
+//             ? ((this.retryLogin = false), this.login())
+//             : (this.clearCache(),
+//               (this.calendarEvents = []),
+//               a.core.calendarEventHandler.clearAllEvents(),
+//               a.core.redraw(true)),
+//           (this.enableGoogleLogin = true),
+//           (this.enableGoogleLogout =
+//             this.enableReload =
+//             this.enableMultipleCalendars =
+//               false),
+//           (this.enableFakeData = true));
+//     };
+//     b.prototype.reload = function () {
+//       this.clearCache();
+//       this.calendarEvents = [];
+//       a.core.loadingHandler.startLoading();
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.redraw(true);
+//       this.forceReload = true;
+//       this.makeApiCall();
+//     };
+//     b.prototype.makeApiCall = function () {
+//       this.doFullRefresh = false;
+//       this.refetchCalendars(this.forceReload);
+//     };
+//     b.prototype.refetchCalendars = function (b) {
+//       var c = this;
+//       gapi.client.load("calendar", "v3", function () {
+//         var d;
+//         gapi.client.calendar.calendarList.list(void 0).execute(function (e) {
+//           if (e.error && !b) c.refetchCalendars(true);
+//           else {
+//             c.nextSyncTokenCalendars = e.nextSyncToken;
+//             for (d = 0; d < e.items.length; d++) {
+//               var f = true,
+//                 g = false;
+//               "reader" !== e.items[d].accessRole && (f = false);
+//               "owner" === e.items[d].accessRole && (g = true);
+//               e.items[d].primary && (a.core.calendarPrimaryId = e.items[d].id);
+//               var l = [];
+//               if (e.items[d].defaultReminders) {
+//                 var h;
+//                 for (h = 0; h < e.items[d].defaultReminders.length; h++)
+//                   l.push(
+//                     new a.Reminder(e.items[d].defaultReminders[h].minutes)
+//                   );
+//               }
+//               h = a.VisibilityType.Visible;
+//               0 == e.items[d].selected && (h = a.VisibilityType.Hidden);
+//               var k = a.core.getCalendar(e.items[d].id);
+//               if (void 0 == k || "NoneZ" == k.id)
+//                 a.core.calendars.push(
+//                   new a.CalendarObject(
+//                     e.items[d].id,
+//                     e.items[d].summary,
+//                     l,
+//                     a.core.calendars.length,
+//                     h,
+//                     g,
+//                     !f
+//                   )
+//                 );
+//               else {
+//                 if (e.items[d].deleted) {
+//                   c.refetchCalendars(true);
+//                   return;
+//                 }
+//                 k.name = e.items[d].summary;
+//                 k.defaultReminders = e.items[d].defaultReminders;
+//                 k.visibility = h;
+//                 k.canEditCalendar = g;
+//                 k.canEditCalendarEvents = !f;
+//               }
+//             }
+//             c.refetchCalendarEvents(b);
+//           }
+//         });
+//       });
+//     };
+//     b.prototype.dateFromString = function (a) {
+//       var b = a.split(/[-T:+]/g),
+//         c = new Date(parseInt(b[0]), parseInt(b[1]) - 1, parseInt(b[2]));
+//       b[5] = b[5].replace("Z", "");
+//       c.setHours(parseInt(b[3]), parseInt(b[4]), parseInt(b[5]));
+//       6 < b.length &&
+//         ((b = 60 * parseInt(b[6]) + Number(b[7])),
+//         (b = 0 + ("-" == (/\d\d-\d\d:\d\d$/.test(a) ? "-" : "+") ? -1 * b : b)),
+//         c.setMinutes(c.getMinutes() - b - c.getTimezoneOffset()));
+//       return c;
+//     };
+//     b.prototype.refetchCalendarEvents = function (b) {
+//       this.eventsChanged = b;
+//       this.doFullRefresh = false;
+//       b && (this.calendarEvents = []);
+//       this.loadingCalendarCounter = a.core.calendars.length;
+//       for (var c = 0; c < a.core.calendars.length; c++)
+//         this.getCalendarEvents(a.core.calendars[c].id, null, b);
+//     };
+//     b.prototype.getCalendarEvents = function (b, d, f) {
+//       var c = this;
+//       gapi.client.load("calendar", "v3", function () {
+//         var e = moment()
+//             .add(
+//               -((1 * a.core.commonUserSettings.dataAmountToLoad) / 4),
+//               "months"
+//             )
+//             .toDate()
+//             .toISOString(),
+//           g = moment()
+//             .add((3 * a.core.commonUserSettings.dataAmountToLoad) / 4, "months")
+//             .toDate()
+//             .toISOString(),
+//           e = {
+//             calendarId: b,
+//             maxResults: 1e3,
+//             singleEvents: true,
+//             showDeleted: !f,
+//             timeMin: e,
+//             timeMax: g,
+//           };
+//         !f &&
+//           a.core.getCalendar(b) &&
+//           ((e = {
+//             calendarId: b,
+//             maxResults: 1e3,
+//             singleEvents: true,
+//             showDeleted: true,
+//           }),
+//           (e.syncToken = a.core.getCalendar(b).nextSyncTokenEvents));
+//         void 0 !== d && "" != d && (e.pageToken = d);
+//         var l, h;
+//         gapi.client.calendar.events.list(e).execute(function (e) {
+//           e.error && !f && (c.doFullRefresh = true);
+//           c.oneview_was_connected_to_google = true;
+//           moment().add(3, "years").add(-10, "hours").toDate();
+//           d = e.nextPageToken;
+//           if (e.items && 0 < e.items.length)
+//             for (
+//               c.eventsChanged = true, c.eventCounter += e.items.length, l = 0;
+//               l < e.items.length;
+//               l++
+//             )
+//               if (e.items[l].start && e.items[l].end)
+//                 if (
+//                   (c.okEventCounter++,
+//                   a.core.getCalendar(b).countEvents++,
+//                   (h = c.RespItemToCalendarEvent(e.items[l], b)),
+//                   f)
+//                 )
+//                   "cancelled" !== e.items[l].status && c.calendarEvents.push(h);
+//                 else {
+//                   var g = c.calendarEvents.filter(function (a) {
+//                     return a.calendarId == b && a.id == e.items[l].id;
+//                   });
+//                   1 == g.length
+//                     ? "cancelled" == e.items[l].status
+//                       ? c.calendarEvents.splice(
+//                           c.calendarEvents.indexOf(g[0]),
+//                           1
+//                         )
+//                       : (c.calendarEvents[c.calendarEvents.indexOf(g[0])] = h)
+//                     : "cancelled" !== e.items[l].status &&
+//                       c.calendarEvents.push(h);
+//                 }
+//           void 0 !== d && "" != d
+//             ? c.getCalendarEvents(b, d, f)
+//             : ((a.core.getCalendar(b).nextSyncTokenEvents = e.nextSyncToken),
+//               c.loadingCalendarCounter--,
+//               0 === c.loadingCalendarCounter &&
+//               (c.eventsChanged || c.doFullRefresh)
+//                 ? (a.core.helper.sortCalendars(),
+//                   a.core.calendarEventHandler.gradeCalendarEvents(
+//                     c.calendarEvents
+//                   ),
+//                   c.calendarEvents.sort(function (a, b) {
+//                     return a.startZOP - b.startZOP;
+//                   }),
+//                   c.saveEventsToCache(),
+//                   c.finalizeLoad())
+//                 : 0 === c.loadingCalendarCounter && c.finalizeLoad());
+//         });
+//       });
+//     };
+//     b.prototype.finalizeLoad = function () {
+//       var b;
+//       JSON.stringify(a.core.calendars);
+//       JSON.stringify(this.calendarEvents);
+//       this.applyCalendarsVisibilitySettings();
+//       a.core.calendarEventHandler.clearAllEvents();
+//       if (this.doFullRefresh) this.reload();
+//       else {
+//         for (b = 0; b < this.calendarEvents.length; b++)
+//           a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
+//             a.VisibilityType.Visible &&
+//             a.core.calendarEventHandler.addEventToCalendar(
+//               this.calendarEvents[b]
+//             );
+//         a.core.calendarEventHandler.findCommonTimes();
+//       }
+//       a.core.loadingHandler.stopLoading();
+//       this.loadReadyCallback && this.loadReadyCallback();
+//       a.core.redraw(true);
+//     };
+//     b.prototype.canEditRecurring = function (a) {
+//       return true;
+//     };
+//     b.prototype.getRRuleObject = function (b, d) {
+//       if (b.isRecurring) {
+//         var c = this;
+//         a.core.dynamicallyLoadFile("libs/rrule.js", "js", function () {
+//           var a = b.calendarId,
+//             e;
+//           gapi.client.load("calendar", "v3", function () {
+//             gapi.client.calendar.events
+//               .get({
+//                 calendarId: a,
+//                 eventId: b.recurringEventId,
+//               })
+//               .execute(function (b) {
+//                 b.result &&
+//                   ((b = b.result),
+//                   c.RespItemToCalendarEvent(b, a),
+//                   (b = b.recurrence[0].substr(6)),
+//                   (e = RRule.fromString(b)));
+//                 d(e);
+//               });
+//           });
+//         });
+//       }
+//     };
+//     b.prototype.connectionOk = function () {
+//       return navigator.onLine;
+//     };
+//     b.prototype.RespItemToCalendarEvent = function (b, d) {
+//       var c = b.start.dateTime,
+//         e = b.end.dateTime;
+//       void 0 === c
+//         ? (c = moment(b.start.date).toDate())
+//         : ((a.core.getCalendar(d).allEventsAreFullDay = false),
+//           (c = a.core.helper.addUserTimeZoneSetting(this.dateFromString(c))));
+//       e =
+//         void 0 === e
+//           ? moment(b.end.date).toDate()
+//           : a.core.helper.addUserTimeZoneSetting(this.dateFromString(e));
+//       c = new a.CalendarEventObject(
+//         b.summary,
+//         b.description,
+//         b.location,
+//         c,
+//         e,
+//         d,
+//         b.id
+//       );
+//       b.recurringEventId &&
+//         ((c.isRecurring = true), (c.recurringEventId = b.recurringEventId));
+//       b.extendedProperties &&
+//         b.extendedProperties["private"] &&
+//         b.extendedProperties["private"].extraColorId &&
+//         (c.extraColorId = b.extendedProperties["private"].extraColorId);
+//       c.reminders = [];
+//       if (b.reminders && b.reminders.useDefault)
+//         for (
+//           var m = a.core.getCalendar(d), e = 0;
+//           e < m.defaultReminders.length;
+//           e++
+//         )
+//           c.reminders.push(m.defaultReminders[e]);
+//       if (b.reminders && b.reminders.overrides)
+//         for (e = 0; e < b.reminders.overrides.length; e++)
+//           c.reminders.push(new a.Reminder(b.reminders.overrides[e].minutes));
+//       c.timeZoneName = b.start.timeZone;
+//       return c;
+//     };
+//     b.prototype.deleteEvent = function (b, d, f) {
+//       void 0 === f && (f = false);
+//       var c = this,
+//         e = b.calendarId;
+//       gapi.client.load("calendar", "v3", function () {
+//         gapi.client.calendar.events
+//           .get({
+//             calendarId: e,
+//             eventId: b.id,
+//           })
+//           .execute(function (f) {
+//             b.isRecurring &&
+//             d !== a.EventEditType.ThisOnly &&
+//             b.recurringEventId
+//               ? d === a.EventEditType.AllInSeries &&
+//                 3 < b.recurringEventId.length &&
+//                 b.recurringEventId &&
+//                 !(3 >= b.recurringEventId.length) &&
+//                 ((f = googleDelete({
+//                   calendarId: e,
+//                   eventId: b.recurringEventId,
+//                 })),
+//                 f.execute(function (a) {
+//                   c.populateCalendarEvents(void 0);
+//                 }))
+//               : !b.id ||
+//                 3 >= b.id.length ||
+//                 ((f = googleDelete({
+//                   calendarId: e,
+//                   eventId: b.id,
+//                 })),
+//                 f.execute(function (a) {
+//                   c.populateCalendarEvents(void 0);
+//                 }));
+//           });
+//       });
+//     };
+//     b.prototype.addNewEvent = function (a, b) {
+//       void 0 === b && (b = false);
+//       var c = {};
+//       this.syncCalendarEventToResource(a, c, false);
+//       var d = this;
+//       gapi.client.load("calendar", "v3", function () {
+//         gapi.client.calendar.events
+//           .insert({
+//             calendarId: a.calendarId,
+//             resource: c,
+//           })
+//           .execute(function (a) {
+//             d.populateCalendarEvents(void 0);
+//           });
+//       });
+//     };
+//     b.prototype.getFirstRecurringEvent = function (a) {
+//       return this.calendarEvents.filter(function (b) {
+//         return b.recurringEventId === a.recurringEventId;
+//       })[0];
+//     };
+//     b.prototype.editExistingEvent = function (b, d) {
+//       var c = this,
+//         e = b.calendarId;
+//       gapi.client.load("calendar", "v3", function () {
+//         gapi.client.calendar.events
+//           .get({
+//             calendarId: e,
+//             eventId: b.id,
+//           })
+//           .execute(function (f) {
+//             if (b.isRecurring && d !== a.EventEditType.ThisOnly) {
+//               if (d === a.EventEditType.AllInSeries) {
+//                 var g = c.RespItemToCalendarEvent(f.result, e),
+//                   l = b.startDateTime.getTime() - g.startDateTime.getTime(),
+//                   h = b.endDateTime.getTime() - g.endDateTime.getTime();
+//                 gapi.client.load("calendar", "v3", function () {
+//                   gapi.client.calendar.events
+//                     .get({
+//                       calendarId: e,
+//                       eventId: b.recurringEventId,
+//                     })
+//                     .execute(function (a) {
+//                       a = a.result;
+//                       var d = c.RespItemToCalendarEvent(a, e);
+//                       d.startDateTime.setTime(g.startDateTime.getTime() + l);
+//                       d.endDateTime.setTime(g.endDateTime.getTime() + h);
+//                       c.syncCalendarEventToResource(d, a, false);
+//                       c.syncCalendarEventToResource(b, a, true);
+//                       c.editExistingEventHelper(b.recurringEventId, a, e);
+//                     });
+//                 });
+//               }
+//               d === a.EventEditType.ThisAndFuture &&
+//                 (gapi.client.load("calendar", "v3", function () {
+//                   gapi.client.calendar.events
+//                     .get({
+//                       calendarId: e,
+//                       eventId: b.recurringEventId,
+//                     })
+//                     .execute(function (d) {
+//                       d = d.result;
+//                       var f = c.RespItemToCalendarEvent(d, e);
+//                       f.endDateTime = a.core.calendarDateHandler.addMinutes(
+//                         f.endDateTime,
+//                         -1
+//                       );
+//                       c.syncCalendarEventToResource(b, d, false);
+//                       c.editExistingEventHelper(b.recurringEventId, d, e);
+//                     });
+//                 }),
+//                 c.addNewEvent(b));
+//             } else (f = f.result), c.syncCalendarEventToResource(b, f, false), c.editExistingEventHelper(b.id, f, e);
+//           });
+//       });
+//     };
+//     b.prototype.editExistingEventHelper = function (b, d, f) {
+//       var c = this;
+//       gapi.client.calendar.events
+//         .update({
+//           calendarId: f,
+//           eventId: b,
+//           resource: d,
+//         })
+//         .execute(function (b) {
+//           c.populateCalendarEvents(void 0);
+//           b.message && (a.core.debugtext = b.message);
+//         });
+//     };
+//     b.prototype.syncCalendarEventToResource = function (b, d, f) {
+//       d.summary = b.summary;
+//       d.description = b.description;
+//       d.location = b.location;
+//       f ||
+//         (a.core.calendarEventHandler.isFullDayEvent(b)
+//           ? ((d.start = {
+//               date: moment(b.startDateTime).format("YYYY-MM-DD"),
+//             }),
+//             (d.end = {
+//               date: moment(b.endDateTime).format("YYYY-MM-DD"),
+//             }))
+//           : ((d.start = {
+//               dateTime: moment(
+//                 a.core.helper.removeUserTimeZoneSetting(b.startDateTime)
+//               ).format("YYYY-MM-DDTHH:mm:ssZ"),
+//             }),
+//             (d.end = {
+//               dateTime: moment(
+//                 a.core.helper.removeUserTimeZoneSetting(b.endDateTime)
+//               ).format("YYYY-MM-DDTHH:mm:ssZ"),
+//             })),
+//         b.timeZoneName &&
+//           ((d.start.timeZone = b.timeZoneName),
+//           (d.end.timeZone = b.timeZoneName)));
+//       b.extraColorId &&
+//         (d.extendedProperties = {
+//           private: {
+//             extraColorId: b.extraColorId,
+//           },
+//         });
+//       d.reminders = {};
+//       d.reminders.useDefault = false;
+//       d.reminders.overrides = [];
+//       if (b.reminders)
+//         for (f = 0; f < b.reminders.length; f++) {
+//           var c = {
+//             method: "popup",
+//           };
+//           c.minutes = b.reminders[f].minutes;
+//           d.reminders.overrides.push(c);
+//         }
+//     };
+//     b.prototype.clearCache = function () {
+//       this.localStorageSetItem("oneview_verrsion", void 0);
+//       this.localStorageSetItem("oneview_saveComplete", void 0);
+//       this.localStorageSetItem("oneview_allEvents", void 0);
+//       this.localStorageSetItem("oneview_allCalendars", void 0);
+//       this.localStorageSetItem("oneview_primaryCalendarId", void 0);
+//       this.localStorageSetItem("oneview_lastCalendarId", void 0);
+//       this.localStorageSetItem("oneview_nextSyncTokenCalendars", void 0);
+//       this.localStorageSetItem("oneview_google", void 0);
+//       this.localStorageSetItem("oneview_saveComplete", void 0);
+//     };
+//     b.prototype.saveEventsToCache = function () {
+//       try {
+//         this.localStorageSetItem("oneview_verrsion", this.dbVersion),
+//           this.localStorageSetItem(
+//             "oneview_saveComplete",
+//             JSON.stringify(false)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_allEvents",
+//             LZString.compress(JSON.stringify(this.calendarEvents))
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_allCalendars",
+//             JSON.stringify(a.core.calendars)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_primaryCalendarId",
+//             JSON.stringify(a.core.calendarPrimaryId)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_nextSyncTokenCalendars",
+//             JSON.stringify(this.nextSyncTokenCalendars)
+//           ),
+//           this.localStorageSetItem("oneview_google", JSON.stringify(true)),
+//           this.localStorageSetItem(
+//             "oneview_saveComplete",
+//             JSON.stringify(true)
+//           );
+//       } catch (c) {}
+//     };
+//     b.prototype.loadEventsFromCache = function () {
+//       var b = localStorage.getItem("oneview_verrsion"),
+//         d = localStorage.getItem("oneview_saveComplete"),
+//         f = localStorage.getItem("oneview_allEvents"),
+//         g = localStorage.getItem("oneview_allCalendars"),
+//         m = localStorage.getItem("oneview_primaryCalendarId"),
+//         n = localStorage.getItem("oneview_google"),
+//         l = localStorage.getItem("oneview_nextSyncTokenCalendars");
+//       if (
+//         b !== this.dbVersion ||
+//         "true" != d ||
+//         null == g ||
+//         void 0 == g ||
+//         "undefined" == g ||
+//         null == f ||
+//         void 0 == f ||
+//         "undefined" == f ||
+//         null == m ||
+//         void 0 == m ||
+//         "undefined" == m ||
+//         null == n ||
+//         void 0 == n ||
+//         "undefined" == n
+//       )
+//         return false;
+//       try {
+//         (a.core.calendarPrimaryId = JSON.parse(m)),
+//           (this.calendarEvents = JSON.parse(
+//             LZString.decompress(f),
+//             this.dateTimeReviver
+//           )),
+//           (a.core.calendars = JSON.parse(g, this.dateTimeReviver)),
+//           (this.nextSyncTokenCalendars = l);
+//       } catch (h) {
+//         return false;
+//       }
+//       return true;
+//     };
+//     b.prototype.persistCalendarsVisibilitySettings = function (a) {
+//       this.localStorageSetItem("oneview_visibilitySettings", JSON.stringify(a));
+//       this.reload();
+//     };
+//     b.prototype.applyCalendarsVisibilitySettings = function () {
+//       var b = localStorage.getItem("oneview_visibilitySettings");
+//       if (null !== b && void 0 !== b)
+//         for (
+//           var b = JSON.parse(b, this.dateTimeReviver), d = 0;
+//           d < a.core.calendars.length;
+//           d++
+//         )
+//           for (var f = 0; f < b.length; f++)
+//             b[f].id == a.core.calendars[d].id &&
+//               (a.core.calendars[d].visibility = b[f].newVisibility);
+//     };
+//     b.prototype.analyticsInit = function () {
+//       0 == this.analyticsStarted &&
+//         ((this.analyticsStarted = true),
+//         -1 < document.URL.indexOf("app.oneviewcalendar.com")
+//           ? ga.create("UA-69941766-2", "auto")
+//           : ga.create("UA-69941766-1", "auto"),
+//         ga("send", "pageview"));
+//     };
+//     b.prototype.analyticsEvent = function (a, b) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", {
+//             hitType: "event",
+//             eventCategory: a,
+//             eventAction: b,
+//             eventLabel: b,
+//           }));
+//       } catch (f) {}
+//     };
+//     b.prototype.analyticsPage = function (a) {
+//       try {
+//         ga && (this.analyticsInit(), ga("send", "pageview", "/" + a));
+//       } catch (e) {}
+//     };
+//     b.prototype.analyticsValue = function (a, b, d, g) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", {
+//             hitType: "event",
+//             eventCategory: a,
+//             eventAction: b,
+//             eventLabel: d + "=" + g,
+//           }));
+//       } catch (m) {}
+//     };
+//     b.prototype.analyticsTiming = function (a, b) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", "timing", {
+//             timingCategory: "Category",
+//             timingVar: a,
+//             timingValue: b,
+//           }));
+//       } catch (f) {}
+//     };
+//     return b;
+//   })(a.LocalStorage);
+//   a.GoogleCalendarDataProxy = p;
+// })(OneView || (OneView = {}));
+// (function (a) {
+//   var p = (function (d) {
+//     function b() {
+//       d.call(this);
+//       this.enableReload = false;
+//       this.enableMultipleCalendars = true;
+//       this.enableGoogleLogout =
+//         this.enableGoogleLogin =
+//         this.enableShop =
+//           false;
+//       this.enableFakeData = true;
+//       this.calendarDataProxyType = a.CalendarDataProxyType.Google;
+//       this.demoVideoSpecial = false;
+//       this.retryLogin = true;
+//       this.dbVersion = "rio0.52";
+//       this.analyticsStarted = false;
+//     }
+//     __extends(b, d);
+//     b.prototype.populateCalendarEvents = function (b) {
+//       var c = this;
+//       this.loadReadyCallback = b;
+//       this.calendarEvents = [];
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.calendars = [];
+//       a.core.calendarPrimaryId = void 0;
+//       a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+//       try {
+//         this.loadEventsFromCache() ? this.finalizeLoad() : this.makeApiCall();
+//       } catch (f) {
+//         window.setTimeout(function () {
+//           c.populateCalendarEvents(b);
+//         }, 200);
+//       }
+//     };
+//     b.prototype.saveSettings = function () {
+//       this.saveEventsToCache();
+//     };
+//     b.prototype.logout = function () {};
+//     b.prototype.login = function () {
+//       a.DemoCalendarDataProxy.setLastSessionWasInDemoMode(false);
+//       this.enableGoogleLogin = false;
+//       this.enableReload = this.enableMultipleCalendars = true;
+//       this.enableFakeData = this.enableGoogleLogout = false;
+//       this.makeApiCall();
+//     };
+//     b.prototype.reload = function () {
+//       this.clearCache();
+//       this.calendarEvents = [];
+//       a.core.loadingHandler.startLoading();
+//       a.core.calendarEventHandler.clearAllEvents();
+//       a.core.redraw(true);
+//       this.makeApiCall();
+//     };
+//     b.prototype.makeApiCall = function () {
+//       this.loadCalendars();
+//       this.loadEvents();
+//       this.finalizeLoad();
+//     };
+//     b.prototype.finalizeLoad = function () {
+//       var b;
+//       this.applyCalendarsVisibilitySettings();
+//       a.core.calendarEventHandler.clearAllEvents();
+//       for (b = 0; b < this.calendarEvents.length; b++)
+//         a.core.getCalendar(this.calendarEvents[b].calendarId).visibility ==
+//           a.VisibilityType.Visible &&
+//           a.core.calendarEventHandler.addEventToCalendar(
+//             this.calendarEvents[b]
+//           );
+//       a.core.calendarEventHandler.findCommonTimes();
+//       a.core.loadingHandler.stopLoading();
+//       this.loadReadyCallback && this.loadReadyCallback();
+//       a.core.redraw(true);
+//     };
+//     b.prototype.canEditRecurring = function (a) {
+//       return false;
+//     };
+//     b.prototype.getRRuleObject = function (a, b) {};
+//     b.prototype.connectionOk = function () {
+//       return true;
+//     };
+//     b.prototype.deleteEvent = function (a, b, d) {};
+//     b.prototype.addNewEvent = function (a, b) {};
+//     b.prototype.getFirstRecurringEvent = function (a) {
+//       return this.calendarEvents.filter(function (b) {
+//         return b.recurringEventId === a.recurringEventId;
+//       })[0];
+//     };
+//     b.prototype.editExistingEvent = function (a, b) {};
+//     b.prototype.clearCache = function () {
+//       this.localStorageSetItem("oneview_verrsion", void 0);
+//       this.localStorageSetItem("oneview_saveComplete", void 0);
+//       this.localStorageSetItem("oneview_allEvents", void 0);
+//       this.localStorageSetItem("oneview_allCalendars", void 0);
+//       this.localStorageSetItem("oneview_primaryCalendarId", void 0);
+//       this.localStorageSetItem("oneview_lastCalendarId", void 0);
+//       this.localStorageSetItem("oneview_nextSyncTokenCalendars", void 0);
+//       this.localStorageSetItem("oneview_google", void 0);
+//       this.localStorageSetItem("oneview_saveComplete", void 0);
+//     };
+//     b.prototype.saveEventsToCache = function () {
+//       try {
+//         this.localStorageSetItem("oneview_verrsion", this.dbVersion),
+//           this.localStorageSetItem(
+//             "oneview_saveComplete",
+//             JSON.stringify(false)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_allCalendars",
+//             JSON.stringify(a.core.calendars)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_primaryCalendarId",
+//             JSON.stringify(a.core.calendarPrimaryId)
+//           ),
+//           this.localStorageSetItem(
+//             "oneview_nextSyncTokenCalendars",
+//             JSON.stringify(this.nextSyncTokenCalendars)
+//           ),
+//           this.localStorageSetItem("oneview_google", JSON.stringify(true)),
+//           this.localStorageSetItem(
+//             "oneview_saveComplete",
+//             JSON.stringify(true)
+//           );
+//       } catch (c) {}
+//     };
+//     b.prototype.loadEventsFromCache = function () {
+//       var b = localStorage.getItem("oneview_verrsion"),
+//         d = localStorage.getItem("oneview_saveComplete"),
+//         f = localStorage.getItem("oneview_allCalendars"),
+//         g = localStorage.getItem("oneview_primaryCalendarId"),
+//         m = localStorage.getItem("oneview_google"),
+//         n = localStorage.getItem("oneview_nextSyncTokenCalendars");
+//       if (
+//         b !== this.dbVersion ||
+//         "true" != d ||
+//         null == f ||
+//         void 0 == f ||
+//         "undefined" == f ||
+//         null == g ||
+//         void 0 == g ||
+//         "undefined" == g ||
+//         null == m ||
+//         void 0 == m ||
+//         "undefined" == m
+//       )
+//         return false;
+//       try {
+//         (a.core.calendarPrimaryId = JSON.parse(g)),
+//           this.loadEvents(),
+//           (a.core.calendars = JSON.parse(f, this.dateTimeReviver)),
+//           (this.nextSyncTokenCalendars = n);
+//       } catch (l) {
+//         return false;
+//       }
+//       return true;
+//     };
+//     b.prototype.loadCalendars = function () {
+//       a.core.calendars = JSON.parse(rioCalendars, this.dateTimeReviver);
+//     };
+//     b.prototype.loadEvents = function () {
+//       this.calendarEvents = JSON.parse(rioEvents, this.dateTimeReviver);
+//     };
+//     b.prototype.persistCalendarsVisibilitySettings = function (a) {
+//       this.localStorageSetItem("oneview_visibilitySettings", JSON.stringify(a));
+//       this.reload();
+//     };
+//     b.prototype.applyCalendarsVisibilitySettings = function () {
+//       var b = localStorage.getItem("oneview_visibilitySettings");
+//       if (null !== b && void 0 !== b)
+//         for (
+//           var b = JSON.parse(b, this.dateTimeReviver), d = 0;
+//           d < a.core.calendars.length;
+//           d++
+//         )
+//           for (var f = 0; f < b.length; f++)
+//             b[f].id == a.core.calendars[d].id &&
+//               (a.core.calendars[d].visibility = b[f].newVisibility);
+//     };
+//     b.prototype.analyticsInit = function () {
+//       0 == this.analyticsStarted &&
+//         ((this.analyticsStarted = true),
+//         ga.create("UA-69941766-7", "auto"),
+//         ga("send", "pageview"));
+//     };
+//     b.prototype.analyticsEvent = function (a, b) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", {
+//             hitType: "event",
+//             eventCategory: a,
+//             eventAction: b,
+//             eventLabel: b,
+//           }));
+//       } catch (f) {}
+//     };
+//     b.prototype.analyticsPage = function (a) {
+//       try {
+//         ga && (this.analyticsInit(), ga("send", "pageview", "/" + a));
+//       } catch (e) {}
+//     };
+//     b.prototype.analyticsValue = function (a, b, d, g) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", {
+//             hitType: "event",
+//             eventCategory: a,
+//             eventAction: b,
+//             eventLabel: d + "=" + g,
+//           }));
+//       } catch (m) {}
+//     };
+//     b.prototype.analyticsTiming = function (a, b) {
+//       try {
+//         ga &&
+//           (this.analyticsInit(),
+//           ga("send", "timing", {
+//             timingCategory: "Category",
+//             timingVar: a,
+//             timingValue: b,
+//           }));
+//       } catch (f) {}
+//     };
+//     return b;
+//   })(a.LocalStorage);
+//   a.RioCalendarDataProxy = p;
+// })(OneView || (OneView = {}));
 (function (a) {
   var p = (function () {
     function d() {
