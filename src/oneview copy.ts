@@ -24,8 +24,6 @@ var oneview9;
   };
 })(oneview9 || (oneview9 = {}));
 
-const OneView: any = {};
-
 // LocalStorage class
 class LocalStorage {
   constructor(readonly calendarEvents = []) {}
@@ -48,7 +46,7 @@ class LocalStorage {
     } catch (e) {}
   }
 }
-OneView.LocalStorage = LocalStorage;
+
 class CommonUserSettings extends LocalStorage {
   cachedTimeZoneDiffInMinutes = undefined;
   cachedGrayDays: string | undefined = undefined;
@@ -306,7 +304,6 @@ class CommonUserSettings extends LocalStorage {
     return a;
   }
 }
-OneView.CommonUserSettings = CommonUserSettings;
 class DrawArea {
   previousFont = "";
   canvasCache = new OneView.SpeedCache();
@@ -505,16 +502,6 @@ class DrawArea {
     );
   }
 }
-OneView.DrawArea = DrawArea;
-
-OneView.CalendarDataProxyType = {
-  0: "Google",
-  1: "Demo",
-  2: "Android",
-  Google: 0,
-  Demo: 1,
-  Android: 2,
-};
 
 class DrawAreaEffects {
   preparingScrollCounter = 0;
@@ -657,8 +644,6 @@ class DrawAreaEffects {
     OneView.core.redraw(false);
   }
 }
-
-OneView.DrawAreaEffects = DrawAreaEffects;
 
 class CalendarsControl {
   pageHtml =
@@ -854,12 +839,10 @@ class CalendarsControl {
       OneView.core.appStateHandler.back();
   }
 }
-OneView.CalendarsControl = CalendarsControl;
 
 class CalendarVisibilitySetting {
   constructor(readonly id: string, readonly oldVisibility: any) {}
 }
-OneView.CalendarVisibilitySetting = CalendarVisibilitySetting;
 
 class SettingsControl {
   pageHtml =
@@ -1094,8 +1077,6 @@ class SettingsControl {
       OneView.core.appStateHandler.back();
   }
 }
-
-OneView.SettingsControl = SettingsControl;
 
 class MainMenuControl {
   constructor() {
@@ -1662,7 +1643,6 @@ class MainMenuControl {
       : this.safeBack();
   }
 }
-OneView.MainMenuControl = MainMenuControl;
 
 class AddButtonControl {
   constructor() {
@@ -1996,8 +1976,6 @@ class AddButtonControl {
   redraw() {}
 }
 
-OneView.AddButtonControl = AddButtonControl;
-
 class PopupMenuControl_Base {
   constructor() {
     this.menuItems = [];
@@ -2119,8 +2097,6 @@ class PopupMenuControl_Base {
   }
 }
 
-OneView.PopupMenuControl_Base = PopupMenuControl_Base;
-
 class MenuItemInfo {
   constructor(a, b, c) {
     this.isHighlited = false;
@@ -2130,8 +2106,6 @@ class MenuItemInfo {
     this.onMenuItemClicked = c;
   }
 }
-
-OneView.MenuItemInfo = MenuItemInfo;
 
 class EditEventControl {
   constructor() {
@@ -2691,8 +2665,6 @@ class EditEventControl {
   }
 }
 
-OneView.EditEventControl = EditEventControl;
-
 class EditRecurrenceControl {
   constructor() {
     this.pageHtml =
@@ -2932,8 +2904,6 @@ class EditRecurrenceControl {
     history.back();
   }
 }
-
-OneView.EditRecurrenceControl = EditRecurrenceControl;
 
 class ViewEventControl {
   constructor() {
@@ -3272,8 +3242,6 @@ class ViewEventControl {
   }
 }
 
-OneView.ViewEventControl = ViewEventControl;
-
 class Helper {
   constructor() {
     this.monthesShort = new OneView.Hashtable();
@@ -3559,8 +3527,6 @@ class Helper {
     return isNaN(+a) ? c : +a;
   }
 }
-
-OneView.Helper = Helper;
 
 class DomHandler {
   constructor() {
@@ -4267,7 +4233,6 @@ class DomHandler {
     false === f && a.push(c);
   }
 }
-OneView.DomHandler = DomHandler;
 
 class LoadingHandler {
   constructor() {
@@ -4338,8 +4303,6 @@ class LoadingHandler {
     OneView.core.redraw(true);
   }
 }
-
-OneView.LoadingHandler = LoadingHandler;
 
 class AppStateHandler {
   constructor() {
@@ -4520,7 +4483,6 @@ class AppStateHandler {
   }
   viewAbout() {}
 }
-OneView.AppStateHandler = AppStateHandler;
 
 class CalendarDateHandler {
   constructor() {
@@ -4790,7 +4752,7 @@ class CalendarDateHandler {
       OneView.core.settings.titleWidth
     );
   }
-  getHitCalendarDateObjectAmong(a, c, e, f) {
+  getHitCalendarDateObjectAmong(a, c, e, f): CalendarDateObject {
     var b = e.length,
       d;
     if (a > f)
@@ -4806,7 +4768,7 @@ class CalendarDateHandler {
   clearSelect() {
     this.selectedObjects = [];
   }
-  selectCalendarDateObject(a) {
+  selectCalendarDateObject(a?: CalendarDateObject) {
     a && this.selectedObjects.push(a);
   }
   getHitWeekAt(b, c, e) {
@@ -4880,7 +4842,7 @@ class CalendarDateHandler {
     }
     this.gotoCalendarDateObject(e, c);
   }
-  gotoCalendarDateObject(b, c) {
+  gotoCalendarDateObject(b: CalendarDateObject, c) {
     this.selectCalendarDateObject(b);
     if (void 0 !== b)
       if (
@@ -5520,7 +5482,7 @@ class CalendarDateHandler {
             false
           ));
   }
-  verifyDetailsArePopulatedFor(a) {
+  verifyDetailsArePopulatedFor(a: CalendarDateObject) {
     a.detailsArePopulated || this.populateDetails(a);
   }
   prepareThouroughRedraw(a) {
@@ -5580,10 +5542,10 @@ class CalendarDateHandler {
         this.paintDaySpecialDetails(e, f);
     return true;
   }
-  populateDetails(a) {
+  populateDetails(a: CalendarDateObject) {
     this.populateDetails_helper(a);
   }
-  populateDetails_helper(b) {
+  populateDetails_helper(b: CalendarDateObject) {
     b.details = [];
     for (var c = new Date(b.startDateTime.getTime()); c < b.endDateTime; ) {
       var e;
@@ -5768,7 +5730,7 @@ class CalendarDateHandler {
           ));
     }
   }
-  paintMonthSpecialDetails(b, c) {
+  paintMonthSpecialDetails(b: CalendarDateObject, c) {
     this.verifyDetailsArePopulatedFor(b);
     var e,
       f = OneView.core.zopHandler.getPixelFromZOP(b.startZOP),
@@ -5808,7 +5770,7 @@ class CalendarDateHandler {
           m
         );
   }
-  paintDaySpecialDetails(b, c) {
+  paintDaySpecialDetails(b: CalendarDateObject, c) {
     this.verifyDetailsArePopulatedFor(b);
     var e;
     e = OneView.core.zopHandler.getPixelFromZOP(
@@ -5828,7 +5790,6 @@ class CalendarDateHandler {
       this.paintObject(this.visibleLowestLevelObjects[e], false, f, 0);
   }
 }
-OneView.CalendarDateHandler = CalendarDateHandler;
 
 class CalendarEventHandler {
   constructor() {
@@ -6744,7 +6705,9 @@ class CalendarEventHandler {
       if (this.visibleEventTagWrappers[b].calendarEvent == a)
         return this.visibleEventTagWrappers[b];
   }
-  verifyChildCalendarDateObjectsAreReadyForParentToBeShown(b) {
+  verifyChildCalendarDateObjectsAreReadyForParentToBeShown(
+    b: CalendarDateObject
+  ) {
     OneView.core.calendarDateHandler.verifyDetailsArePopulatedFor(b);
     var c = b.details.length,
       e,
@@ -7201,8 +7164,6 @@ class CalendarEventHandler {
   }
 }
 
-OneView.CalendarEventHandler = CalendarEventHandler;
-
 class DateTimeSelectionHandler {
   constructor() {
     this.markerLeft =
@@ -7583,8 +7544,6 @@ class DateTimeSelectionHandler {
     OneView.core.appStateHandler.isDraggingBottomMarker = false;
   }
 }
-
-OneView.DateTimeSelectionHandler = DateTimeSelectionHandler;
 
 class EventHandler {
   constructor() {
@@ -8131,8 +8090,6 @@ class EventHandler {
   }
 }
 
-OneView.EventHandler = EventHandler;
-
 class ZopHandler {
   constructor() {
     this.currentDelta = 0;
@@ -8313,47 +8270,45 @@ class ZopHandler {
       OneView.core.calendarDataProxy.demoVideoSpecial &&
       500 < this.currentZoom;
     var e = this.dateToZOP(new Date());
-    debugger;
     var d = OneView.core.calendarDateHandler.getCalendarDateObject(
       e,
       OneView.CalendarDateObjectType.Title.Day,
       OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
     );
-    if (5 > d.calendarEvents.length) {
-      d = OneView.core.calendarDateHandler.getCalendarDateObject(
-        e,
-        OneView.CalendarDateObjectType.Title.Month,
-        OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
-      );
-    }
-
-    4 > d.calendarEvents.length &&
-      (d = OneView.core.calendarDateHandler.getCalendarDateObject(
-        e,
-        OneView.CalendarDateObjectType.Title.Year,
-        OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
-      ));
-    if (0 === d.calendarEvents.length)
+    // if (5 > d.calendarEvents.length) {
+    //   d = OneView.core.calendarDateHandler.getCalendarDateObject(
+    //     e,
+    //     OneView.CalendarDateObjectType.Title.Month,
+    //     OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
+    //   );
+    // }
+    // 4 > d.calendarEvents.length &&
+    //   (d = OneView.core.calendarDateHandler.getCalendarDateObject(
+    //     e,
+    //     OneView.CalendarDateObjectType.Title.Year,
+    //     OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
+    //   ));
+    // if (0 === d.calendarEvents.length)
       (e = this.dateToZOP(moment().add(-2, "days").toDate())),
         (d = this.dateToZOP(moment().add(8, "days").toDate()));
-    else
-      var g = (10 * (d.endZOP - d.startZOP)) / d.calendarEvents.length,
-        d = e + 0.8 * g,
-        e = Math.max(
-          e - 0.2 * g,
-          this.dateToZOP(moment().add(-7, "days").toDate())
-        ),
-        d = Math.min(d, this.dateToZOP(moment().add(30, "days").toDate()));
-    b
-      ? OneView.core.drawAreaEffects.startAutoZoom(e, d, c, function () {})
-      : this.setZOPBounds(e, d);
-    OneView.core.calendarDataProxy &&
-      OneView.core.calendarDataProxy.analyticsValue(
-        "Value",
-        "Start",
-        "Initial Zoom",
-        d - e
-      );
+    // else
+    //   var g = (10 * (d.endZOP - d.startZOP)) / d.calendarEvents.length,
+    //     d = e + 0.8 * g,
+    //     e = Math.max(
+    //       e - 0.2 * g,
+    //       this.dateToZOP(moment().add(-7, "days").toDate())
+    //     ),
+    //     d = Math.min(d, this.dateToZOP(moment().add(30, "days").toDate()));
+    // b
+    //   ? OneView.core.drawAreaEffects.startAutoZoom(e, d, c, function () {})
+    //   : this.setZOPBounds(e, d);
+    // OneView.core.calendarDataProxy &&
+    //   OneView.core.calendarDataProxy.analyticsValue(
+    //     "Value",
+    //     "Start",
+    //     "Initial Zoom",
+    //     d - e
+    //   );
   }
   validateZoomValues() {
     this.currentZoom < this.absoluteMinZoom &&
@@ -8482,8 +8437,6 @@ class ZopHandler {
   }
 }
 
-OneView.ZopHandler = ZopHandler;
-
 class SpeedCache {
   constructor() {
     this.cacheKeys = [];
@@ -8525,8 +8478,6 @@ class SpeedCache {
   }
 }
 
-OneView.SpeedCache = SpeedCache;
-
 class Hashtable {
   constructor() {
     this.keys = [];
@@ -8542,30 +8493,6 @@ class Hashtable {
       if (this.keys[b] == a) return this.values[b];
   }
 }
-
-OneView.Hashtable = Hashtable;
-
-(function (a) {
-  a[(a.ThisOnly = 10)] = "ThisOnly";
-  a[(a.AllInSeries = 20)] = "AllInSeries";
-  a[(a.ThisAndFuture = 30)] = "ThisAndFuture";
-  a[(a.None = 40)] = "None";
-  a[(a.DontKnow = 50)] = "DontKnow";
-  a[(a.New = 51)] = "New";
-})(OneView.EventEditType || (OneView.EventEditType = {}));
-(function (a) {
-  a[(a.Visible = 10)] = "Visible";
-  a[(a.Hidden = 20)] = "Hidden";
-})(OneView.VisibilityType || (OneView.VisibilityType = {}));
-(function (a) {
-  a[(a.Minutes5 = 0)] = "Minutes5";
-  a[(a.Hour = 1)] = "Hour";
-  a[(a.Day = 2)] = "Day";
-  a[(a.Week = 3)] = "Week";
-  a[(a.Month = 4)] = "Month";
-  a[(a.Year = 5)] = "Year";
-  a[(a.Title = 6)] = "Title";
-})(OneView.CalendarDateObjectType || (OneView.CalendarDateObjectType = {}));
 
 class CalendarEventObject {
   constructor(
@@ -8597,7 +8524,6 @@ class CalendarEventObject {
     this.eventId = eventId;
   }
 }
-OneView.CalendarEventObject = CalendarEventObject;
 
 class CalendarObject {
   constructor(a, c, e, d, g, m, n) {
@@ -8612,7 +8538,6 @@ class CalendarObject {
     this.countEvents = 0;
   }
 }
-OneView.CalendarObject = CalendarObject;
 
 class Reminder {
   constructor(a) {
@@ -8740,8 +8665,6 @@ class CalendarDateObject {
   }
 }
 
-OneView.CalendarDateObject = CalendarDateObject;
-
 class PossibleEventTagsAtThisZoomLevel {
   constructor(a, c, e, d) {
     this.calendarEvent = a;
@@ -8750,8 +8673,6 @@ class PossibleEventTagsAtThisZoomLevel {
     this.position = d;
   }
 }
-
-OneView.PossibleEventTagsAtThisZoomLevel = PossibleEventTagsAtThisZoomLevel;
 
 class CalendarEventTagGroup {
   constructor(a, c) {
@@ -8763,7 +8684,6 @@ class CalendarEventTagGroup {
   }
 }
 
-OneView.CalendarEventTagGroup = CalendarEventTagGroup;
 
 class CalendarEventTagWrapper {
   constructor(a) {
@@ -8786,7 +8706,6 @@ class CalendarFullEventWrapper {
     this.calendarEvent = a;
   }
 }
-OneView.CalendarFullEventWrapper = CalendarFullEventWrapper;
 
 class Badge {
   constructor() {
@@ -8794,7 +8713,6 @@ class Badge {
   }
 }
 
-OneView.Badge = Badge;
 
 class OccupiedSpaceObject {
   constructor() {
@@ -8802,21 +8720,17 @@ class OccupiedSpaceObject {
   }
 }
 
-OneView.OccupiedSpaceObject = OccupiedSpaceObject;
-
 class TagSurface {
   constructor() {
     this.parentCollidingFullEventWrapper = void 0;
     this.maxZOP = this.minZOP = 0;
   }
 }
-OneView.TagSurface = TagSurface;
 
 class TagDataToPaint {
   constructor() {}
 }
 
-OneView.TagDataToPaint = TagDataToPaint;
 
 class NumberPair {
   constructor(a, c) {
@@ -8824,7 +8738,6 @@ class NumberPair {
     this.value2 = c;
   }
 }
-OneView.NumberPair = NumberPair;
 
 class NumberStringPair {
   constructor(a, c) {
@@ -8832,26 +8745,6 @@ class NumberStringPair {
     this.valueString = c;
   }
 }
-OneView.NumberStringPair = NumberStringPair;
-
-(function (a) {
-  a[(a.Year = 0)] = "Year";
-  a[(a.Month = 1)] = "Month";
-  a[(a.Week = 2)] = "Week";
-  a[(a.Day = 3)] = "Day";
-  a[(a.Hourly = 4)] = "Hourly";
-  a[(a.Minutely = 5)] = "Minutely";
-  a[(a.Secondly = 6)] = "Secondly";
-})(OneView.RRuleFrequencies || (OneView.RRuleFrequencies = {}));
-(function (a) {
-  a[(a.Monday = 0)] = "Monday";
-  a[(a.Tuesday = 1)] = "Tuesday";
-  a[(a.Wednesday = 2)] = "Wednesday";
-  a[(a.Thursday = 3)] = "Thursday";
-  a[(a.Friday = 4)] = "Friday";
-  a[(a.Saturday = 5)] = "Saturday";
-  a[(a.Sunday = 6)] = "Sunday";
-})(OneView.RRuleWeekDay || (OneView.RRuleWeekDay = {}));
 
 class Settings {
   constructor(a) {
@@ -8899,9 +8792,6 @@ class Settings {
     this.theme = this.themes[OneView.core.commonUserSettings.theme];
   }
 }
-
-OneView.Settings = Settings;
-
 class OriginalColorTheme {
   constructor() {
     this.themeName = "OneView Calendar Original";
@@ -8960,8 +8850,6 @@ class OriginalColorTheme {
     this.addButtonWidthFactor = 0.9;
   }
 }
-
-OneView.OriginalColorTheme = OriginalColorTheme;
 
 class MaterialColorTheme {
   constructor() {
@@ -9024,8 +8912,6 @@ class MaterialColorTheme {
     this.addButtonWidthFactor = 1.1;
   }
 }
-
-OneView.MaterialColorTheme = MaterialColorTheme;
 
 class FreeTheme {
   constructor() {
@@ -9090,8 +8976,6 @@ class FreeTheme {
   }
 }
 
-OneView.FreeTheme = FreeTheme;
-
 class DarkTheme {
   constructor() {
     this.themeName = "Dark theme";
@@ -9152,7 +9036,7 @@ class DarkTheme {
     this.addButtonWidthFactor = 1.1;
   }
 }
-OneView.DarkTheme = DarkTheme;
+
 
 class CandyTheme {
   constructor() {
@@ -9217,7 +9101,6 @@ class CandyTheme {
   }
 }
 
-OneView.CandyTheme = CandyTheme;
 
 class Core {
   constructor() {
@@ -9301,15 +9184,7 @@ class Core {
     this.loadGraphics();
   }
   loadDataProxy() {
-    this.isCordovaApp
-      ? ((this.populateCalendars = this.populateCalendars.bind(this)),
-        this.populateCalendars())
-      : (this.dynamicallyLoadFile("libs/analytics.js", "js", function () {}),
-        this.dynamicallyLoadFile(
-          "https://web.archive.org/web/20190808203716/https://apis.google.com/js/client.js?onload=populateCalendars",
-          "js",
-          function () {}
-        ));
+    this.populateCalendars()
   }
   redraw(a) {
     this.hardRedraw = a;
@@ -9589,7 +9464,6 @@ class Core {
   }
 }
 
-OneView.Core = Core;
 
 window.populateCalendars = function () {
   OneView.core.populateCalendars();
@@ -9646,7 +9520,7 @@ class Translate {
     return void 0 !== b && null !== b && "" != b ? b : a;
   }
 }
-OneView.Translate = Translate;
+
 
 class Dictionary {
   constructor() {
@@ -9684,9 +9558,6 @@ class Dictionary {
     return this;
   }
 }
-
-OneView.Dictionary = Dictionary;
-
 class CanvasHorizontalCacheObject {
   constructor(a, b) {
     this.cachedTags = [];
@@ -9929,7 +9800,6 @@ class CanvasHorizontalCacheObject {
         ((this.previousFont = c), (b.font = this.previousFont));
   }
 }
-OneView.CanvasHorizontalCacheObject = CanvasHorizontalCacheObject;
 
 class ZopDrawArea {
   constructor() {
@@ -10416,7 +10286,6 @@ class ZopDrawArea {
       240 < b.length && this.canvasContext.fillText(b.substring(240), 90, 540));
   }
 }
-OneView.ZopDrawArea = ZopDrawArea;
 
 // var d = (function () {
 //     return function (b, c, d, m, n) {
@@ -12744,9 +12613,6 @@ class ShopControl {
       OneView.core.appStateHandler.back();
   }
 }
-
-OneView.ShopControl = ShopControl;
-
 /*
      FILE ARCHIVED ON 20:37:16 Aug 08, 2019 AND RETRIEVED FROM THE
      INTERNET ARCHIVE ON 22:12:38 Aug 05, 2023.
@@ -12767,3 +12633,138 @@ playback timings (ms):
   load_resource: 1000.749 (2)
   PetaboxLoader3.resolve: 267.062 (2)
 */
+
+type OV = {
+  LocalStorage: typeof LocalStorage;
+  CommonUserSettings: typeof CommonUserSettings;
+  DrawArea: typeof DrawArea;
+  CalendarDataProxyType: {
+    0: "Google";
+    1: "Demo";
+    2: "Android";
+    Google: 0;
+    Demo: 1;
+    Android: 2;
+  };
+  DrawAreaEffects: typeof DrawAreaEffects;
+  CalendarsControl: typeof CalendarsControl;
+  CalendarVisibilitySetting: typeof CalendarVisibilitySetting;
+  SettingsControl: typeof SettingsControl;
+  MainMenuControl: typeof MainMenuControl;
+  AddButtonControl: typeof AddButtonControl;
+  PopupMenuControl_Base: typeof PopupMenuControl_Base;
+  MenuItemInfo: typeof MenuItemInfo;
+  EditEventControl: typeof EditEventControl;
+  EditRecurrenceControl: typeof EditRecurrenceControl;
+  ViewEventControl: typeof ViewEventControl;
+  Helper: typeof Helper;
+  DomHandler: typeof DomHandler;
+  LoadingHandler: typeof LoadingHandler;
+  AppStateHandler: typeof AppStateHandler;
+  CalendarDateHandler: typeof CalendarDateHandler;
+  CalendarEventHandler: typeof CalendarEventHandler;
+  DateTimeSelectionHandler: typeof DateTimeSelectionHandler;
+  EventHandler: typeof EventHandler;
+};
+
+const OneView: OV = {
+  LocalStorage,
+  CommonUserSettings,
+  DrawArea,
+  CalendarDataProxyType: {
+    0: "Google",
+    1: "Demo",
+    2: "Android",
+    Google: 0,
+    Demo: 1,
+    Android: 2,
+  },
+  DrawAreaEffects,
+  CalendarsControl,
+  CalendarVisibilitySetting,
+  SettingsControl,
+  MainMenuControl,
+  AddButtonControl,
+  PopupMenuControl_Base,
+  MenuItemInfo,
+  EditEventControl,
+  EditRecurrenceControl,
+  ViewEventControl,
+  Helper,
+  DomHandler,
+  LoadingHandler,
+  AppStateHandler,
+  CalendarDateHandler,
+  CalendarEventHandler,
+  DateTimeSelectionHandler,
+  EventHandler,
+};
+OneView.ZopHandler = ZopHandler;
+OneView.SpeedCache = SpeedCache;
+OneView.Hashtable = Hashtable;
+
+(function (a) {
+  a[(a.ThisOnly = 10)] = "ThisOnly";
+  a[(a.AllInSeries = 20)] = "AllInSeries";
+  a[(a.ThisAndFuture = 30)] = "ThisAndFuture";
+  a[(a.None = 40)] = "None";
+  a[(a.DontKnow = 50)] = "DontKnow";
+  a[(a.New = 51)] = "New";
+})(OneView.EventEditType || (OneView.EventEditType = {}));
+(function (a) {
+  a[(a.Visible = 10)] = "Visible";
+  a[(a.Hidden = 20)] = "Hidden";
+})(OneView.VisibilityType || (OneView.VisibilityType = {}));
+(function (a) {
+  a[(a.Minutes5 = 0)] = "Minutes5";
+  a[(a.Hour = 1)] = "Hour";
+  a[(a.Day = 2)] = "Day";
+  a[(a.Week = 3)] = "Week";
+  a[(a.Month = 4)] = "Month";
+  a[(a.Year = 5)] = "Year";
+  a[(a.Title = 6)] = "Title";
+})(OneView.CalendarDateObjectType || (OneView.CalendarDateObjectType = {}));
+OneView.CalendarEventObject = CalendarEventObject;
+OneView.CalendarObject = CalendarObject;
+OneView.CalendarDateObject = CalendarDateObject;
+OneView.PossibleEventTagsAtThisZoomLevel = PossibleEventTagsAtThisZoomLevel;
+OneView.Reminder = Reminder
+OneView.CalendarEventTagGroup = CalendarEventTagGroup;
+OneView.CalendarFullEventWrapper = CalendarFullEventWrapper;
+OneView.CalendarEventTagWrapper = CalendarEventTagWrapper
+OneView.NumberStringPair = NumberStringPair;
+OneView.NumberPair = NumberPair;
+OneView.TagDataToPaint = TagDataToPaint;
+OneView.TagSurface = TagSurface;
+OneView.OccupiedSpaceObject = OccupiedSpaceObject;
+OneView.Badge = Badge;
+(function (a) {
+  a[(a.Year = 0)] = "Year";
+  a[(a.Month = 1)] = "Month";
+  a[(a.Week = 2)] = "Week";
+  a[(a.Day = 3)] = "Day";
+  a[(a.Hourly = 4)] = "Hourly";
+  a[(a.Minutely = 5)] = "Minutely";
+  a[(a.Secondly = 6)] = "Secondly";
+})(OneView.RRuleFrequencies || (OneView.RRuleFrequencies = {}));
+(function (a) {
+  a[(a.Monday = 0)] = "Monday";
+  a[(a.Tuesday = 1)] = "Tuesday";
+  a[(a.Wednesday = 2)] = "Wednesday";
+  a[(a.Thursday = 3)] = "Thursday";
+  a[(a.Friday = 4)] = "Friday";
+  a[(a.Saturday = 5)] = "Saturday";
+  a[(a.Sunday = 6)] = "Sunday";
+})(OneView.RRuleWeekDay || (OneView.RRuleWeekDay = {}));
+OneView.OriginalColorTheme = OriginalColorTheme;
+OneView.Settings = Settings;
+OneView.MaterialColorTheme = MaterialColorTheme;
+OneView.FreeTheme = FreeTheme;
+OneView.DarkTheme = DarkTheme;
+OneView.CandyTheme = CandyTheme;
+OneView.Core = Core;
+OneView.Translate = Translate;
+OneView.Dictionary = Dictionary;
+OneView.CanvasHorizontalCacheObject = CanvasHorizontalCacheObject;
+OneView.ZopDrawArea = ZopDrawArea;
+OneView.ShopControl = ShopControl;
