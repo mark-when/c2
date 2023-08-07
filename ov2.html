@@ -1,0 +1,40 @@
+<html dir="ltr" lang="en" class="focus-outline-visible" lazy-loaded="true">
+  <head>
+    <meta charset="utf-8" />
+    <title>New Tab</title>
+    <style>
+      body {
+        background: #35363a;
+        margin: 0;
+      }
+
+      #backgroundImage {
+        border: none;
+        height: 100%;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        visibility: hidden;
+        width: 100%;
+      }
+
+      [show-background-image] #backgroundImage {
+        visibility: visible;
+      }
+    </style>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"
+      integrity="sha512-42PE0rd+wZ2hNXftlM78BSehIGzezNeQuzihiBCvUEB3CVxHvsShF86wBWwQORNxNINlBPuq7rG4WWhNiTVHFg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+  </head>
+  <body style="background-color: rgb(53, 54, 58)">
+    <div>
+      <canvas id="canvas"></canvas>
+    </div>
+    <div id="debugtext"></div>
+    <script src="dist/translations.js"></script>
+    <script src="dist/oneview copy.js"></script>
+  </body>
+</html>
