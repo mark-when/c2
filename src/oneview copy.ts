@@ -1,14 +1,4 @@
-var __extends =
-    (this && this.__extends) ||
-    function (a, p) {
-      function d() {
-        this.constructor = a;
-      }
-      for (var b in p) p.hasOwnProperty(b) && (a[b] = p[b]);
-      a.prototype =
-        null === p ? Object.create(p) : ((d.prototype = p.prototype), new d());
-    },
-  oneview9;
+var oneview9;
 
 (function (a) {
   var p;
@@ -772,7 +762,7 @@ class CalendarsControl {
             : g.add(OneView.core.calendars[e].id, f);
           OneView.core.commonUserSettings.savedCalendarColors = g;
           OneView.core.calendars[e].colorId = f;
-          OneView.core.calendars[e].visibility =OneView.VisibilityType.Visible;
+          OneView.core.calendars[e].visibility = OneView.VisibilityType.Visible;
           OneView.core.calendarDataProxy.saveSettings();
           h.styleBasedOnVisibility(
             h.liElements[e],
@@ -825,7 +815,7 @@ class CalendarsControl {
     d = OneView.core.helper.getEventColor(d, g);
     f.style.backgroundColor = d;
     f.style.borderColor = d;
-    g.visibility ==OneView.VisibilityType.Visible
+    g.visibility == OneView.VisibilityType.Visible
       ? ((e.src = "images/checkbox-checked.svg"),
         (b.style.color = OneView.core.settings.theme.colorHorizontalTitle))
       : ((e.src = "images/checkbox-unchecked.svg"),
@@ -1537,7 +1527,8 @@ class MainMenuControl {
   menuItemLogin_Click() {
     OneView.core.calendarDataProxy.analyticsEvent("Event", "Login Clicked");
     OneView.core.calendarDataProxy
-      ? ((OneView.core.calendarDataProxy = new OneView.GoogleCalendarDataProxy()),
+      ? ((OneView.core.calendarDataProxy =
+          new OneView.GoogleCalendarDataProxy()),
         OneView.core.calendarDataProxy.login())
       : OneView.core.loadDataProxy();
   }
@@ -1852,7 +1843,8 @@ class AddButtonControl {
         );
         for (
           var f = 10;
-          e && e.calendarDateObjectType === OneView.CalendarDateObjectType.Title;
+          e &&
+          e.calendarDateObjectType === OneView.CalendarDateObjectType.Title;
 
         )
           (e = OneView.core.calendarDateHandler.selectCalendarDateObjectAt(
@@ -2011,25 +2003,25 @@ class PopupMenuControl_Base {
     this.menuItems = [];
     this.menuItems = a;
   }
-  resetDrawAreaSize (a, c) {};
-  showMenuFor (b, c) {
+  resetDrawAreaSize(a, c) {}
+  showMenuFor(b, c) {
     this.x = b;
     this.y = c;
     this.tryShiftPixels = c - OneView.core.domHandler.screenHeight / 2;
     this.redraw();
-  };
-  click (a, c) {
+  }
+  click(a, c) {
     for (var b = 0; b < this.menuItems.length; b++)
       if (this.hitTest(this.menuItems[b], a, c)) {
         this.menuItems[b].onMenuItemClicked();
         return;
       }
     history.back();
-  };
-  drawAreaResized () {
+  }
+  drawAreaResized() {
     this.redraw();
-  };
-  redraw () {
+  }
+  redraw() {
     for (var b = 0, c = 0, e = 0; e < this.menuItems.length; e++)
       this.menuItems[e].isVisible &&
         ((this.menuItems[e].top = b),
@@ -2054,8 +2046,7 @@ class PopupMenuControl_Base {
       )
     );
     this.menuHeight = b + 1;
-    this.menuLeft =
-      (OneView.core.domHandler.screenWidth - this.menuWidth) / 2;
+    this.menuLeft = (OneView.core.domHandler.screenWidth - this.menuWidth) / 2;
     this.menuTop =
       (OneView.core.domHandler.screenHeight - this.menuHeight) / 2 +
       this.tryShiftPixels;
@@ -2082,8 +2073,8 @@ class PopupMenuControl_Base {
     );
     for (e = 0; e < this.menuItems.length; e++)
       this.paintMenuItem(this.menuItems[e]);
-  };
-  paintMenuItem (b) {
+  }
+  paintMenuItem(b) {
     if (b.isVisible) {
       var c = OneView.core.settings.menuItemHeight - 1;
       OneView.core.drawArea.drawFilledRectangle(
@@ -2112,26 +2103,23 @@ class PopupMenuControl_Base {
       OneView.core.drawArea.drawIcon(
         b.charCode,
         this.menuLeft + c / 2 - OneView.core.settings.menuIconHeight / 2,
-        this.menuTop +
-          b.top +
-          c / 2 -
-          OneView.core.settings.menuIconHeight / 2,
+        this.menuTop + b.top + c / 2 - OneView.core.settings.menuIconHeight / 2,
         OneView.core.settings.menuIconHeight,
         OneView.core.settings.menuIconHeight
       );
     }
-  };
-  hitTest (a, c, e) {
+  }
+  hitTest(a, c, e) {
     return c > this.menuLeft &&
       c < this.menuLeft + this.menuWidth &&
       e > this.menuTop + a.top &&
       e < this.menuTop + a.bottom
       ? true
       : false;
-  };
+  }
 }
 
-OneView.PopupMenuControl_Base = PopupMenuControl_Base
+OneView.PopupMenuControl_Base = PopupMenuControl_Base;
 
 class MenuItemInfo {
   constructor(a, b, c) {
@@ -2152,12 +2140,12 @@ class EditEventControl {
     this.isShowingDatePickerForStartTime = false;
     this.canEditReccur = true;
   }
-  reshow () {
+  reshow() {
     OneView.core.appStateHandler.editEventControlIsShowing = true;
     this.updateRecurrenceHtml();
     this.timestamp = OneView.core.getTimeStamp();
-  };
-  init (b, c) {
+  }
+  init(b, c) {
     this.calendarEvent =
       c === OneView.EventEditType.AllInSeries && b.isRecurring
         ? OneView.core.calendarDataProxy.getFirstRecurringEvent(b)
@@ -2171,8 +2159,8 @@ class EditEventControl {
       this.calendarEvent,
       this.rruleFetched
     );
-  };
-  show () {
+  }
+  show() {
     OneView.core.domHandler.hideCanvas();
     OneView.core.calendarDataProxy.analyticsPage("Edit event page");
     this.editPage = OneView.core.domHandler.pageHtmlFormatHelper(
@@ -2189,8 +2177,7 @@ class EditEventControl {
     window.setTimeout(OneView.core.domHandler.resizeDomElements, 100);
     this.durationSelectElement = document.getElementById("editEventDuration");
     this.updateDuration();
-    this.remindersSelectElement =
-      document.getElementById("editEventReminders");
+    this.remindersSelectElement = document.getElementById("editEventReminders");
     this.updateReminders();
     var b = (OneView.core.settings.titleWidth / OneView.core.ratio - 24) / 2;
     document.getElementById("editEventOk").style.padding = b + "px";
@@ -2337,14 +2324,14 @@ class EditEventControl {
           OneView.core.helper.getEventColor2(f.calendarEvent)));
       f.hideColorPickerWindow();
     });
-  };
-  calendarChanged (b) {
+  }
+  calendarChanged(b) {
     b = document.getElementById("editEventCalendar").value;
     document.getElementById("editEventColor").style.backgroundColor =
       OneView.core.helper.getCalendarColor(OneView.core.getCalendar(b));
     this.calendarEvent.extraColorId = void 0;
-  };
-  onSuccess (a) {
+  }
+  onSuccess(a) {
     this.isShowingDatePickerForStartTime
       ? ((document.getElementById("editEventTimeStart").value =
           this.timeToValue(a)),
@@ -2354,9 +2341,9 @@ class EditEventControl {
           this.timeToValue(a)),
         (this.calendarEvent.endDateTime = a),
         this.endChanged(null));
-  };
-  onError (a) {};
-  showDatePicker (b) {
+  }
+  onError(a) {}
+  showDatePicker(b) {
     this.isShowingDatePickerForStartTime = b;
     b = {
       date: b
@@ -2369,16 +2356,16 @@ class EditEventControl {
     this.onSuccess = this.onSuccess.bind(this);
     this.onError = this.onError.bind(this);
     datePicker.show(b, this.onSuccess, this.onError);
-  };
-  showDatePickerForStartTime (a) {
+  }
+  showDatePickerForStartTime(a) {
     a.preventDefault();
     this.showDatePicker(true);
-  };
-  showDatePickerForEndTime (a) {
+  }
+  showDatePickerForEndTime(a) {
     a.preventDefault();
     this.showDatePicker(false);
-  };
-  showMessage (b, c) {
+  }
+  showMessage(b, c) {
     var e = this;
     document.getElementById("message").style.display = "table";
     document.getElementById("messageText").innerText = b;
@@ -2389,12 +2376,12 @@ class EditEventControl {
       },
       this
     );
-  };
-  hideMessage (b) {
+  }
+  hideMessage(b) {
     document.getElementById("message").style.display = "none";
     b && OneView.core.appStateHandler.back();
-  };
-  showColorPickerWindow () {
+  }
+  showColorPickerWindow() {
     OneView.core.commonUserSettings.licenceColorPicker
       ? (document.getElementById("colorPickerWindow").style.display = "table")
       : ((document.getElementById("noColorPickerWindow").style.display =
@@ -2409,17 +2396,17 @@ class EditEventControl {
           this.hideNoColorPickerWindow,
           this
         ));
-  };
-  hideColorPickerWindow () {
+  }
+  hideColorPickerWindow() {
     document.getElementById("colorPickerWindow").style.display = "none";
-  };
-  hideNoColorPickerWindow () {
+  }
+  hideNoColorPickerWindow() {
     document.getElementById("noColorPickerWindow").style.display = "none";
-  };
-  gotoShop () {
+  }
+  gotoShop() {
     OneView.core.appStateHandler.viewShop();
-  };
-  updateRecurrenceHtml () {
+  }
+  updateRecurrenceHtml() {
     this.canEditReccur = true;
     this.calendarEvent.isRecurring &&
       this.editType != OneView.EventEditType.ThisOnly &&
@@ -2442,8 +2429,8 @@ class EditEventControl {
     this.calendarEvent.isRecurring ||
       (document.getElementById("editEventRecurrence").innerHTML =
         "NO (Press to add)");
-  };
-  autoAdjustSoNotNegativeTime () {
+  }
+  autoAdjustSoNotNegativeTime() {
     this.calendarEvent.startDateTime >= this.calendarEvent.endDateTime &&
       ((this.calendarEvent.endDateTime = moment(
         this.calendarEvent.startDateTime
@@ -2452,11 +2439,11 @@ class EditEventControl {
         .toDate()),
       this.updateRealDateInputs(),
       this.updateFakes());
-  };
-  showFakeTimeStart () {
+  }
+  showFakeTimeStart() {
     this.autoAdjustSoNotNegativeTime();
-  };
-  showFakeTimeEnd () {
+  }
+  showFakeTimeEnd() {
     this.calendarEvent.startDateTime >= this.calendarEvent.endDateTime &&
       ((this.calendarEvent.startDateTime = moment(
         this.calendarEvent.endDateTime
@@ -2465,33 +2452,33 @@ class EditEventControl {
         .toDate()),
       this.updateRealDateInputs(),
       this.updateFakes());
-  };
-  dateToValue (a) {
+  }
+  dateToValue(a) {
     this.timezoneOffset = 6e4 * a.getTimezoneOffset();
     return new Date(a.getTime() - this.timezoneOffset)
       .toISOString()
       .replace("Z", "")
       .split("T")[0];
-  };
-  timeToValue (a) {
+  }
+  timeToValue(a) {
     this.timezoneOffset = 6e4 * a.getTimezoneOffset();
     return new Date(a.getTime() - this.timezoneOffset)
       .toISOString()
       .replace("Z", "")
       .split("T")[1];
-  };
-  valueToDate (a) {
+  }
+  valueToDate(a) {
     return new Date(new Date(a).getTime() + this.timezoneOffset);
-  };
-  rruleFetched (a) {
+  }
+  rruleFetched(a) {
     a && (this.originalRRule = this.calendarEvent.rruleToSave = a);
-  };
-  hide () {
+  }
+  hide() {
     OneView.core.appStateHandler.editEventControlIsShowing = false;
     OneView.core.domHandler.showCanvas();
     OneView.core.domHandler.removeElement(this.editPage.id);
-  };
-  startChanged (b) {
+  }
+  startChanged(b) {
     var c = this;
     new OneView.Helper().isAndroid()
       ? (this.readDateTimeToCalendarEvent(),
@@ -2503,15 +2490,15 @@ class EditEventControl {
         window.setTimeout(function () {
           c.startChangedOnWeb(b);
         }, 700));
-  };
-  startChangedOnWeb (b) {
+  }
+  startChangedOnWeb(b) {
     OneView.core.getTimeStamp() < this.lastStartChangedOnWeb + 600 ||
       (this.readDateTimeToCalendarEvent(),
       this.updateEndBasedOnDuration(),
       this.autoAdjustSoNotNegativeTime(),
       window.setTimeout(b.target.focus, 50));
-  };
-  endChanged (b) {
+  }
+  endChanged(b) {
     var c = this;
     new OneView.Helper().isAndroid()
       ? (this.readDateTimeToCalendarEvent(),
@@ -2524,24 +2511,22 @@ class EditEventControl {
         window.setTimeout(function () {
           c.endChangedOnWeb(b);
         }, 700));
-  };
-  endChangedOnWeb (b) {
+  }
+  endChangedOnWeb(b) {
     OneView.core.getTimeStamp() < this.lastEndChangedOnWeb + 600 ||
       (this.readDateTimeToCalendarEvent(),
       this.autoAdjustSoNotNegativeTime(),
       this.updateFakes(),
       this.updateDuration(),
       window.setTimeout(b.target.focus, 50));
-  };
-  updateFakes () {
+  }
+  updateFakes() {
     document.getElementById("fakeDateStart").innerText =
-      OneView.core.helper.GetDateWithWeekDay(
-        this.calendarEvent.startDateTime
-      );
+      OneView.core.helper.GetDateWithWeekDay(this.calendarEvent.startDateTime);
     document.getElementById("fakeDateEnd").innerText =
       OneView.core.helper.GetDateWithWeekDay(this.calendarEvent.endDateTime);
-  };
-  updateRealDateInputs () {
+  }
+  updateRealDateInputs() {
     document.getElementById("editEventDateStart").value = this.dateToValue(
       this.calendarEvent.startDateTime
     );
@@ -2554,18 +2539,18 @@ class EditEventControl {
     document.getElementById("editEventTimeEnd").value = this.timeToValue(
       this.calendarEvent.endDateTime
     );
-  };
-  validateStartAndEnd () {
+  }
+  validateStartAndEnd() {
     return this.calendarEvent.startDateTime >= this.calendarEvent.endDateTime
       ? (this.showMessage("Please enter a valid end time.", false), false)
       : true;
-  };
-  validateTitle (a) {
+  }
+  validateTitle(a) {
     return null == a || 0 == a.length
       ? (this.showMessage("Please enter a title.", false), false)
       : true;
-  };
-  editEventOk (b) {
+  }
+  editEventOk(b) {
     b.preventDefault();
     b = document.getElementById("editEventTitle").value;
     if (
@@ -2597,10 +2582,7 @@ class EditEventControl {
             true
           ),
           (this.calendarEvent.calendarId = c),
-          OneView.core.calendarDataProxy.addNewEvent(
-            this.calendarEvent,
-            true
-          ))
+          OneView.core.calendarDataProxy.addNewEvent(this.calendarEvent, true))
         : ((this.calendarEvent.calendarId = c),
           this.editType == OneView.EventEditType.New
             ? OneView.core.calendarDataProxy.addNewEvent(
@@ -2623,8 +2605,8 @@ class EditEventControl {
           (OneView.core.commonUserSettings.hasShownRemindersInfo = true))
         : OneView.core.appStateHandler.back();
     }
-  };
-  readDateTimeToCalendarEvent () {
+  }
+  readDateTimeToCalendarEvent() {
     this.calendarEvent.startDateTime = this.valueToDate(
       document.getElementById("editEventDateStart").value +
         "T" +
@@ -2636,19 +2618,17 @@ class EditEventControl {
     this.calendarEvent.endDateTime = this.valueToDate(
       document.getElementById("editEventDateEnd").value +
         "T" +
-        this.addMiliseconds(
-          document.getElementById("editEventTimeEnd").value
-        ) +
+        this.addMiliseconds(document.getElementById("editEventTimeEnd").value) +
         "Z"
     );
     OneView.core.zopHandler.updateStartEndZOP(this.calendarEvent);
     OneView.core.calendarEventHandler.gradeCalendarEvent(this.calendarEvent);
     OneView.core.calendarEventHandler.reorderAllEvents();
-  };
-  addMiliseconds (a) {
+  }
+  addMiliseconds(a) {
     return 5 == a.length ? a + ":00.000" : 8 == a.length ? a + ".000" : a;
-  };
-  editEventCancel (b) {
+  }
+  editEventCancel(b) {
     b.preventDefault();
     this.calendarEvent.startDateTime = this.originalStartDate;
     this.calendarEvent.endDateTime = this.originalEndDate;
@@ -2658,24 +2638,24 @@ class EditEventControl {
     OneView.core.calendarEventHandler.gradeCalendarEvent(this.calendarEvent);
     OneView.core.calendarEventHandler.reorderAllEvents();
     OneView.core.appStateHandler.back();
-  };
-  doNothing (a) {};
-  editEventDurationChanged (b) {
+  }
+  doNothing(a) {}
+  editEventDurationChanged(b) {
     b = OneView.core.domHandler.getSelectOptions(this.durationSelectElement);
     this.calendarEvent.endDateTime = moment(this.calendarEvent.startDateTime)
       .add("milliseconds", b)
       .toDate();
     this.updateRealDateInputs();
     this.updateFakes();
-  };
-  updateEndBasedOnDuration () {
+  }
+  updateEndBasedOnDuration() {
     this.calendarEvent.endDateTime = moment(this.calendarEvent.startDateTime)
       .add("milliseconds", this.previousDuration)
       .toDate();
     this.updateRealDateInputs();
     this.updateFakes();
-  };
-  updateDuration () {
+  }
+  updateDuration() {
     this.previousDuration =
       this.calendarEvent.endDateTime.getTime() -
       this.calendarEvent.startDateTime.getTime();
@@ -2684,22 +2664,22 @@ class EditEventControl {
       this.calendarEvent.startDateTime,
       this.calendarEvent.endDateTime
     );
-  };
-  updateReminders () {
+  }
+  updateReminders() {
     void 0 == this.calendarEvent.reminders &&
       (this.calendarEvent.reminders = []);
     OneView.core.domHandler.addRemindersToSelectNode(
       this.remindersSelectElement,
       this.calendarEvent.reminders
     );
-  };
-  setByDuration (a) {};
-  setByTime (a) {};
-  editRecurrency (b) {
+  }
+  setByDuration(a) {}
+  setByTime(a) {}
+  editRecurrency(b) {
     this.canEditReccur &&
       OneView.core.appStateHandler.editRecurrence(this.calendarEvent);
-  };
-  moveEvent (b) {
+  }
+  moveEvent(b) {
     this.readDateTimeToCalendarEvent();
     this.hide();
     OneView.core.appStateHandler.startMoveCalendarEventObject(
@@ -2708,24 +2688,23 @@ class EditEventControl {
       OneView.core.domHandler.screenHeight / 2,
       OneView.EventEditType.DontKnow
     );
-  };
+  }
 }
 
 OneView.EditEventControl = EditEventControl;
 
 class EditRecurrenceControl {
-
   constructor() {
     this.pageHtml =
       '<div id="editRecurrenceTopBar" class="topBar">    <button id="editRecurrenceCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/></span><span>{#Cancel#}</span></button>    <button id="editRecurrenceOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/></span><span>{#Ok#}</span></button></div><div class="pageContent" id="editRecurrenceArea" style="float:left; background-color: #E9E9E9;">        <div class="editRecurrencePopupContent pageTopPadding" id="editRecurrencePopupContent">            <div class="miniTitle sizedTitle">{#Frequency#}</div>            <div style="position: relative"><div class="inputBox">                <select class="base inputBase" id="editRecurrenceFrequency">                    <option class="inputOption" value="none">{#Not repeated#}</option>                    <option class="inputOption" value="day">{#Day#}</option>                    <option class="inputOption" value="week">{#Week#}</option>                    <option class="inputOption" value="month">{#Month#}</option>                    <option class="inputOption" value="year">{#Year#}</option>                </select>            </div></div>            <div id="daySelectionArea">                <div class="miniTitle sizedTitle">{#Every X day(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="dayInterval">                </div></div>            </div>            <div id="weekSelectionArea">                <div class="miniTitle sizedTitle">{#Every X week(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="weekInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Week days#}</div>                <div style="position: relative"><div class="inputBox">                    <select id="weekDays" class="base inputBase maybeBig" multiple="multiple">                    </select>                </div></div>            </div>            <div id="monthSelectionArea">                <div class="miniTitle sizedTitle">{#Every X month(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="monthInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Type#}</div>                <div style="position: relative"> <div class="inputBox">                     <select class="base inputBase" id="editRecurrenceMonthType">                        <option class="inputOption" value="date">?</option>                        <option class="inputOption" value="weekday">?</option>                    </select>                </div></div>            </div>            <div id="yearSelectionArea">                <div class="miniTitle sizedTitle">{#Every X year(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="yearInterval">                </div></div>            </div>            <div class="miniTitle sizedTitle">{#End#}</div>                <div style="position: relative"><div class="inputBox">                     <select class="base inputBase" id="editRecurrenceEnd">                         <option class="inputOption" value="forever">{#Forever#}</option>                         <option class="inputOption" value="untildate">{#End before a date#}</option>                         <option class="inputOption" value="numberoftimes">{#Repeat X times#}</option>                    </select>                </div></div>                <div class="miniTitle sizedTitle" id="numberoftimes_input_title">{#Repeat X times#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="number" class="base inputBase" name="task" id="numberoftimes_input">                </div></div>                <div class="miniTitle sizedTitle" id="untildate_input_title">{#End before#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="date" class="base inputBase inputDate" name="task" id="untildate_input">                </div></div>            </div>        </div></div><br/><br/>';
   }
-  reshow () {
+  reshow() {
     this.show();
-  };
-  init (a) {
+  }
+  init(a) {
     this.calendarEvent = a;
-  };
-  show () {
+  }
+  show() {
     var b = this;
     OneView.core.calendarDataProxy.analyticsPage("Edit recurrence page");
     this.editPage = OneView.core.domHandler.pageHtmlFormatHelper(
@@ -2808,7 +2787,8 @@ class EditRecurrenceControl {
       void 0 === b.calendarEvent.rruleToSave &&
         ((b.calendarEvent.rruleToSave = new RRule()),
         (b.calendarEvent.rruleToSave.options.count = 10),
-        (b.calendarEvent.rruleToSave.options.freq = OneView.RRuleFrequencies.Week),
+        (b.calendarEvent.rruleToSave.options.freq =
+          OneView.RRuleFrequencies.Week),
         (b.calendarEvent.rruleToSave.options.interval = 1),
         (b.calendarEvent.rruleToSave.options.byweekday = [
           b.calendarEvent.startDateTime.getDay() - 1,
@@ -2816,8 +2796,8 @@ class EditRecurrenceControl {
       f.loadSettings(b.calendarEvent.rruleToSave);
     });
     this.editPage.style.display = "block";
-  };
-  loadSettings (b) {
+  }
+  loadSettings(b) {
     this.yearInterval.value = b.options.interval.toString();
     this.monthInterval.value = b.options.interval.toString();
     this.weekInterval.value = b.options.interval.toString();
@@ -2862,11 +2842,11 @@ class EditRecurrenceControl {
       : (this.editRecurrenceEnd.value = "forever");
     this.editRecurrenceEndChanged(null);
     this.editRecurrenceFrequencyChanged(null);
-  };
-  hide () {
+  }
+  hide() {
     OneView.core.domHandler.removeElement(this.editPage.id);
-  };
-  editRecurrenceFrequencyChanged (a) {
+  }
+  editRecurrenceFrequencyChanged(a) {
     this.daySelectionArea.style.display = "none";
     this.weekSelectionArea.style.display = "none";
     this.monthSelectionArea.style.display = "none";
@@ -2879,11 +2859,10 @@ class EditRecurrenceControl {
       (this.monthSelectionArea.style.display = "block");
     "year" == this.editRecurrenceFrequency.value &&
       (this.yearSelectionArea.style.display = "block");
-  };
-  editRecurrenceEndChanged (a) {
+  }
+  editRecurrenceEndChanged(a) {
     this.untildate_input.style.display = "none";
-    this.numberoftimes_input.parentElement.parentElement.style.display =
-      "none";
+    this.numberoftimes_input.parentElement.parentElement.style.display = "none";
     this.untildate_input_title.style.display = "none";
     this.numberoftimes_input_title.style.display = "none";
     "numberoftimes" == this.editRecurrenceEnd.value &&
@@ -2893,8 +2872,8 @@ class EditRecurrenceControl {
     "untildate" == this.editRecurrenceEnd.value &&
       ((this.untildate_input.style.display = "block"),
       (this.untildate_input_title.style.display = "block"));
-  };
-  editRecurrenceOk (b) {
+  }
+  editRecurrenceOk(b) {
     b = new RRule();
     if ("year" == this.editRecurrenceFrequency.value)
       (b.options.freq = OneView.RRuleFrequencies.Year),
@@ -2947,28 +2926,27 @@ class EditRecurrenceControl {
       "none" !== this.editRecurrenceFrequency.value;
     this.hide();
     history.back();
-  };
-  editRecurrenceCancel (a) {
+  }
+  editRecurrenceCancel(a) {
     this.hide();
     history.back();
-  };
+  }
 }
 
 OneView.EditRecurrenceControl = EditRecurrenceControl;
 
 class ViewEventControl {
-
   constructor() {
     this.pageHtml =
       '<div id="editRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="editRecurrenceOnlyOne" class="base menuItem">{#Only edit this event#}</div>    <div id="editRecurrenceAll" class="base menuItem">{#Edit the whole series#}</div>    \x3c!--<div id="editRecurrenceFuture" class="base menuItem">{#Edit this and future events#}</div>--\x3e    <div id="editRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="noEditMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItemInfo">{#Sorry, this event can\'t be edited#}</div>    <div id="noEditOk" class="base menuItem">{#Ok#}</div></div></div></div><div id="deleteConfirmPopup" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Delete?#}</div>    <div>        <button id="deleteConfirmCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="deleteConfirmOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="deleteRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="deleteRecurrenceOnlyOne" class="base menuItem">{#Only delete this event#}</div>    <div id="deleteRecurrenceAll" class="base menuItem">{#Delete the whole series#}</div>    \x3c!--<div id="deleteRecurrenceFuture" class="base menuItem">{#Delete this and future events#}</div>--\x3e    <div id="deleteRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="viewEventTopBar" class="topBar">    <button id="viewEventBack" class="topBarButton" style="width:39%">        _insertBackButtonImage        <span id="viewEventBackText" style="color: _buttonImageColor">{#Back#}</span>    </button>    \x3c!--<button id="viewEventMove" class="topBarButton" style="width:?%"><img src="images/clock.svg" class="topBarImage"/><span id="viewEventMoveText">{#Move#}</span></button>--\x3e    <button id="viewEventDelete" class="topBarButton" style="width:23%">        _insertTrashButtonImage    </button>    <button id="viewEventEdit" class="topBarButton" style="width:38%">        _insertPencilButtonImage        <span id="viewEventEditText" style="color: _buttonImageColor">{#Edit#}</span>    </button></div><div class="pageContent" id="viewEventArea" style="float:left">    <div id="viewEventTitle" class="topBarTitleX" style="width:100%"></div>    <div class="pagePadding pageTopPadding" style="padding-left:20px;padding-right:20px;">        <div class="editEventPopupContent" id="editEventPopupContent">            <br>            <br>            <div>                <div class="miniTitle">{#When#}</div>                <div class="pageContentText" id="viewEventTime1"></div>                <div class="pageContentText" id="viewEventTime2"></div>                <br>            </div>            <div id="viewEventBoxWhere">                <div class="miniTitle" id="viewEventTitleWhere">{#Where#}</div>                <div class="pageContentText" id="viewEventLocation"></div>                <br>            </div>            <div id="viewEventBoxDetails">                <div class="miniTitle" id="viewEventTitleDetails">{#Details#}</div>                <div class="pageContentText" id="viewEventDetails" style="white-space: pre-wrap;"></div>                <br>            </div>            <div>                <div class="miniTitle">{#Calendar#}</div>                <div class="pageContentText" id="viewEventCalendar"></div>                <br>            </div>            <div id="viewEventBoxReminders">                <div class="miniTitle">{#Reminders#}</div>                <div class="pageContentText" id="viewEventReminders"></div>                <br>            </div>            <div id="viewEventBoxInvited">                <div class="miniTitle">{#Invited#}</div>                <div class="pageContentText" id="viewEventInvited"></div>                <br>            </div>        </div>    </div></div><br/><br/>';
   }
-  init (a) {
+  init(a) {
     this.calendarEvent = a;
-  };
-  reshow () {
+  }
+  reshow() {
     this.show();
-  };
-  show () {
+  }
+  show() {
     OneView.core.domHandler.hideCanvas();
     OneView.core.calendarDataProxy.analyticsPage("View event page");
     var b = OneView.core.domHandler.insertImages(
@@ -3069,15 +3047,15 @@ class ViewEventControl {
     )
       document.getElementById("viewEventBoxInvited").hidden = true;
     this.resize();
-  };
-  resize () {
+  }
+  resize() {
     var a;
     a = this.verifySize("Back", false);
     a = this.verifySize("Edit", a);
     a = this.verifySize("Back", a);
     this.verifySize("Edit", a);
-  };
-  remindersToString () {
+  }
+  remindersToString() {
     if (
       void 0 == this.calendarEvent.reminders ||
       0 == this.calendarEvent.reminders.length
@@ -3089,8 +3067,8 @@ class ViewEventControl {
       (c += this.reminderToString(this.calendarEvent.reminders[a])),
         a < this.calendarEvent.reminders.length - 1 && (c += ", ");
     return c;
-  };
-  reminderToString (a) {
+  }
+  reminderToString(a) {
     return 60 == a.minutes
       ? "1 hour"
       : 90 == a.minutes
@@ -3110,8 +3088,8 @@ class ViewEventControl {
       : 10080 == a.minutes
       ? "1 week"
       : a.minutes + " minutes";
-  };
-  verifySize (b, c) {
+  }
+  verifySize(b, c) {
     if (document.getElementById("viewEvent" + b)) {
       var e = document.getElementById("viewEvent" + b),
         f = document.getElementById("viewEvent" + b + "Text"),
@@ -3131,29 +3109,29 @@ class ViewEventControl {
         "inline";
       return false;
     }
-  };
-  hide () {
+  }
+  hide() {
     OneView.core.appStateHandler.viewEventControlIsShowing = false;
     OneView.core.domHandler.showCanvas();
     OneView.core.domHandler.removeElement(this.viewPage.id);
-  };
-  viewEventBack (b) {
+  }
+  viewEventBack(b) {
     OneView.core.appStateHandler.back();
-  };
-  viewEventDelete (b) {
+  }
+  viewEventDelete(b) {
     OneView.core.calendarEventHandler.canEditEvent(this.calendarEvent) &&
       (this.calendarEvent.isRecurring && this.calendarEvent.recurringEventId
         ? this.showDeleteRecurrenceMenu()
         : this.showDeleteConfirm());
-  };
-  deleteEvent () {
+  }
+  deleteEvent() {
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.deleteEvent(
       this.calendarEvent,
       OneView.EventEditType.DontKnow
     );
-  };
-  viewEventEdit (b) {
+  }
+  viewEventEdit(b) {
     OneView.core.calendarEventHandler.canEditEvent(this.calendarEvent) &&
       (this.calendarEvent.isRecurring && this.calendarEvent.recurringEventId
         ? OneView.core.calendarDataProxy.canEditRecurring(this.calendarEvent)
@@ -3164,19 +3142,19 @@ class ViewEventControl {
             this.calendarEvent,
             OneView.EventEditType.DontKnow
           )));
-  };
-  showNoEditMenu () {
+  }
+  showNoEditMenu() {
     document.getElementById("noEditMenu").style.display = "table";
     OneView.core.domHandler.addClickEvent(
       "noEditOk",
       this.hideNoEditMenu,
       this
     );
-  };
-  hideNoEditMenu () {
+  }
+  hideNoEditMenu() {
     document.getElementById("noEditMenu").style.display = "none";
-  };
-  showDeleteConfirm () {
+  }
+  showDeleteConfirm() {
     document.getElementById("deleteConfirmPopup").style.display = "table";
     OneView.core.domHandler.addClickEvent(
       "deleteConfirmOk",
@@ -3188,8 +3166,8 @@ class ViewEventControl {
       this.hideDeleteConfirm,
       this
     );
-  };
-  showEditRecurrenceMenu () {
+  }
+  showEditRecurrenceMenu() {
     document.getElementById("editRecurrenceMenu").style.display = "table";
     OneView.core.domHandler.addClickEvent(
       "editRecurrenceOnlyOne",
@@ -3206,38 +3184,38 @@ class ViewEventControl {
       this.hideEditRecurrenceMenu,
       this
     );
-  };
-  editRecurrenceOnlyOne () {
+  }
+  editRecurrenceOnlyOne() {
     this.hideEditRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.editEvent(
       this.calendarEvent,
       OneView.EventEditType.ThisOnly
     );
-  };
-  editRecurrenceAll () {
+  }
+  editRecurrenceAll() {
     this.hideEditRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.editEvent(
       this.calendarEvent,
       OneView.EventEditType.AllInSeries
     );
-  };
-  editRecurrenceFuture () {
+  }
+  editRecurrenceFuture() {
     this.hideEditRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.editEvent(
       this.calendarEvent,
       OneView.EventEditType.ThisAndFuture
     );
-  };
-  hideEditRecurrenceMenu () {
+  }
+  hideEditRecurrenceMenu() {
     document.getElementById("editRecurrenceMenu").style.display = "none";
-  };
-  hideDeleteConfirm () {
+  }
+  hideDeleteConfirm() {
     document.getElementById("deleteConfirmPopup").style.display = "none";
-  };
-  showDeleteRecurrenceMenu () {
+  }
+  showDeleteRecurrenceMenu() {
     document.getElementById("deleteRecurrenceMenu").style.display = "table";
     OneView.core.domHandler.addClickEvent(
       "deleteRecurrenceOnlyOne",
@@ -3254,35 +3232,35 @@ class ViewEventControl {
       this.hideDeleteRecurrenceMenu,
       this
     );
-  };
-  deleteRecurrenceOnlyOne () {
+  }
+  deleteRecurrenceOnlyOne() {
     this.hideDeleteRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.deleteEvent(
       this.calendarEvent,
       OneView.EventEditType.ThisOnly
     );
-  };
-  deleteRecurrenceAll () {
+  }
+  deleteRecurrenceAll() {
     this.hideDeleteRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.deleteEvent(
       this.calendarEvent,
       OneView.EventEditType.AllInSeries
     );
-  };
-  deleteRecurrenceFuture () {
+  }
+  deleteRecurrenceFuture() {
     this.hideDeleteRecurrenceMenu();
     OneView.core.appStateHandler.back();
     OneView.core.appStateHandler.deleteEvent(
       this.calendarEvent,
       OneView.EventEditType.ThisAndFuture
     );
-  };
-  hideDeleteRecurrenceMenu () {
+  }
+  hideDeleteRecurrenceMenu() {
     document.getElementById("deleteRecurrenceMenu").style.display = "none";
-  };
-  viewEventMove (b) {
+  }
+  viewEventMove(b) {
     this.hide();
     OneView.core.calendarEventHandler.canEditEvent(this.calendarEvent) &&
       OneView.core.appStateHandler.startMoveCalendarEventObject(
@@ -3291,20 +3269,19 @@ class ViewEventControl {
         OneView.core.domHandler.screenHeight / 2,
         OneView.EventEditType.DontKnow
       );
-  };
+  }
 }
 
 OneView.ViewEventControl = ViewEventControl;
 
 class Helper {
-
   constructor() {
     this.monthesShort = new OneView.Hashtable();
     this.monthesLong = new OneView.Hashtable();
     this.weekdayShort = new OneView.Hashtable();
     this.weekdayLong = new OneView.Hashtable();
   }
-  colorToRGBA (a, c) {
+  colorToRGBA(a, c) {
     var b = parseInt(a.substr(1), 16);
     return (
       "rgba(" +
@@ -3317,8 +3294,8 @@ class Helper {
       c +
       ")"
     );
-  };
-  GetDateTimeLine1 (a, c) {
+  }
+  GetDateTimeLine1(a, c) {
     var b = moment(a),
       f = moment(c);
     return this.IsSameDay(b, f)
@@ -3326,8 +3303,8 @@ class Helper {
       : 0 == b.hours() && b.minutes()
       ? b.format("dddd") + ", " + b.format("LL") + " - "
       : b.format("dddd") + ", " + b.format("LLL") + " - ";
-  };
-  GetDateTimeLine2 (a, c) {
+  }
+  GetDateTimeLine2(a, c) {
     var b = moment(a),
       f = moment(c);
     return this.IsSameDay(b, f)
@@ -3340,36 +3317,36 @@ class Helper {
       : 0 == b.hours() && b.minutes()
       ? f.format("dddd") + ", " + f.format("LL")
       : f.format("dddd") + ", " + f.format("LLL");
-  };
-  IsSameDay (a, c) {
+  }
+  IsSameDay(a, c) {
     return a.format("L") == c.clone().subtract(1, "minutes").format("L");
-  };
-  GetDateWithWeekDay (a) {
+  }
+  GetDateWithWeekDay(a) {
     a = moment(a);
     return a.format("dddd") + ", " + a.format("LL");
-  };
-  GetTime (a) {
+  }
+  GetTime(a) {
     return moment(a).format("LT");
-  };
-  isNullOrEmpty (a) {
+  }
+  isNullOrEmpty(a) {
     return !a || 0 === a.length;
-  };
-  isAndroid () {
+  }
+  isAndroid() {
     return navigator.userAgent.match(/Android/i);
-  };
-  isBlackBerry () {
+  }
+  isBlackBerry() {
     return navigator.userAgent.match(/BlackBerry/i);
-  };
-  isiOS () {
+  }
+  isiOS() {
     return navigator.userAgent.match(/iPhone|iPad|iPod/i);
-  };
-  isOpera () {
+  }
+  isOpera() {
     return navigator.userAgent.match(/Opera Mini/i);
-  };
-  isWindows () {
+  }
+  isWindows() {
     return navigator.userAgent.match(/IEMobile/i);
-  };
-  isMobile () {
+  }
+  isMobile() {
     return (
       this.isAndroid() ||
       this.isBlackBerry() ||
@@ -3377,8 +3354,8 @@ class Helper {
       this.isOpera() ||
       this.isWindows()
     );
-  };
-  sortCalendars () {
+  }
+  sortCalendars() {
     OneView.core.calendars.sort(function (b, c) {
       return c.id == OneView.core.calendarPrimaryId
         ? 1
@@ -3395,9 +3372,7 @@ class Helper {
         : b.countEvents - c.countEvents;
     });
     for (
-      var b = 0,
-        c = OneView.core.settings.theme.eventColors.length - 1,
-        e = 0;
+      var b = 0, c = OneView.core.settings.theme.eventColors.length - 1, e = 0;
       e < OneView.core.calendars.length;
       e++
     )
@@ -3426,26 +3401,24 @@ class Helper {
           100 > Number(f) &&
           (OneView.core.calendars[e].colorId = f);
       }
-  };
-  replaceAll (a, c, e) {
+  }
+  replaceAll(a, c, e) {
     return a.split(c).join(e);
-  };
-  canShowDatePicker () {
+  }
+  canShowDatePicker() {
     return OneView.core.isCordovaApp ? true : false;
-  };
-  setCalendarColorId (b, c) {
+  }
+  setCalendarColorId(b, c) {
     var e = OneView.core.commonUserSettings.savedCalendarColors;
-    OneView.core.commonUserSettings.licenceColorPicker &&
-    e &&
-    e.containsKey(b)
+    OneView.core.commonUserSettings.licenceColorPicker && e && e.containsKey(b)
       ? (e[b] = c)
       : e.add(b, c);
     OneView.core.commonUserSettings.savedCalendarColors = e;
-  };
-  getEventColor2 (b) {
+  }
+  getEventColor2(b) {
     return this.getEventColor(b, OneView.core.getCalendar(b.calendarId));
-  };
-  getEventTextColor (b, c) {
+  }
+  getEventTextColor(b, c) {
     var e =
       OneView.core.settings.theme.eventTextColors[
         c.colorId % OneView.core.settings.theme.eventColors.length
@@ -3459,13 +3432,13 @@ class Helper {
           b.extraColorId % OneView.core.settings.theme.eventTextColors.length
         ]
       : e;
-  };
-  getCalendarColor (b) {
+  }
+  getCalendarColor(b) {
     return OneView.core.settings.theme.eventColors[
       b.colorId % OneView.core.settings.theme.eventColors.length
     ];
-  };
-  getEventColor (b, c) {
+  }
+  getEventColor(b, c) {
     var e =
       OneView.core.settings.theme.eventColors[
         c.colorId % OneView.core.settings.theme.eventColors.length
@@ -3502,16 +3475,16 @@ class Helper {
               ? OneView.core.settings.theme.eventColorsForFirstCalendar[1]
               : OneView.core.settings.theme.eventColorsForFirstCalendar[0])));
     return e;
-  };
-  getAndroidNumFromColor (a) {
+  }
+  getAndroidNumFromColor(a) {
     a = this.hexToRgb(a);
     return -16777216 + (a[0] << 16) + (a[1] << 8) + a[2];
-  };
-  fillLeadingZeros (a, c) {
+  }
+  fillLeadingZeros(a, c) {
     var b = "000000000" + a;
     return b.substr(b.length - c);
-  };
-  getColorIdFromAndroidNum (b) {
+  }
+  getColorIdFromAndroidNum(b) {
     b = +b;
     var c = (b >> 8) & 255,
       e = b & 255;
@@ -3531,8 +3504,8 @@ class Helper {
       )),
         f < e && ((e = f), (c = g));
     return c;
-  };
-  getColorDistance (a, c) {
+  }
+  getColorDistance(a, c) {
     for (
       var b = 0,
         f = 0,
@@ -3562,35 +3535,34 @@ class Helper {
     n != p && (b = 1.25 * b + 0.25);
     h != r && (b = 1.1 * b + 0.1);
     return b;
-  };
-  hexToRgb (a) {
+  }
+  hexToRgb(a) {
     return [
       parseInt(a.substr(1, 2), 16),
       parseInt(a.substr(3, 2), 16),
       parseInt(a.substr(5, 2), 16),
     ];
-  };
-  addUserTimeZoneSetting (b) {
+  }
+  addUserTimeZoneSetting(b) {
     var c = OneView.core.commonUserSettings.getCachedTimeZoneDiffInMinutes();
     b = new Date(b.getTime());
     b.setMinutes(b.getMinutes() + c);
     return b;
-  };
-  removeUserTimeZoneSetting (b) {
+  }
+  removeUserTimeZoneSetting(b) {
     var c = OneView.core.commonUserSettings.getCachedTimeZoneDiffInMinutes();
     b = new Date(b.getTime());
     b.setMinutes(b.getMinutes() - c);
     return b;
-  };
-  getNumberFromString (a, c) {
+  }
+  getNumberFromString(a, c) {
     return isNaN(+a) ? c : +a;
-  };
+  }
 }
 
 OneView.Helper = Helper;
 
 class DomHandler {
-
   constructor() {
     this.canvasMenuContext =
       this.canvasMenu =
@@ -3619,25 +3591,25 @@ class DomHandler {
     };
     this.tryCreateHtmlElements();
   }
-  init () {
+  init() {
     OneView.core.mainMenuControl = new OneView.MainMenuControl();
     OneView.core.addButtonControl = new OneView.AddButtonControl();
     OneView.core.zopDrawArea.init(this.canvas, this.canvasContext);
-  };
-  getElement (a) {
+  }
+  getElement(a) {
     return document.getElementById(a);
-  };
-  addElement (a, c) {
+  }
+  addElement(a, c) {
     return this.getElement(a.id) ? a : this.getElement(c).appendChild(a);
-  };
-  addDiv (a, c, e) {
+  }
+  addDiv(a, c, e) {
     if (this.getElement(a)) return this.getElement(a);
     var b = document.createElement("div");
     b.id = a;
     b.className = c;
     return this.addElement(b, e);
-  };
-  showCanvas () {
+  }
+  showCanvas() {
     OneView.core.calendarDataProxy.analyticsPage("Main page");
     this.addElement(this.canvas, document.body.id);
     this.resetDrawAreaSize_Delayed();
@@ -3645,8 +3617,8 @@ class DomHandler {
     window.setTimeout(function () {
       return OneView.core.redraw(true);
     }, 100);
-  };
-  insertImages (b, c) {
+  }
+  insertImages(b, c) {
     var e = OneView.core.helper.replaceAll(
         b,
         "_insertBackButtonImage",
@@ -3663,11 +3635,11 @@ class DomHandler {
         this.trashButtonImage
       );
     return (e = OneView.core.helper.replaceAll(e, "_buttonImageColor", c));
-  };
-  hideCanvas () {
+  }
+  hideCanvas() {
     this.removeElement(this.canvas.id);
-  };
-  pageHtmlFormatHelper (b, c) {
+  }
+  pageHtmlFormatHelper(b, c) {
     for (
       var e = OneView.core.domHandler.addDiv(b, "page", "pageRoot"),
         f = OneView.core.domHandler.addDiv(b + "inner", "pageInner", b),
@@ -3682,23 +3654,23 @@ class DomHandler {
       );
     f.innerHTML = c;
     return e;
-  };
-  replaceMultiple (a, c, e) {
+  }
+  replaceMultiple(a, c, e) {
     return a.split(c).join(e);
-  };
-  removeElement (a) {
+  }
+  removeElement(a) {
     (a = this.getElement(a)) && a.parentNode && a.parentNode.removeChild(a);
-  };
-  addEvent (a, c, e, f) {
+  }
+  addEvent(a, c, e, f) {
     e = e.bind(f);
     this.getElement(a).addEventListener(c, e, false);
-  };
-  addClickEvent (a, c, e) {
+  }
+  addClickEvent(a, c, e) {
     this.addEvent(a, "click", c, e);
-  };
-  touchClickDown (a) {};
-  touchClickUp (a) {};
-  tryCreateHtmlElements () {
+  }
+  touchClickDown(a) {}
+  touchClickUp(a) {}
+  tryCreateHtmlElements() {
     void 0 === this.canvas &&
       ((this.canvas = document.createElement("canvas")),
       (this.canvas.id = "canvas"),
@@ -3709,13 +3681,13 @@ class DomHandler {
       (this.canvasMenu.id = "canvasMenu"),
       document.body.appendChild(this.canvasMenu),
       (this.canvasMenuContext = this.canvasMenu.getContext("2d")));
-  };
-  resetDrawAreaSize_Delayed () {
+  }
+  resetDrawAreaSize_Delayed() {
     this.resetDrawAreaSize = this.resetDrawAreaSize.bind(this);
     window.setTimeout(this.resetDrawAreaSize, 100);
     window.setTimeout(this.resetDrawAreaSize, 300);
-  };
-  resetDrawAreaSize () {
+  }
+  resetDrawAreaSize() {
     var b = document.querySelector('meta[name="viewport"]');
     b &&
       (b.content.match(/width=device-width/) &&
@@ -3891,8 +3863,8 @@ class DomHandler {
     OneView.core.preloadAllImages();
     OneView.core.redraw(true);
     this.fadeInIfWebPage();
-  };
-  fadeInIfWebPage () {
+  }
+  fadeInIfWebPage() {
     this.alreadyFadedIn ||
       (document.getElementById("phone") &&
         ($(".innerX").animate(
@@ -3908,8 +3880,8 @@ class DomHandler {
           2e3
         )),
       (this.alreadyFadedIn = true));
-  };
-  resizeDomElements (b) {
+  }
+  resizeDomElements(b) {
     void 0 === b && (b = "");
     var c = Math.min(
         24,
@@ -3940,8 +3912,7 @@ class DomHandler {
     if (null == b || 4 > b.length)
       b = OneView.core.settings.theme.colorTitleBackground;
     for (var k = 0; k < h.length; k++)
-      h[k].style.backgroundColor =
-        OneView.core.settings.theme.colorBackground;
+      h[k].style.backgroundColor = OneView.core.settings.theme.colorBackground;
     h = document.querySelectorAll(".pageContent");
     for (k = 0; k < h.length; k++)
       (h[k].style.fontFamily =
@@ -3959,8 +3930,7 @@ class DomHandler {
     for (k = 0; k < h.length; k++) h[k].style.backgroundColor = b;
     h = document.querySelectorAll(".pageTopPadding");
     for (k = 0; k < h.length; k++)
-      (h[k].style.paddingTop = d + "px"),
-        (h[k].style.paddingBottom = d + "px");
+      (h[k].style.paddingTop = d + "px"), (h[k].style.paddingBottom = d + "px");
     h = document.querySelectorAll(".pageSecondTopPadding");
     for (k = 0; k < h.length; k++)
       (h[k].style.marginTop = "-" + d + "px"),
@@ -4121,25 +4091,25 @@ class DomHandler {
       (h[k].style.paddingTop = g + "px"),
         (h[k].style.backgroundColor =
           OneView.core.settings.theme.colorBackground);
-  };
-  overrideEnter (a) {
+  }
+  overrideEnter(a) {
     if (
       13 == a.which &&
       "textarea" != a.target.type &&
       "button" != a.target.type
     )
       return a.target.blur(), false;
-  };
-  getSelectOptions (a) {
+  }
+  getSelectOptions(a) {
     for (var b = "", e = 0; e < a.options.length; e++)
       a.options[e].selected && (b += a.options[e].value);
     return b;
-  };
-  selectWeekDays (a, c) {
+  }
+  selectWeekDays(a, c) {
     for (var b = 0; b < a.options.length; b++)
       a.options[b].selected = -1 < c.indexOf(a.options[b].value);
-  };
-  addWeekDaysToSelectNode (b) {
+  }
+  addWeekDaysToSelectNode(b) {
     for (var c, e = 1; 7 >= e; e++)
       (c = new Option(
         OneView.core.helper.weekdayLong.find(e),
@@ -4149,8 +4119,8 @@ class DomHandler {
       )),
         (c.className = "inputOption"),
         b.appendChild(c);
-  };
-  addRemindersToSelectNode (b, c) {
+  }
+  addRemindersToSelectNode(b, c) {
     var e = [],
       f = moment(),
       g = f.clone().add("minutes", 0);
@@ -4204,9 +4174,9 @@ class DomHandler {
       d.className = "inputOption";
       b.appendChild(d);
     }
-  };
-  selectDuration (a, c, e) {};
-  addDurationsToSelectNode (b, c, e) {
+  }
+  selectDuration(a, c, e) {}
+  addDurationsToSelectNode(b, c, e) {
     var f = [];
     c = moment(c);
     var g = c.clone().add("minutes", 1),
@@ -4289,23 +4259,22 @@ class DomHandler {
       )),
         (e.className = "inputOption"),
         b.appendChild(e);
-  };
-  addSortedIfNotExists (a, c) {
+  }
+  addSortedIfNotExists(a, c) {
     for (var b = a.length, f = false, g = 0; g < b && 0 == f; g++)
       c.valueNumber < a[g].valueNumber && (a.splice(g, 0, c), (f = true)),
         c.valueNumber === a[g].valueNumber && (f = true);
     false === f && a.push(c);
-  };
+  }
 }
 OneView.DomHandler = DomHandler;
 
 class LoadingHandler {
-
   constructor() {
     this.showMessage = false;
     this.loadingCounter = 0;
   }
-  showLoadingSpinnerIfNeeded () {
+  showLoadingSpinnerIfNeeded() {
     if (0 < this.loadingCounter)
       if (
         !OneView.core.calendarDataProxy.connectionOk() ||
@@ -4348,34 +4317,31 @@ class LoadingHandler {
           ),
           OneView.core.redraw(true))
         : (this.showMessage = false));
-  };
-  isLoading () {
+  }
+  isLoading() {
     return 0 < this.loadingCounter;
-  };
-  startLoading () {
+  }
+  startLoading() {
     this.showMessage = false;
     OneView.core.eventHandler.closeAllPagesAndMenus();
-    0 > this.loadingCounter
-      ? (this.loadingCounter = 1)
-      : this.loadingCounter++;
+    0 > this.loadingCounter ? (this.loadingCounter = 1) : this.loadingCounter++;
     OneView.core &&
       ((this.loadStartTime = OneView.core.getTimeStamp()),
       OneView.core.redraw(true));
-  };
-  stopLoadingWithError () {
+  }
+  stopLoadingWithError() {
     this.showMessage = true;
     this.stopLoading();
-  };
-  stopLoading () {
+  }
+  stopLoading() {
     this.loadingCounter = 0;
     OneView.core.redraw(true);
-  };
+  }
 }
 
-OneView.LoadingHandler = LoadingHandler
+OneView.LoadingHandler = LoadingHandler;
 
 class AppStateHandler {
-
   constructor() {
     this.isEditingEvent = this.isCreatingNewEvent = 0;
     this.isChoosingDateTimeForEvent = false;
@@ -4408,7 +4374,7 @@ class AppStateHandler {
     this.editEventControl = new OneView.EditEventControl();
     this.editRecurrenceControl = new OneView.EditRecurrenceControl();
   }
-  isMainWindowShowing () {
+  isMainWindowShowing() {
     return (
       !this.isMainMenuShowing &&
       !this.editEventControlIsShowing &&
@@ -4416,8 +4382,8 @@ class AppStateHandler {
       !this.isPopupEditRecurringMenuShowing &&
       !this.viewEventControlIsShowing
     );
-  };
-  setChoosingDateTimeForEvent (b) {
+  }
+  setChoosingDateTimeForEvent(b) {
     (this.isChoosingDateTimeForEvent = b)
       ? (this.isPopupDissabled++,
         OneView.core.zopDrawArea &&
@@ -4427,28 +4393,28 @@ class AppStateHandler {
         OneView.core.zopDrawArea &&
           (OneView.core.dateTimeSelectionHandler.makeVisible(false),
           OneView.core.redraw(true)));
-  };
-  viewEvent (b) {
+  }
+  viewEvent(b) {
     OneView.core.loadingHandler.isLoading() ||
       ((this.viewEventControlIsShowing = true),
       this.viewEventControl.init(b),
       this.addVisibleControl(this.viewEventControl));
-  };
-  editEvent (b, c) {
+  }
+  editEvent(b, c) {
     OneView.core.loadingHandler.isLoading() ||
       ((this.editEventControlIsShowing = true),
       this.editEventControl.init(b, c),
       this.addVisibleControl(this.editEventControl));
-  };
-  deleteEvent (b, c) {
+  }
+  deleteEvent(b, c) {
     OneView.core.calendarDataProxy.deleteEvent(b, c, false);
-  };
-  editRecurrence (a) {
+  }
+  editRecurrence(a) {
     this.editRecurrenceControl.init(a);
     this.addVisibleControl(this.editRecurrenceControl);
-  };
-  startMoveCalendarEventObject (a, c, e, f) {};
-  startAddCalendarEventObject (b, c) {
+  }
+  startMoveCalendarEventObject(a, c, e, f) {}
+  startAddCalendarEventObject(b, c) {
     var e = new OneView.CalendarEventObject(
       "",
       "",
@@ -4459,17 +4425,19 @@ class AppStateHandler {
       "-1"
     );
     this.editEvent(e, OneView.EventEditType.New);
-  };
-  getDefaultCalendarId () {
+  }
+  getDefaultCalendarId() {
     var b = OneView.core.commonUserSettings.calendarIdLastAddedTo;
     if (
-      OneView.core.getCalendar(b).visibility === OneView.VisibilityType.Visible &&
+      OneView.core.getCalendar(b).visibility ===
+        OneView.VisibilityType.Visible &&
       OneView.core.getCalendar(b).canEditCalendarEvents
     )
       return b;
     for (var b = void 0, c = 0; c < OneView.core.calendars.length; c++)
       if (
-        OneView.core.calendars[c].visibility === OneView.VisibilityType.Visible &&
+        OneView.core.calendars[c].visibility ===
+          OneView.VisibilityType.Visible &&
         OneView.core.calendars[c].canEditCalendarEvents
       ) {
         b = OneView.core.calendars[c].id;
@@ -4480,8 +4448,8 @@ class AppStateHandler {
         OneView.VisibilityType.Visible
       ? OneView.core.calendarPrimaryId
       : b;
-  };
-  addVisibleControl (a) {
+  }
+  addVisibleControl(a) {
     this.visibleControls[this.visibleControls.length - 1] !== a &&
       (history.pushState(
         {
@@ -4491,8 +4459,8 @@ class AppStateHandler {
       ),
       this.visibleControls.push(a),
       a.show());
-  };
-  back () {
+  }
+  back() {
     var b = OneView.core.getTimeStamp();
     if (this.previousBackTime && b - 500 < this.previousBackTime)
       return (this.previousBackTime = b), false;
@@ -4507,15 +4475,15 @@ class AppStateHandler {
       );
     navigator && navigator.app && navigator.app.exitApp();
     return false;
-  };
-  safeBack (a) {
+  }
+  safeBack(a) {
     return this.visibleControls &&
       0 < this.visibleControls.length &&
       this.visibleControls[this.visibleControls.length - 1] === a
       ? this.back()
       : false;
-  };
-  mainButtonPressed () {
+  }
+  mainButtonPressed() {
     if (!OneView.core.loadingHandler.isLoading()) {
       var b = OneView.core.zopHandler.dateToZOP(new Date());
       OneView.core.zopHandler.topZOP < b &&
@@ -4523,8 +4491,8 @@ class AppStateHandler {
         ? this.showMainMenu(true)
         : OneView.core.zopHandler.showInitialBounds(true);
     }
-  };
-  showMainMenu (b) {
+  }
+  showMainMenu(b) {
     OneView.core.loadingHandler.isLoading() ||
       (OneView.core.appStateHandler.isMainWindowShowing()
         ? ((OneView.core.appStateHandler.isMainMenuShowing = true),
@@ -4537,25 +4505,24 @@ class AppStateHandler {
             return OneView.core.redraw(true);
           }, 200))
         : this.back());
-  };
-  viewCalendars () {
+  }
+  viewCalendars() {
     this.calendarsControlIsShowing = true;
     this.addVisibleControl(this.calendarsControl);
-  };
-  viewShop () {
+  }
+  viewShop() {
     this.shopControlIsShowing = true;
     this.addVisibleControl(this.shopControl);
-  };
-  viewSettings () {
+  }
+  viewSettings() {
     this.settingsControlIsShowing = true;
     this.addVisibleControl(this.settingsControl);
-  };
-  viewAbout () {};
+  }
+  viewAbout() {}
 }
 OneView.AppStateHandler = AppStateHandler;
 
 class CalendarDateHandler {
-
   constructor() {
     this.visibleHorizontalDateObjects = [];
     this.visibleTitleBarDateObjects = [];
@@ -4592,7 +4559,7 @@ class CalendarDateHandler {
     this.populateDetails_helper = this.populateDetails_helper.bind(this);
     this.reset();
   }
-  reset () {
+  reset() {
     this.rootCalendarDateObjects = [];
     this.weekCalendarDateObjects = [];
     this.rootCalendarDateObjects.push(
@@ -4609,11 +4576,11 @@ class CalendarDateHandler {
         OneView.core.settings.absoluteMaxDate
       );
     OneView.core.zopHandler.setAbsoluteMinMax(b, c);
-  };
-  clearWeekInfo () {
+  }
+  clearWeekInfo() {
     this.weekCalendarDateObjects = [];
-  };
-  selectCalendarDateObjectAt (b, c, e) {
+  }
+  selectCalendarDateObjectAt(b, c, e) {
     if (
       c < OneView.core.zopHandler.topPixel ||
       c > OneView.core.zopHandler.bottomPixel
@@ -4643,8 +4610,8 @@ class CalendarDateHandler {
           )),
         (this.selectedCalendarDateObject = e)
       );
-  };
-  getClosestDetailAt (b, c) {
+  }
+  getClosestDetailAt(b, c) {
     if (
       !(
         b < OneView.core.zopHandler.topPixel ||
@@ -4686,8 +4653,8 @@ class CalendarDateHandler {
         ));
       }
     }
-  };
-  convertCommonTimesToDates (b) {
+  }
+  convertCommonTimesToDates(b) {
     if (b != this.lastCommonTimesStartDate) {
       this.lastCommonTimesStartDate = b;
       this.commonDateTimes = [];
@@ -4705,8 +4672,8 @@ class CalendarDateHandler {
         this.commonDateTimes.push(d);
       }
     }
-  };
-  getCalendarDateObject (a, c, e) {
+  }
+  getCalendarDateObject(a, c, e) {
     this.verifyDetailsArePopulatedFor(e);
     for (var b = 0; b < e.details.length; b++) {
       var d = e.details[b];
@@ -4715,8 +4682,8 @@ class CalendarDateHandler {
           ? d
           : this.getCalendarDateObject(a, c, d);
     }
-  };
-  getClosestFakeDetailAt (b, c, e) {
+  }
+  getClosestFakeDetailAt(b, c, e) {
     if (
       this.lowestLevelCalendarDateObjectType ==
         OneView.CalendarDateObjectType.Title.Month &&
@@ -4728,7 +4695,8 @@ class CalendarDateHandler {
         false
       );
     if (
-      this.lowestLevelCalendarDateObjectType == OneView.CalendarDateObjectType.Title.Day
+      this.lowestLevelCalendarDateObjectType ==
+      OneView.CalendarDateObjectType.Title.Day
     ) {
       if (
         b < OneView.core.zopHandler.topPixel ||
@@ -4812,8 +4780,8 @@ class CalendarDateHandler {
         OneView.core.settings.titleWidth
       ));
     }
-  };
-  getLowestLevelCalendarDateObjectAt (b) {
+  }
+  getLowestLevelCalendarDateObjectAt(b) {
     b = OneView.core.zopHandler.getZOPFromPixel(b);
     return this.getHitCalendarDateObjectAmong(
       OneView.core.settings.titleWidth + 1,
@@ -4821,8 +4789,8 @@ class CalendarDateHandler {
       this.visibleLowestLevelObjects,
       OneView.core.settings.titleWidth
     );
-  };
-  getHitCalendarDateObjectAmong (a, c, e, f) {
+  }
+  getHitCalendarDateObjectAmong(a, c, e, f) {
     var b = e.length,
       d;
     if (a > f)
@@ -4834,14 +4802,14 @@ class CalendarDateHandler {
               d.calendarDateObjectType > f.calendarDateObjectType) &&
             (d = f);
     return d;
-  };
-  clearSelect () {
+  }
+  clearSelect() {
     this.selectedObjects = [];
-  };
-  selectCalendarDateObject (a) {
+  }
+  selectCalendarDateObject(a) {
     a && this.selectedObjects.push(a);
-  };
-  getHitWeekAt (b, c, e) {
+  }
+  getHitWeekAt(b, c, e) {
     if (0 < this.weekNumbersVisible.length) {
       var f = OneView.core.zopHandler.getZOPFromPixel(c),
         d =
@@ -4870,8 +4838,8 @@ class CalendarDateHandler {
         )
           return this.weekCalendarDateObjects[c];
     }
-  };
-  gotoCalendarDateObjectAt (b, c) {
+  }
+  gotoCalendarDateObjectAt(b, c) {
     var e = this.selectCalendarDateObjectAt(b, c, true);
     if (
       e &&
@@ -4889,12 +4857,7 @@ class CalendarDateHandler {
         f = OneView.core.zopHandler.getZOPFromPixel(
           c + 25 * OneView.core.ratio
         );
-        OneView.core.drawAreaEffects.startAutoZoom(
-          e,
-          f,
-          false,
-          function () {}
-        );
+        OneView.core.drawAreaEffects.startAutoZoom(e, f, false, function () {});
         return;
       }
     }
@@ -4916,8 +4879,8 @@ class CalendarDateHandler {
       c < f + this.horizontalTitleHeight && (e = d);
     }
     this.gotoCalendarDateObject(e, c);
-  };
-  gotoCalendarDateObject (b, c) {
+  }
+  gotoCalendarDateObject(b, c) {
     this.selectCalendarDateObject(b);
     if (void 0 !== b)
       if (
@@ -4943,17 +4906,15 @@ class CalendarDateHandler {
             false,
             this.clearSelect
           );
-  };
-  paintMarker (b) {
+  }
+  paintMarker(b) {
     var c = this.fakeLeft + OneView.core.settings.titleWidth;
     b = OneView.core.zopHandler.dateToZOP(b);
     var e = "3" != OneView.core.commonUserSettings.theme;
     OneView.core.zopDrawArea.drawHorizontalLineThick(
       c + 2 * OneView.core.settings.tagHeight,
       b,
-      OneView.core.zopHandler.rightPixel -
-        c -
-        OneView.core.settings.tagHeight,
+      OneView.core.zopHandler.rightPixel - c - OneView.core.settings.tagHeight,
       OneView.core.settings.theme.colorMarker,
       2 * OneView.core.ratio,
       e
@@ -4965,8 +4926,8 @@ class CalendarDateHandler {
       OneView.core.settings.theme.colorMarker,
       e
     );
-  };
-  verifyWeGotEnoughWeekZOPs () {
+  }
+  verifyWeGotEnoughWeekZOPs() {
     if (
       60 <
         (OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP) /
@@ -4980,9 +4941,7 @@ class CalendarDateHandler {
       0 < this.weekCalendarDateObjects.length &&
         (b = this.weekCalendarDateObjects[0].startZOP);
       for (; b > OneView.core.zopHandler.topZOP; ) {
-        var c = this.getStartOfWeek(
-          OneView.core.zopHandler.getDateFromZOP(b)
-        );
+        var c = this.getStartOfWeek(OneView.core.zopHandler.getDateFromZOP(b));
         OneView.core.zopHandler.dateToZOP(c.toDate());
         c.add(-1, "week");
         var e = this.getWeekNrForDate(c),
@@ -4999,9 +4958,8 @@ class CalendarDateHandler {
       }
       0 < this.weekCalendarDateObjects.length &&
         (b =
-          this.weekCalendarDateObjects[
-            this.weekCalendarDateObjects.length - 1
-          ].endZOP);
+          this.weekCalendarDateObjects[this.weekCalendarDateObjects.length - 1]
+            .endZOP);
       for (; b < OneView.core.zopHandler.bottomZOP; )
         (b = this.getStartOfWeek(OneView.core.zopHandler.getDateFromZOP(b))),
           OneView.core.zopHandler.dateToZOP(b.toDate()),
@@ -5018,8 +4976,8 @@ class CalendarDateHandler {
           (c.weekIsOddDubble = 1 == e % 4),
           this.weekCalendarDateObjects.push(c);
     }
-  };
-  getWeekNrForDate (b) {
+  }
+  getWeekNrForDate(b) {
     var c = b.dayOfYear(),
       e =
         ((b.clone().dayOfYear(1).isoWeekday() +
@@ -5036,16 +4994,16 @@ class CalendarDateHandler {
         2 == this.getWeekNrForDate(b.clone().add("weeks", 1)) &&
         (c = 1);
     return c;
-  };
-  getStartOfWeek (b) {
+  }
+  getStartOfWeek(b) {
     b = moment(b).startOf("day");
     b.isoWeekday() != OneView.core.commonUserSettings.firstDayOfWeek &&
       (b = b.isoWeekday(OneView.core.commonUserSettings.firstDayOfWeek));
     b.isoWeekday() < OneView.core.commonUserSettings.firstDayOfWeek &&
       (b = b.add("days", -7));
     return b;
-  };
-  paintWeeksBackground () {
+  }
+  paintWeeksBackground() {
     this.verifyWeGotEnoughWeekZOPs();
     var b = Math.min(
       255,
@@ -5125,8 +5083,8 @@ class CalendarDateHandler {
                 false
               ));
           }
-  };
-  paintWeekNumbers () {
+  }
+  paintWeekNumbers() {
     if (
       OneView.core.settings.allowWeekNumber &&
       OneView.core.commonUserSettings.showWeekNumbers
@@ -5205,8 +5163,8 @@ class CalendarDateHandler {
             );
           }
     }
-  };
-  paintCalendarDateObjects () {
+  }
+  paintCalendarDateObjects() {
     var b;
     this.counter = 0;
     this.visibleHorizontalDateObjects = [];
@@ -5281,54 +5239,61 @@ class CalendarDateHandler {
         this.paintMonthSpecialDetails(this.visibleLowestLevelObjects[b], c);
     OneView.core.zopDrawArea.endTextDelayedDraw();
     this.counter = this.counter;
-  };
-  decideCalendarDateObjectTypesToShowAtDifferentLevels () {
-      this.lowestLevelCalendarDateObjectType = OneView.CalendarDateObjectType.Title.Year;
-      this.title4CalendarDateObjectType = void 0;
-      this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title;
-      this.horizontalDateObjectType = void 0;
-      this.showMonthSpecialDetails =
-        OneView.core.zopHandler.getPixelSizeOfYear() >=
-        4 * OneView.core.settings.minDateHeight;
-      OneView.core.zopHandler.getPixelSizeOfMonth() >=
-        OneView.core.settings.minDateHeight &&
-        ((this.lowestLevelCalendarDateObjectType =
-          OneView.CalendarDateObjectType.Title.Month),
-        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title.Year),
-        (this.horizontalDateObjectType = void 0),
-        (this.showMonthSpecialDetails =
-          OneView.core.zopHandler.getPixelSizeOfMonth() >=
-          7 * OneView.core.settings.minDateHeight));
-      OneView.core.zopHandler.getPixelSizeOfDay() >=
-        OneView.core.settings.minDateHeight &&
-        ((this.lowestLevelCalendarDateObjectType =
-          OneView.CalendarDateObjectType.Title.Day),
-        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title.Month),
-        (this.horizontalDateObjectType = void 0),
-        (this.showMonthSpecialDetails =
-          OneView.core.zopHandler.getPixelSizeOfDay() >=
-          6 * OneView.core.settings.minDateHeight));
-      OneView.core.zopHandler.getPixelSizeOfHour() >=
-        OneView.core.settings.minDateHeight &&
-        ((this.lowestLevelCalendarDateObjectType =
-          OneView.CalendarDateObjectType.Title.Hour),
-        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title.Month),
-        (this.horizontalDateObjectType = OneView.CalendarDateObjectType.Title.Day),
-        (this.showMonthSpecialDetails =
-          OneView.core.zopHandler.getPixelSizeOfHour() >=
-          6 * OneView.core.settings.minDateHeight));
-      OneView.core.zopHandler.getPixelSizeOf5Minutes() >=
-        OneView.core.settings.minDateHeight &&
-        ((this.lowestLevelCalendarDateObjectType =
-          OneView.CalendarDateObjectType.Minutes5),
-        (this.title4CalendarDateObjectType = OneView.CalendarDateObjectType.Title.Hour),
-        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title.Month),
-        (this.horizontalDateObjectType = OneView.CalendarDateObjectType.Title.Day),
-        (this.showMonthSpecialDetails =
-          OneView.core.zopHandler.getPixelSizeOf5Minutes() >=
-          6 * OneView.core.settings.minDateHeight));
-    };
-  decideFontSizes () {
+  }
+  decideCalendarDateObjectTypesToShowAtDifferentLevels() {
+    this.lowestLevelCalendarDateObjectType =
+      OneView.CalendarDateObjectType.Title.Year;
+    this.title4CalendarDateObjectType = void 0;
+    this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title;
+    this.horizontalDateObjectType = void 0;
+    this.showMonthSpecialDetails =
+      OneView.core.zopHandler.getPixelSizeOfYear() >=
+      4 * OneView.core.settings.minDateHeight;
+    OneView.core.zopHandler.getPixelSizeOfMonth() >=
+      OneView.core.settings.minDateHeight &&
+      ((this.lowestLevelCalendarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Month),
+      (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Title.Year),
+      (this.horizontalDateObjectType = void 0),
+      (this.showMonthSpecialDetails =
+        OneView.core.zopHandler.getPixelSizeOfMonth() >=
+        7 * OneView.core.settings.minDateHeight));
+    OneView.core.zopHandler.getPixelSizeOfDay() >=
+      OneView.core.settings.minDateHeight &&
+      ((this.lowestLevelCalendarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Day),
+      (this.titleBarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Month),
+      (this.horizontalDateObjectType = void 0),
+      (this.showMonthSpecialDetails =
+        OneView.core.zopHandler.getPixelSizeOfDay() >=
+        6 * OneView.core.settings.minDateHeight));
+    OneView.core.zopHandler.getPixelSizeOfHour() >=
+      OneView.core.settings.minDateHeight &&
+      ((this.lowestLevelCalendarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Hour),
+      (this.titleBarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Month),
+      (this.horizontalDateObjectType =
+        OneView.CalendarDateObjectType.Title.Day),
+      (this.showMonthSpecialDetails =
+        OneView.core.zopHandler.getPixelSizeOfHour() >=
+        6 * OneView.core.settings.minDateHeight));
+    OneView.core.zopHandler.getPixelSizeOf5Minutes() >=
+      OneView.core.settings.minDateHeight &&
+      ((this.lowestLevelCalendarDateObjectType =
+        OneView.CalendarDateObjectType.Minutes5),
+      (this.title4CalendarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Hour),
+      (this.titleBarDateObjectType =
+        OneView.CalendarDateObjectType.Title.Month),
+      (this.horizontalDateObjectType =
+        OneView.CalendarDateObjectType.Title.Day),
+      (this.showMonthSpecialDetails =
+        OneView.core.zopHandler.getPixelSizeOf5Minutes() >=
+        6 * OneView.core.settings.minDateHeight));
+  }
+  decideFontSizes() {
     this.averageObjectPixelHeight = 0;
     this.lowestLevelCalendarDateObjectType ===
       OneView.CalendarDateObjectType.Title.Year &&
@@ -5342,7 +5307,8 @@ class CalendarDateHandler {
         OneView.core.zopHandler.getPixelSizeOfMonth()),
       (this.averageObjectPixelHeight2 =
         OneView.core.zopHandler.getPixelSizeOfDay()));
-    this.lowestLevelCalendarDateObjectType === OneView.CalendarDateObjectType.Title.Day &&
+    this.lowestLevelCalendarDateObjectType ===
+      OneView.CalendarDateObjectType.Title.Day &&
       ((this.averageObjectPixelHeight =
         OneView.core.zopHandler.getPixelSizeOfDay()),
       (this.averageObjectPixelHeight2 =
@@ -5469,8 +5435,8 @@ class CalendarDateHandler {
         : this.horizontalTitleExtraTextHeight) +
       OneView.core.settings.innerTopMaxMargin +
       OneView.core.settings.margin;
-  };
-  decideVisibleObjects (b, c) {
+  }
+  decideVisibleObjects(b, c) {
     if (0 === c.length) {
       if (b === OneView.CalendarDateObjectType.Title)
         return this.rootCalendarDateObjects;
@@ -5480,17 +5446,15 @@ class CalendarDateHandler {
         );
       if (b === OneView.CalendarDateObjectType.Title.Month)
         return this.getVisibleChildCalendarDateObjects(
-          this.getVisibleChildCalendarDateObjects(
-            this.rootCalendarDateObjects
-          )
+          this.getVisibleChildCalendarDateObjects(this.rootCalendarDateObjects)
         );
     } else if (b == OneView.CalendarDateObjectType.Title.Minutes5)
       return this.getVisibleChildCalendarDateObjects(
         this.getVisibleChildCalendarDateObjects(c)
       );
     return this.getVisibleChildCalendarDateObjects(c);
-  };
-  paintVisibleTitleObjects (b, c, e, f, d, m) {
+  }
+  paintVisibleTitleObjects(b, c, e, f, d, m) {
     var g = b.length;
     if (0 !== g) {
       var l, h, k;
@@ -5512,8 +5476,8 @@ class CalendarDateHandler {
               m
             ));
     }
-  };
-  drawHorizontalLine (b, c) {
+  }
+  drawHorizontalLine(b, c) {
     var e =
       OneView.core.zopHandler.leftPixel +
       OneView.core.settings.titleWidth +
@@ -5555,17 +5519,17 @@ class CalendarDateHandler {
             this.bigDividerColor,
             false
           ));
-  };
-  verifyDetailsArePopulatedFor (a) {
+  }
+  verifyDetailsArePopulatedFor(a) {
     a.detailsArePopulated || this.populateDetails(a);
-  };
-  prepareThouroughRedraw (a) {
+  }
+  prepareThouroughRedraw(a) {
     void 0 == a && (a = this.rootCalendarDateObjects[0]);
     for (var b = a.details.length, e = 0; e < b; e++)
       (a.possibleEventTagsAtThisZoomLevel = []),
         this.prepareThouroughRedraw(a.details[e]);
-  };
-  getVisibleChildCalendarDateObjects (b) {
+  }
+  getVisibleChildCalendarDateObjects(b) {
     var c,
       e,
       f,
@@ -5588,8 +5552,8 @@ class CalendarDateHandler {
             : OneView.core.zopHandler.isObjectAboveExtendedScreen(n.endZOP) ||
               l.push(n);
     return l;
-  };
-  paintVisibleLowestObjects () {
+  }
+  paintVisibleLowestObjects() {
     var b,
       c = this.visibleLowestLevelObjects.length,
       e;
@@ -5602,8 +5566,8 @@ class CalendarDateHandler {
           0
         );
     return true;
-  };
-  paintVisibleHorizontalTitles () {
+  }
+  paintVisibleHorizontalTitles() {
     var b,
       c = this.visibleHorizontalDateObjects.length,
       e;
@@ -5615,11 +5579,11 @@ class CalendarDateHandler {
       (e = this.visibleHorizontalDateObjects[b]),
         this.paintDaySpecialDetails(e, f);
     return true;
-  };
-  populateDetails (a) {
+  }
+  populateDetails(a) {
     this.populateDetails_helper(a);
-  };
-  populateDetails_helper (b) {
+  }
+  populateDetails_helper(b) {
     b.details = [];
     for (var c = new Date(b.startDateTime.getTime()); c < b.endDateTime; ) {
       var e;
@@ -5629,31 +5593,42 @@ class CalendarDateHandler {
           new Date(c.getTime())
         )),
         c.setFullYear(c.getFullYear() + 1));
-      if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Year)
+      if (
+        b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Year
+      )
         (e = new OneView.CalendarDateObject(
           OneView.CalendarDateObjectType.Title.Month,
           new Date(c.getTime())
         )),
           c.setMonth(c.getMonth() + 1);
-      else if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Month)
+      else if (
+        b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Month
+      )
         (e = new OneView.CalendarDateObject(
           OneView.CalendarDateObjectType.Title.Day,
           new Date(c.getTime())
         )),
           c.setDate(c.getDate() + 1);
-      else if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Day)
+      else if (
+        b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Day
+      )
         (e = new OneView.CalendarDateObject(
           OneView.CalendarDateObjectType.Title.Hour,
           new Date(c.getTime())
         )),
           (c = this.addHours(c, 1));
-      else if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Hour)
+      else if (
+        b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Hour
+      )
         (e = new OneView.CalendarDateObject(
           OneView.CalendarDateObjectType.Title.Minutes5,
           new Date(c.getTime())
         )),
           (c = this.addMinutes(c, 5));
-      else if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Title.Minutes5)
+      else if (
+        b.calendarDateObjectType ===
+        OneView.CalendarDateObjectType.Title.Minutes5
+      )
         break;
       void 0 !== e &&
         null !== e &&
@@ -5662,14 +5637,14 @@ class CalendarDateHandler {
     }
     b.detailsArePopulated = true;
     OneView.core.redraw(false);
-  };
-  addMinutes (a, c) {
+  }
+  addMinutes(a, c) {
     return new Date(a.getTime() + 6e4 * c);
-  };
-  addHours (a, c) {
+  }
+  addHours(a, c) {
     return new Date(a.getTime() + 36e5 * c);
-  };
-  paintObject (b, c, e, f) {
+  }
+  paintObject(b, c, e, f) {
     this.counter += 1;
     if (
       !OneView.core.zopHandler.isObjectBelowScreen(b.startZOP) &&
@@ -5792,8 +5767,8 @@ class CalendarDateHandler {
             c
           ));
     }
-  };
-  paintMonthSpecialDetails (b, c) {
+  }
+  paintMonthSpecialDetails(b, c) {
     this.verifyDetailsArePopulatedFor(b);
     var e,
       f = OneView.core.zopHandler.getPixelFromZOP(b.startZOP),
@@ -5832,8 +5807,8 @@ class CalendarDateHandler {
           OneView.core.zopHandler.topPixel,
           m
         );
-  };
-  paintDaySpecialDetails (b, c) {
+  }
+  paintDaySpecialDetails(b, c) {
     this.verifyDetailsArePopulatedFor(b);
     var e;
     e = OneView.core.zopHandler.getPixelFromZOP(
@@ -5851,12 +5826,11 @@ class CalendarDateHandler {
           (m = e);
     for (e = d; e < m; e += 1)
       this.paintObject(this.visibleLowestLevelObjects[e], false, f, 0);
-  };
+  }
 }
 OneView.CalendarDateHandler = CalendarDateHandler;
 
 class CalendarEventHandler {
-
   constructor() {
     this.rootCalendarDateObjects = [];
     this.visibleEventTagWrappers = [];
@@ -5896,44 +5870,44 @@ class CalendarEventHandler {
       this.absoluteMaxZOP
     );
   }
-  canEditEvent (a) {
+  canEditEvent(a) {
     a = this.getOwningCalendar(a);
     return void 0 === a ? false : a.canEditCalendarEvents;
-  };
-  isFullDayEvent (a) {
+  }
+  isFullDayEvent(a) {
     return 0 === moment(a.startDateTime).minutes() &&
       0 === moment(a.startDateTime).hours() &&
       0 === moment(a.endDateTime).minutes() &&
       0 === moment(a.endDateTime).hours()
       ? true
       : false;
-  };
-  getOwningCalendar (b) {
+  }
+  getOwningCalendar(b) {
     return OneView.core.getCalendar(b.calendarId);
-  };
-  gradeCalendarEvents (a) {
+  }
+  gradeCalendarEvents(a) {
     for (var b = 0; b < a.length; b++) this.gradeCalendarEvent(a[b]);
-  };
-  gradeCalendarEvent (a) {
+  }
+  gradeCalendarEvent(a) {
     a.grade =
       100 * (a.endZOP - a.startZOP) + this.sumLettersInString(a.summary);
     a.isGraded = true;
-  };
-  sumLettersInString (a) {
+  }
+  sumLettersInString(a) {
     var b = 0,
       e = a.toLowerCase();
     for (a = 0; a < e.length; a++) b += e.charCodeAt(a) - 96;
     return b;
-  };
-  drawAreaResized () {};
-  dataLoadReady () {
+  }
+  drawAreaResized() {}
+  dataLoadReady() {
     this.somethingChanged();
-  };
-  somethingChanged () {
+  }
+  somethingChanged() {
     this.zoomLevel = this.getNewZoomLevelString();
     this.prepareDataForPaint();
-  };
-  getNewZoomLevelString () {
+  }
+  getNewZoomLevelString() {
     return OneView.core.calendarDateHandler.visibleLowestLevelObjects &&
       0 < OneView.core.calendarDateHandler.visibleLowestLevelObjects.length
       ? "" +
@@ -5941,8 +5915,8 @@ class CalendarEventHandler {
             .startZOP +
           OneView.core.calendarDateHandler.visibleLowestLevelObjects.length
       : "x";
-  };
-  paintCalendarEvents () {
+  }
+  paintCalendarEvents() {
     this.eventsFarLeft = Math.floor(
       OneView.core.settings.eventsFarLeft +
         OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged
@@ -5962,8 +5936,8 @@ class CalendarEventHandler {
     this.paintVisibleEventTags();
     this.prepareBadges();
     this.paintBadges();
-  };
-  prepareDataForPaint () {
+  }
+  prepareDataForPaint() {
     this.visibleTagEventGroups = [];
     this.visibleFullEventWrappers = [];
     this.visibleEventTagWrappers = [];
@@ -5984,11 +5958,11 @@ class CalendarEventHandler {
     this.tagSurfaces.push(b);
     this.selectVisibleFullEventsIn();
     this.selectVisibleTags();
-  };
-  paintSelectedCalendarEvent (a) {
+  }
+  paintSelectedCalendarEvent(a) {
     for (a = 0; a < this.visibleFullEventWrappers.length; a++);
-  };
-  selectVisibleTags () {
+  }
+  selectVisibleTags() {
     var a, c, e, f;
     this.tagSurfaces.sort(function (a, b) {
       return a.minZOP - b.minZOP;
@@ -6013,8 +5987,8 @@ class CalendarEventHandler {
             (e.calendarEvent.grade > f.calendarEvent.grade
               ? (f.visible = false)
               : (e.visible = false));
-  };
-  prepareBadges () {
+  }
+  prepareBadges() {
     for (
       var b, c, e, f, d = 0, m = 0, n = 0;
       n < this.tagDatasToPaint.length;
@@ -6089,10 +6063,7 @@ class CalendarEventHandler {
             void 0 === this.findFullEventWrapperForEvent(f) &&
             f.startZOP > b &&
             (p++,
-            (k.topZOPForAllEvents = Math.min(
-              k.topZOPForAllEvents,
-              f.startZOP
-            )),
+            (k.topZOPForAllEvents = Math.min(k.topZOPForAllEvents, f.startZOP)),
             (k.bottomZOPForAllEvents = Math.max(
               k.bottomZOPForAllEvents,
               f.endZOP
@@ -6115,21 +6086,19 @@ class CalendarEventHandler {
           !k.isPartial &&
           ((k.partialBadgeAbove =
             this.visibleBadges[this.visibleBadges.length - 1]),
-          (this.visibleBadges[this.visibleBadges.length - 1].closeToBellow =
-            b),
+          (this.visibleBadges[this.visibleBadges.length - 1].closeToBellow = b),
           (k.closeToAbove = b)),
         !this.visibleBadges[this.visibleBadges.length - 1].isPartial &&
           k.isPartial &&
           ((this.visibleBadges[
             this.visibleBadges.length - 1
           ].partialBadgeBellow = k),
-          (this.visibleBadges[this.visibleBadges.length - 1].closeToBellow =
-            b),
+          (this.visibleBadges[this.visibleBadges.length - 1].closeToBellow = b),
           (k.closeToAbove = b)));
       this.visibleBadges.push(k);
     }
-  };
-  paintBadges () {
+  }
+  paintBadges() {
     for (var b = 0; b < this.visibleBadges.length; b++) {
       var c = this.visibleBadges[b],
         e = 0,
@@ -6141,8 +6110,7 @@ class CalendarEventHandler {
         c.partialBadgeAbove &&
         0.9 > c.partialBadgeAbove.height / OneView.core.settings.tagHeight &&
         ((e =
-          c.partialBadgeAbove.closeToBellow &&
-          c.partialBadgeAbove.closeToAbove
+          c.partialBadgeAbove.closeToBellow && c.partialBadgeAbove.closeToAbove
             ? e + Math.ceil(c.partialBadgeAbove.count / 2)
             : c.partialBadgeAbove.closeToBellow &&
               !c.partialBadgeAbove.closeToAbove
@@ -6166,8 +6134,7 @@ class CalendarEventHandler {
             : e + 0),
         1 < e &&
           OneView.core.settings.tagHeight - c.partialBadgeBellow.height > f &&
-          ((f =
-            OneView.core.settings.tagHeight - c.partialBadgeBellow.height),
+          ((f = OneView.core.settings.tagHeight - c.partialBadgeBellow.height),
           (d = d + OneView.core.settings.tagHeight - f)));
       var m = e + "";
       1 < e &&
@@ -6184,14 +6151,8 @@ class CalendarEventHandler {
           c.textColor
         );
     }
-  };
-  selectBiggestFullEventAndMakeVisibleOld (
-    b,
-    c,
-    e,
-    f,
-    d
-  ) {
+  }
+  selectBiggestFullEventAndMakeVisibleOld(b, c, e, f, d) {
     var g, n, l, h, k;
     for (
       g = 0;
@@ -6225,8 +6186,8 @@ class CalendarEventHandler {
         this.AddTagSurface(b),
         b
       );
-  };
-  selectBiggestFullEventAndMakeVisible () {
+  }
+  selectBiggestFullEventAndMakeVisible() {
     var b, c, e, f, d;
     for (
       b = 0;
@@ -6252,8 +6213,8 @@ class CalendarEventHandler {
         this.AddVisibleFullEventWrapper(b),
         b
       );
-  };
-  AddVisibleFullEventWrapper (a) {
+  }
+  AddVisibleFullEventWrapper(a) {
     var b, e, f;
     for (b = this.visibleFullEventWrappers.length - 1; 0 <= b; b--) {
       var d = this.visibleFullEventWrappers[b];
@@ -6271,11 +6232,11 @@ class CalendarEventHandler {
       }
     }
     this.visibleFullEventWrappers.push(a);
-  };
-  DoEventsCollide (a, c) {
+  }
+  DoEventsCollide(a, c) {
     return a.startZOP <= c.endZOP && a.endZOP >= c.startZOP;
-  };
-  AddTagSurface (b) {
+  }
+  AddTagSurface(b) {
     var c = new OneView.TagSurface();
     c.parentCollidingFullEventWrapper = b;
     c.minZOP = b.calendarEvent.startZOP;
@@ -6283,8 +6244,8 @@ class CalendarEventHandler {
     for (b = 0; b < this.tagSurfaces.length; b++)
       this.SubtractSpaceFromSurface(this.tagSurfaces[b], c.minZOP, c.maxZOP);
     this.tagSurfaces.push(c);
-  };
-  SubtractSpaceFromSurface (b, c, e) {
+  }
+  SubtractSpaceFromSurface(b, c, e) {
     if (b.minZOP >= c && b.maxZOP <= e) b.maxZOP = b.minZOP - 1;
     else if (b.minZOP >= c && b.minZOP < e && b.maxZOP > e) b.minZOP = e + 1;
     else if (b.minZOP < c && b.maxZOP > e) {
@@ -6296,8 +6257,8 @@ class CalendarEventHandler {
       b.maxZOP = c - 1;
     } else
       b.maxZOP >= c && b.minZOP <= c && b.maxZOP <= e && (b.maxZOP = c - 1);
-  };
-  IsEventInCollisionList (a, c) {
+  }
+  IsEventInCollisionList(a, c) {
     var b;
     if (void 0 === a) return false;
     if (a.calendarEvent === c) return true;
@@ -6308,15 +6269,15 @@ class CalendarEventHandler {
       )
         return true;
     return false;
-  };
-  calculateMinAndPrefWidth (a) {
+  }
+  calculateMinAndPrefWidth(a) {
     a.preferredWidth =
       (this.eventsFarRight - this.eventsFarLeft) *
       (0.2 +
         this.minFullEventZOPSize /
           (a.calendarEvent.endZOP - a.calendarEvent.startZOP));
-  };
-  calculateWhere2CollidingEventsMeet (a, c, e) {
+  }
+  calculateWhere2CollidingEventsMeet(a, c, e) {
     e.left =
       a === this.eventsFarLeft
         ? a
@@ -6327,13 +6288,13 @@ class CalendarEventHandler {
                 (this.eventsFarRight - this.eventsFarLeft)) /
                 (c - this.eventsFarLeft + e.preferredWidth)
           );
-  };
-  selectVisibleFullEventsIn () {
+  }
+  selectVisibleFullEventsIn() {
     var a;
     do a = this.selectBiggestFullEventAndMakeVisible();
     while (void 0 !== a);
-  };
-  selectVisibleEventTagsIn (b, c, e, f, d) {
+  }
+  selectVisibleEventTagsIn(b, c, e, f, d) {
     var g, n;
     for (
       g = 0;
@@ -6342,13 +6303,12 @@ class CalendarEventHandler {
     )
       (n = OneView.core.calendarDateHandler.visibleLowestLevelObjects[g]),
         n.calendarDateObjectType ===
-          OneView.core.calendarDateHandler
-            .lowestLevelCalendarDateObjectType &&
+          OneView.core.calendarDateHandler.lowestLevelCalendarDateObjectType &&
           n.startZOP <= c &&
           n.endZOP >= b - (n.endZOP - n.startZOP) &&
           this.selectVisibleEventTagsFor(n, b, c, e, f, d);
-  };
-  paintVisibleFullEventWrappers () {
+  }
+  paintVisibleFullEventWrappers() {
     var b, c, e, f;
     for (b = 0; b < this.visibleFullEventWrappers.length; b++)
       (c = this.visibleFullEventWrappers[b].calendarEvent),
@@ -6376,8 +6336,8 @@ class CalendarEventHandler {
             ),
             c.summary
           );
-  };
-  paintVisibleEventTags () {
+  }
+  paintVisibleEventTags() {
     var b,
       c,
       e,
@@ -6477,8 +6437,7 @@ class CalendarEventHandler {
       (r = Math.max(
         0,
         OneView.core.zopHandler.getPixelFromZOP(
-          this.tagDatasToPaint[b].calendarEventTagWrapper.calendarEvent
-            .startZOP
+          this.tagDatasToPaint[b].calendarEventTagWrapper.calendarEvent.startZOP
         ) - this.tagDatasToPaint[b].topPixel
       )),
         (r = Math.min(Math.floor(this.tagDatasToPaint[b].height / 2), r)),
@@ -6504,8 +6463,8 @@ class CalendarEventHandler {
             c.text,
             c.height / OneView.core.settings.tagHeight
           );
-  };
-  getSpaceBellow (b, c, e, f, d) {
+  }
+  getSpaceBellow(b, c, e, f, d) {
     var g,
       n = f;
     for (g = 0; g < this.visibleFullEventWrappers.length && 0 < n; g++) {
@@ -6514,8 +6473,7 @@ class CalendarEventHandler {
         l.left < e &&
         (n = Math.min(
           n,
-          OneView.core.zopHandler.getPixelFromZOP(l.calendarEvent.startZOP) -
-            b
+          OneView.core.zopHandler.getPixelFromZOP(l.calendarEvent.startZOP) - b
         ));
     }
     for (g = 0; g < d.length && 0 < n; g++)
@@ -6525,8 +6483,8 @@ class CalendarEventHandler {
           l.left + l.width > c &&
           (n = Math.min(n, l.topPixel - b));
     return Math.min(f, n);
-  };
-  checkForPixelOverlap (a, c) {
+  }
+  checkForPixelOverlap(a, c) {
     if (void 0 !== c) {
       var b = Math.round(a.topPixel + a.height - c.topPixel);
       2 < b &&
@@ -6542,31 +6500,27 @@ class CalendarEventHandler {
             (a.height -= b),
             2 >= a.height && (a.visible = false)));
     }
-  };
-  copyEventsFromParent (a, c) {
+  }
+  copyEventsFromParent(a, c) {
     var b;
     if (void 0 !== a.calendarEvents)
       for (b = 0; b < a.calendarEvents.length; b++)
         this.addEventToCalendarDateObjectAndChildren(a.calendarEvents[b], c);
-  };
-  getTopTagAtThisZoomLevel (a) {
+  }
+  getTopTagAtThisZoomLevel(a) {
     var b;
     for (b = 0; b < a.possibleFullEvents.length; b++)
       if (
-        void 0 ===
-          this.findFullEventWrapperForEvent(a.possibleFullEvents[b]) &&
-        this.doesEventStartWithinCalendarDateObject(
-          a.possibleFullEvents[b],
-          a
-        )
+        void 0 === this.findFullEventWrapperForEvent(a.possibleFullEvents[b]) &&
+        this.doesEventStartWithinCalendarDateObject(a.possibleFullEvents[b], a)
       )
         return a.possibleFullEvents[b];
     return a.topNonFullEvent;
-  };
-  doesEventStartWithinCalendarDateObject (a, c) {
+  }
+  doesEventStartWithinCalendarDateObject(a, c) {
     return a.startZOP >= c.startZOP && a.startZOP < c.endZOP;
-  };
-  selectAndOrderPossibleEventTagsAtThisZoomLevel (b) {
+  }
+  selectAndOrderPossibleEventTagsAtThisZoomLevel(b) {
     var c = 0,
       e;
     b.possibleEventTagsAtThisZoomLevel = [];
@@ -6587,8 +6541,8 @@ class CalendarEventHandler {
     b.possibleEventTagsAtThisZoomLevel.sort(function (a, b) {
       return b.calendarEvent.grade - a.calendarEvent.grade;
     });
-  };
-  addPossibleEventTagsAtThisZoomLevel (b, c, e, f) {
+  }
+  addPossibleEventTagsAtThisZoomLevel(b, c, e, f) {
     b.possibleEventTagsAtThisZoomLevelMinZop =
       void 0 === b.possibleEventTagsAtThisZoomLevelMinZop
         ? c.startZOP
@@ -6600,8 +6554,8 @@ class CalendarEventHandler {
     b.possibleEventTagsAtThisZoomLevel.push(
       new OneView.PossibleEventTagsAtThisZoomLevel(c, b, f, e)
     );
-  };
-  removeCalendarEvent (b) {
+  }
+  removeCalendarEvent(b) {
     var c;
     for (
       c = 0;
@@ -6612,8 +6566,8 @@ class CalendarEventHandler {
         b,
         OneView.core.calendarDateHandler.rootCalendarDateObjects[c]
       );
-  };
-  removeCalendarEventFromDateObjectandChildren (a, c) {
+  }
+  removeCalendarEventFromDateObjectandChildren(a, c) {
     var b;
     c.isReadyForParentToBeShown = false;
     for (b = 0; b < c.possibleFullEvents.length; b++)
@@ -6633,8 +6587,8 @@ class CalendarEventHandler {
     if (c.details)
       for (b = 0; b < c.details.length; b++)
         this.removeCalendarEventFromDateObjectandChildren(a, c.details[b]);
-  };
-  getCalendarEventsByIdAndRecurringId (b) {
+  }
+  getCalendarEventsByIdAndRecurringId(b) {
     var c,
       e,
       f = [];
@@ -6650,8 +6604,8 @@ class CalendarEventHandler {
           f.push(d.calendarEvents[c]);
     }
     return f;
-  };
-  reorderAllEvents () {
+  }
+  reorderAllEvents() {
     var b;
     for (
       b = 0;
@@ -6661,8 +6615,8 @@ class CalendarEventHandler {
       this.reorderAllEventsInDateObjectandChildren(
         OneView.core.calendarDateHandler.rootCalendarDateObjects[b]
       );
-  };
-  reorderAllEventsInDateObjectandChildren (a) {
+  }
+  reorderAllEventsInDateObjectandChildren(a) {
     var b;
     a.isReadyForParentToBeShown = false;
     a.topNonFullEvent = void 0;
@@ -6672,8 +6626,8 @@ class CalendarEventHandler {
     if (a.details)
       for (b = 0; b < a.details.length; b++)
         this.reorderAllEventsInDateObjectandChildren(a.details[b]);
-  };
-  clearAllEvents () {
+  }
+  clearAllEvents() {
     var b;
     for (
       b = 0;
@@ -6685,8 +6639,8 @@ class CalendarEventHandler {
       );
     this.visibleEventTagWrappers = [];
     this.visibleTagEventGroups = [];
-  };
-  clearAllEventsFromDateObjectandChildren (a) {
+  }
+  clearAllEventsFromDateObjectandChildren(a) {
     var b;
     a.isReadyForParentToBeShown = false;
     a.possibleFullEvents = [];
@@ -6698,8 +6652,8 @@ class CalendarEventHandler {
     if (a.details)
       for (b = 0; b < a.details.length; b++)
         this.clearAllEventsFromDateObjectandChildren(a.details[b]);
-  };
-  addEventToCalendar (b) {
+  }
+  addEventToCalendar(b) {
     var c;
     for (
       c = 0;
@@ -6711,8 +6665,8 @@ class CalendarEventHandler {
         OneView.core.calendarDateHandler.rootCalendarDateObjects[c]
       );
     this.addCommonTimeKey(b.startDateTime, 2);
-  };
-  addCommonTimeKey (a, c) {
+  }
+  addCommonTimeKey(a, c) {
     var b = a.getHours() + "-" + a.getMinutes(),
       f = this.commonTimeKeysHelper.indexOf(b);
     -1 == f
@@ -6722,8 +6676,8 @@ class CalendarEventHandler {
         }),
         this.commonTimeKeysHelper.push(b))
       : this.commonTimeKeys[f].counter++;
-  };
-  findCommonTimes () {
+  }
+  findCommonTimes() {
     var a,
       c = new Date();
     c.setHours(0, 0, 0, 0);
@@ -6755,8 +6709,8 @@ class CalendarEventHandler {
     this.commonTimeKeys.sort(function (a, b) {
       return b.counter - a.counter;
     });
-  };
-  addEventToCalendarDateObjectAndChildren (a, c) {
+  }
+  addEventToCalendarDateObjectAndChildren(a, c) {
     var b;
     if (
       a.endZOP >= c.startZOP &&
@@ -6769,39 +6723,37 @@ class CalendarEventHandler {
     )
       for (b = 0; b < c.details.length; b++)
         this.addEventToCalendarDateObjectAndChildren(a, c.details[b]);
-  };
-  getOrCreateEventTagWrapperFor (b) {
+  }
+  getOrCreateEventTagWrapperFor(b) {
     var c = this.findEventTagWrappersForEvent(b);
     void 0 === c &&
       ((c = new OneView.CalendarEventTagWrapper(b)),
       (c.calendarEvent = b),
       this.visibleEventTagWrappers.push(c));
     return c;
-  };
-  findFullEventWrapperForEvent (a) {
+  }
+  findFullEventWrapperForEvent(a) {
     var b;
     for (b = 0; b < this.visibleFullEventWrappers.length; b++)
       if (this.visibleFullEventWrappers[b].calendarEvent == a)
         return this.visibleFullEventWrappers[b];
-  };
-  findEventTagWrappersForEvent (a) {
+  }
+  findEventTagWrappersForEvent(a) {
     var b;
     for (b = 0; b < this.visibleEventTagWrappers.length; b++)
       if (this.visibleEventTagWrappers[b].calendarEvent == a)
         return this.visibleEventTagWrappers[b];
-  };
+  }
   verifyChildCalendarDateObjectsAreReadyForParentToBeShown(b) {
-      OneView.core.calendarDateHandler.verifyDetailsArePopulatedFor(b);
-      var c = b.details.length,
-        e,
-        f;
-      for (e = 0; e < c; e++)
-        (f = b.details[e]),
-          this.verifyCalendarDateObjectIsReadyForParentToBeShown(f);
-    };
-  verifyCalendarDateObjectIsReadyForParentToBeShown (
-    a
-  ) {
+    OneView.core.calendarDateHandler.verifyDetailsArePopulatedFor(b);
+    var c = b.details.length,
+      e,
+      f;
+    for (e = 0; e < c; e++)
+      (f = b.details[e]),
+        this.verifyCalendarDateObjectIsReadyForParentToBeShown(f);
+  }
+  verifyCalendarDateObjectIsReadyForParentToBeShown(a) {
     if (true !== a.isReadyForParentToBeShown) {
       var b;
       a.possibleFullEvents.sort(function (a, b) {
@@ -6815,8 +6767,8 @@ class CalendarEventHandler {
           (a.topNonFullEvent = a.calendarEvents[b]);
       a.isReadyForParentToBeShown = true;
     }
-  };
-  selectVisibleEventTagsFor (b, c, e, f, d, m) {
+  }
+  selectVisibleEventTagsFor(b, c, e, f, d, m) {
     OneView.core.debugCounter++;
     f = true;
     this.verifyChildCalendarDateObjectsAreReadyForParentToBeShown(b);
@@ -6889,8 +6841,8 @@ class CalendarEventHandler {
               b.possibleEventTagsAtThisZoomLevel[k].calendarEvent.endZOP <=
                 e) ||
               (!d &&
-                b.possibleEventTagsAtThisZoomLevel[k].calendarEvent
-                  .startZOP <= e)) &&
+                b.possibleEventTagsAtThisZoomLevel[k].calendarEvent.startZOP <=
+                  e)) &&
             this.calendarEventIsOnExtendedScreen(
               b.possibleEventTagsAtThisZoomLevel[k].calendarEvent
             ) &&
@@ -6944,23 +6896,23 @@ class CalendarEventHandler {
         return a.position - b.position;
       });
     }
-  };
-  calendarEventIsOnExtendedScreen (a) {
+  }
+  calendarEventIsOnExtendedScreen(a) {
     return a.startZOP <= this.bottomZOP && a.endZOP >= this.topZOP;
-  };
-  getPositionSubtractionForEventTags (a, c) {
+  }
+  getPositionSubtractionForEventTags(a, c) {
     var b;
     for (b = 0; b < a.details.length && !(a.details[b].startZOP >= c); b++);
     return b;
-  };
-  countDetailsForPartialCalendarDateObject (a, c, e) {
+  }
+  countDetailsForPartialCalendarDateObject(a, c, e) {
     var b,
       d = 0;
     for (b = 0; b < a.details.length; b++)
       a.details[b].startZOP >= c && a.details[b].endZOP <= e && (d += 1);
     return d;
-  };
-  calculateAllWidths () {
+  }
+  calculateAllWidths() {
     var a, c, e, d, g;
     for (a = 0; a < this.visibleFullEventWrappers.length; a++) {
       e = this.visibleFullEventWrappers[a];
@@ -6989,8 +6941,7 @@ class CalendarEventHandler {
         g = this.calculateTagWidthsHelper(e, this.topZOP, this.bottomZOP, g);
         for (c = 0; c < e.childCollidingEventTagWrappers.length; c++)
           if (
-            ((e.childCollidingEventTagWrappers[c].right =
-              this.eventsFarRight),
+            ((e.childCollidingEventTagWrappers[c].right = this.eventsFarRight),
             g >= this.eventsFarRight)
           )
             e.childCollidingEventTagWrappers[c].visible = false;
@@ -7020,8 +6971,8 @@ class CalendarEventHandler {
           g = Math.max(g, d.parentCollidingFullEventWrappers[c].right);
       d.left = g;
     }
-  };
-  calculateOutOfScopeFactor (b) {
+  }
+  calculateOutOfScopeFactor(b) {
     var c = 1,
       e =
         (OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP) /
@@ -7035,8 +6986,8 @@ class CalendarEventHandler {
           (b.startZOP - this.bottomZOP) /
           (OneView.core.zopHandler.bottomZOP + e - this.bottomZOP));
     return c;
-  };
-  calculateTagWidthsHelper (b, c, e, d) {
+  }
+  calculateTagWidthsHelper(b, c, e, d) {
     c = this.eventsFarRight - this.eventsFarLeft;
     var f, m;
     e = this.eventsFarLeft;
@@ -7080,8 +7031,8 @@ class CalendarEventHandler {
     }
     e > this.eventsFarRight - 3 && (e = this.eventsFarRight);
     return e;
-  };
-  calculateFullEventWrapperMaxWidth (b) {
+  }
+  calculateFullEventWrapperMaxWidth(b) {
     return Math.max(
       (this.eventsFarRight - this.eventsFarLeft) *
         Math.min(
@@ -7089,12 +7040,10 @@ class CalendarEventHandler {
           (2 * (this.bottomZOP - this.topZOP)) /
             (b.calendarEvent.endZOP - b.calendarEvent.startZOP)
         ),
-      OneView.core.settings.tagHeight +
-        OneView.core.settings.tagColorWidth +
-        1
+      OneView.core.settings.tagHeight + OneView.core.settings.tagColorWidth + 1
     );
-  };
-  calculateWidthsHelper (b, c, e, d, g) {
+  }
+  calculateWidthsHelper(b, c, e, d, g) {
     d = e - c;
     var f,
       n,
@@ -7142,8 +7091,8 @@ class CalendarEventHandler {
         f[f.length - 1].right > e - 3 &&
         (f[f.length - 1].right = e);
     }
-  };
-  calculateFullEventWrapperWidthPercent (a, c, e, d) {
+  }
+  calculateFullEventWrapperWidthPercent(a, c, e, d) {
     a.widthPercent =
       Math.max(
         0.16,
@@ -7151,8 +7100,8 @@ class CalendarEventHandler {
       ) *
       e *
       d;
-  };
-  GetFullEventWrapperCollisionPaths (a) {
+  }
+  GetFullEventWrapperCollisionPaths(a) {
     var b,
       e,
       d = [];
@@ -7168,8 +7117,8 @@ class CalendarEventHandler {
       for (e = 0; e < g.length; e++) g[e].push(a), d.push(g[e]);
     }
     return d;
-  };
-  SetRightForFullEventWrapper (a, c) {
+  }
+  SetRightForFullEventWrapper(a, c) {
     var b;
     if (void 0 === a.right || a.right > c)
       if (((a.right = c), void 0 !== a.childCollidingFullEventWrappers))
@@ -7178,8 +7127,8 @@ class CalendarEventHandler {
             a.childCollidingFullEventWrappers[b],
             c
           );
-  };
-  SetLeftForFullEventWrapper (a, c) {
+  }
+  SetLeftForFullEventWrapper(a, c) {
     var b;
     if (
       a.left !== c &&
@@ -7190,8 +7139,8 @@ class CalendarEventHandler {
           a.parentCollidingFullEventWrappers[b],
           c
         );
-  };
-  SetLeftForEventTagWrapper (a, c) {
+  }
+  SetLeftForEventTagWrapper(a, c) {
     var b;
     if (
       a.left !== c &&
@@ -7202,8 +7151,8 @@ class CalendarEventHandler {
           a.parentCollidingFullEventWrappers[b],
           c
         );
-  };
-  gotoBadgeAt (b, c) {
+  }
+  gotoBadgeAt(b, c) {
     if (
       b >= OneView.core.settings.badgesLeft &&
       b <= OneView.core.settings.eventsFarLeft
@@ -7211,8 +7160,7 @@ class CalendarEventHandler {
       for (var e = 0; e < this.visibleBadges.length; e++)
         if (
           c >= this.visibleBadges[e].topPixel &&
-          c <=
-            this.visibleBadges[e].topPixel + OneView.core.settings.tagHeight
+          c <= this.visibleBadges[e].topPixel + OneView.core.settings.tagHeight
         ) {
           if (0 == this.visibleBadges[e].count) break;
           var d =
@@ -7227,8 +7175,8 @@ class CalendarEventHandler {
           return true;
         }
     return false;
-  };
-  selectCalendarEventObjectAt (b, c) {
+  }
+  selectCalendarEventObjectAt(b, c) {
     var e,
       d,
       g = OneView.core.zopHandler.getZOPFromPixel(c);
@@ -7250,7 +7198,7 @@ class CalendarEventHandler {
           (this.selectedCalendarEvent =
             this.visibleEventTagWrappers[e].calendarEvent);
     return this.selectedCalendarEvent;
-  };
+  }
 }
 
 OneView.CalendarEventHandler = CalendarEventHandler;
@@ -7291,10 +7239,10 @@ class DateTimeSelectionHandler {
     this.pageHtml =
       '<div id="dateTimeSelectionTopBar" class="topBar" style="position:relative; z-index:1000">    <button id="dateTimeSelectionCancel" class="topBarButton" style="width:50%; z-index:1000"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="dateTimeSelectionOk" class="topBarButton" style="width:50%; z-index:1000"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div>';
   }
-  init () {
+  init() {
     this.topPanelHeight = OneView.core.settings.titleWidth;
-  };
-  paint () {
+  }
+  paint() {
     void 0 !== this.calendarEventObject &&
       true === OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
       ((this.topPanelLeft = OneView.core.zopDrawArea.screenLeft),
@@ -7311,8 +7259,8 @@ class DateTimeSelectionHandler {
       (this.markerColor = OneView.core.settings.theme.colorDark),
       (this.textColor = OneView.core.settings.theme.colorLight),
       this.calendarEventObject && this.paintMarkers());
-  };
-  startEditing (b, c, e) {
+  }
+  startEditing(b, c, e) {
     this.callback = e;
     this.editType = c;
     this.calendarEventObject = b;
@@ -7327,8 +7275,8 @@ class DateTimeSelectionHandler {
       false,
       function () {}
     );
-  };
-  paintMarkers () {
+  }
+  paintMarkers() {
     this.topMarkerY = OneView.core.zopHandler.getPixelFromZOP(
       this.calendarEventObject.startZOP
     );
@@ -7340,8 +7288,8 @@ class DateTimeSelectionHandler {
         this.paintMarker(this.topText, this.topMarkerY, true))
       : (this.paintMarker(this.topText, this.topMarkerY, true),
         this.paintMarker(this.bottomText, this.bottomMarkerY, false));
-  };
-  makeNiceTimeToShow (a) {
+  }
+  makeNiceTimeToShow(a) {
     return (
       a.getMonth() +
       " " +
@@ -7351,8 +7299,8 @@ class DateTimeSelectionHandler {
       " " +
       a.getMinutes()
     );
-  };
-  makeVisible (b) {
+  }
+  makeVisible(b) {
     if (b) {
       this.buttonDiv = OneView.core.domHandler.addDiv(
         "dateTimeSelectionbuttons",
@@ -7378,14 +7326,14 @@ class DateTimeSelectionHandler {
         this
       );
     } else OneView.core.domHandler.removeElement(this.buttonDiv.id);
-  };
-  getSpaceTakenAtTop () {
+  }
+  getSpaceTakenAtTop() {
     return OneView.core.settings.titleWidth;
-  };
-  getSpaceTakenAtBottom () {
+  }
+  getSpaceTakenAtBottom() {
     return OneView.core.settings.titleWidth;
-  };
-  paintButton (b, c, e, d, g) {
+  }
+  paintButton(b, c, e, d, g) {
     OneView.core.drawArea.drawFilledRectangle(
       c,
       e,
@@ -7411,8 +7359,8 @@ class DateTimeSelectionHandler {
       false,
       false
     );
-  };
-  paintMarker (b, c, e) {
+  }
+  paintMarker(b, c, e) {
     e
       ? (OneView.core.zopDrawArea.drawHorizontalLineThick(
           OneView.core.settings.eventsFarLeft - 1,
@@ -7520,11 +7468,11 @@ class DateTimeSelectionHandler {
       false,
       false
     );
-  };
-  click (a, c) {
+  }
+  click(a, c) {
     return false;
-  };
-  saveChanges (b) {
+  }
+  saveChanges(b) {
     OneView.core.appStateHandler.setChoosingDateTimeForEvent(false);
     this.callback
       ? this.callback()
@@ -7532,43 +7480,43 @@ class DateTimeSelectionHandler {
           this.calendarEventObject,
           this.editType
         );
-  };
-  cancelChanges (b) {
+  }
+  cancelChanges(b) {
     OneView.core.appStateHandler.setChoosingDateTimeForEvent(false);
     this.calendarEventObject.startDateTime = this.originalTopDateTime;
     this.calendarEventObject.endDateTime = this.originalBottomDateTime;
     OneView.core.zopHandler.updateStartEndZOP(this.calendarEventObject);
     this.callback && this.callback();
-  };
-  hitTopMarkerAt (a, c) {
+  }
+  hitTopMarkerAt(a, c) {
     return c >= this.topMarkerY - this.markerHeight &&
       c <= this.topMarkerY &&
       a >= this.markerLeft &&
       a <= this.markerLeft + this.markerWidth
       ? true
       : false;
-  };
-  hitBottomMarkerAt (a, c) {
+  }
+  hitBottomMarkerAt(a, c) {
     return c >= this.bottomMarkerY &&
       c <= this.bottomMarkerY + this.markerHeight &&
       a >= this.markerLeft &&
       a <= this.markerLeft + this.markerWidth
       ? true
       : false;
-  };
-  startDraggingTopMarker (b) {
+  }
+  startDraggingTopMarker(b) {
     this.draggingTopMarkerOffset = b;
     OneView.core.appStateHandler.isDraggingTopMarker = true;
     this.startDragTopDateTime = this.calendarEventObject.startDateTime;
     OneView.core.appStateHandler.isDraggingBottomMarker ||
       (this.startDragBottomDateTime = this.calendarEventObject.endDateTime);
-  };
-  startDraggingBottomMarker (b) {
+  }
+  startDraggingBottomMarker(b) {
     this.draggingBottomMarkerOffset = b;
     OneView.core.appStateHandler.isDraggingBottomMarker = true;
     this.startDragBottomDateTime = this.calendarEventObject.endDateTime;
-  };
-  continueDraggingTopMarker (b) {
+  }
+  continueDraggingTopMarker(b) {
     b -= this.draggingTopMarkerOffset;
     this.topMarkerY =
       OneView.core.zopHandler.getPixelFromZOP(
@@ -7605,8 +7553,8 @@ class DateTimeSelectionHandler {
       (this.calendarEventObject.endZOP = b.startZOP),
       (this.bottomText = b.shortText),
       b.shortText2 && (this.bottomText += " " + b.shortText2));
-  };
-  continueDraggingBottomMarker (b) {
+  }
+  continueDraggingBottomMarker(b) {
     b -= this.draggingBottomMarkerOffset;
     this.bottomMarkerY =
       OneView.core.zopHandler.getPixelFromZOP(
@@ -7627,13 +7575,13 @@ class DateTimeSelectionHandler {
         (this.calendarEventObject.endZOP = b.startZOP),
         (this.bottomText = b.shortText),
         b.shortText2 && (this.bottomText += " " + b.shortText2);
-  };
-  endDraggingTopMarker () {
+  }
+  endDraggingTopMarker() {
     OneView.core.appStateHandler.isDraggingTopMarker = false;
-  };
-  endDraggingBottomMarker () {
+  }
+  endDraggingBottomMarker() {
     OneView.core.appStateHandler.isDraggingBottomMarker = false;
-  };
+  }
 }
 
 OneView.DateTimeSelectionHandler = DateTimeSelectionHandler;
@@ -7653,7 +7601,7 @@ class EventHandler {
       this.fingerLastDraggingTopMarker =
         0;
   }
-  addBatchEventsTo (b) {
+  addBatchEventsTo(b) {
     this.removeBatchElementsFrom(b);
     this.touchEnd = this.touchEnd.bind(this);
     b.addEventListener("touchend", this.touchEnd, false);
@@ -7664,15 +7612,15 @@ class EventHandler {
     this.touchLeave = this.touchLeave.bind(this);
     b.addEventListener("touchleave", this.touchLeave, false);
     OneView.core.isCordovaApp || this.addMouseEvents(b);
-  };
-  removeBatchElementsFrom (b) {
+  }
+  removeBatchElementsFrom(b) {
     b.removeEventListener("touchend", this.touchEnd, false);
     b.removeEventListener("touchmove", this.touchMove, false);
     b.removeEventListener("touchstart", this.touchStart, false);
     b.removeEventListener("touchleave", this.touchLeave, false);
     OneView.core.isCordovaApp || this.removeMouseEvents(b);
-  };
-  addMouseEvents (a) {
+  }
+  addMouseEvents(a) {
     this.elementsWithMouseEvents.push(a);
     this.mouseDown = this.mouseDown.bind(this);
     a.addEventListener("mousedown", this.mouseDown, false);
@@ -7685,26 +7633,26 @@ class EventHandler {
     this.mouseScroll = this.mouseScroll.bind(this);
     a.addEventListener("mousewheel", this.mouseScroll, false);
     window.addEventListener("DOMMouseScroll", this.mouseScroll, false);
-  };
-  removeMouseEvents (a) {
+  }
+  removeMouseEvents(a) {
     a.removeEventListener("mousedown", this.mouseDown, false);
     a.removeEventListener("mousemove", this.mouseMove, false);
     a.removeEventListener("mouseup", this.mouseUp, false);
     a.removeEventListener("mouseleave", this.mouseLeave, false);
     a.removeEventListener("mousewheel", this.mouseScroll, false);
     window.removeEventListener("DOMMouseScroll", this.mouseScroll, false);
-  };
-  reAddAllMouseEvents () {
+  }
+  reAddAllMouseEvents() {
     var a;
     for (a = 0; a < this.elementsWithMouseEvents.length; a++)
       this.addMouseEvents(this.elementsWithMouseEvents[a]);
-  };
-  removeAllMouseEvents () {
+  }
+  removeAllMouseEvents() {
     var a;
     for (a = 0; a < this.elementsWithMouseEvents.length; a++)
       this.removeMouseEvents(this.elementsWithMouseEvents[a]);
-  };
-  closeAllPagesAndMenus () {
+  }
+  closeAllPagesAndMenus() {
     if (
       OneView.core.appStateHandler.isChoosingDateTimeForEvent ||
       OneView.core.appStateHandler.isMainMenuShowing ||
@@ -7717,8 +7665,8 @@ class EventHandler {
       OneView.core.appStateHandler.settingsControlIsShowing
     )
       for (; OneView.core.appStateHandler.back(); );
-  };
-  click (b, c) {
+  }
+  click(b, c) {
     var e = false,
       d =
         OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
@@ -7744,53 +7692,45 @@ class EventHandler {
             b - g,
             c - d
           )) ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g,
-                c - d + 4
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g,
+              c - d + 4
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g,
-                c - d - 4
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g,
+              c - d - 4
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g + 2,
-                c - d
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g + 2,
+              c - d
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g - 2,
-                c - d
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g - 2,
+              c - d
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g,
-                c - d + 8
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g,
+              c - d + 8
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g,
-                c - d - 8
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g,
+              c - d - 8
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g + 4,
-                c - d
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g + 4,
+              c - d
+            )),
           e ||
-            (e =
-              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                b - g - 4,
-                c - d
-              )),
+            (e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+              b - g - 4,
+              c - d
+            )),
           e
             ? OneView.core.appStateHandler.viewEvent(e)
             : OneView.core.calendarEventHandler.gotoBadgeAt(b - g, c - d) ||
@@ -7799,8 +7739,8 @@ class EventHandler {
                 c - d
               )));
     OneView.core.redraw(true);
-  };
-  testIfStartDraggingMarker (b, c, e) {
+  }
+  testIfStartDraggingMarker(b, c, e) {
     OneView.core.dateTimeSelectionHandler.hitTopMarkerAt(b, c)
       ? (OneView.core.dateTimeSelectionHandler.startDraggingTopMarker(c),
         OneView.core.redraw(false),
@@ -7809,28 +7749,26 @@ class EventHandler {
         (OneView.core.dateTimeSelectionHandler.startDraggingBottomMarker(c),
         OneView.core.redraw(false),
         (this.fingerLastDraggingBottomMarker = e));
-  };
-  testIfContinueDraggingMarker (b, c) {
+  }
+  testIfContinueDraggingMarker(b, c) {
     OneView.core.appStateHandler.isDraggingTopMarker &&
     c === this.fingerLastDraggingTopMarker
       ? (OneView.core.dateTimeSelectionHandler.continueDraggingTopMarker(b),
         OneView.core.redraw(false))
       : OneView.core.appStateHandler.isDraggingBottomMarker &&
         c === this.fingerLastDraggingBottomMarker &&
-        (OneView.core.dateTimeSelectionHandler.continueDraggingBottomMarker(
-          b
-        ),
+        (OneView.core.dateTimeSelectionHandler.continueDraggingBottomMarker(b),
         OneView.core.redraw(false));
-  };
-  testIfEndDraggingMarker () {
+  }
+  testIfEndDraggingMarker() {
     OneView.core.appStateHandler.isDraggingTopMarker
       ? (OneView.core.dateTimeSelectionHandler.endDraggingTopMarker(),
         OneView.core.redraw(false))
       : OneView.core.appStateHandler.isDraggingBottomMarker &&
         (OneView.core.dateTimeSelectionHandler.endDraggingBottomMarker(),
         OneView.core.redraw(false));
-  };
-  touchStart (b) {
+  }
+  touchStart(b) {
     b.preventDefault();
     this.canBeAClick = true;
     OneView.core.drawAreaEffects.isScrollingOrZooming() &&
@@ -7848,10 +7786,7 @@ class EventHandler {
       this.getTouchY(this.touches[0]) *
       OneView.core.ratio *
       OneView.core.domRatio;
-    this.startedInTitleArea = OneView.core.mainMenuControl.startDragging(
-      b,
-      c
-    );
+    this.startedInTitleArea = OneView.core.mainMenuControl.startDragging(b, c);
     OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
       (1 <= this.touches.length &&
         (this.testIfEndDraggingMarker(),
@@ -7896,14 +7831,14 @@ class EventHandler {
       (this.canBeAClick = false);
     OneView.core.redraw(false);
     return false;
-  };
-  getTouchX (b) {
+  }
+  getTouchX(b) {
     return b.pageX - OneView.core.domHandler.screenLeftForDOM;
-  };
-  getTouchY (b) {
+  }
+  getTouchY(b) {
     return b.pageY - OneView.core.domHandler.screenTopForDOM;
-  };
-  mouseDown (b) {
+  }
+  mouseDown(b) {
     b.preventDefault();
     OneView.core.firstTouchMade = true;
     if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
@@ -7949,8 +7884,8 @@ class EventHandler {
       OneView.core.redraw(false);
       return false;
     }
-  };
-  touchMove (b) {
+  }
+  touchMove(b) {
     b.preventDefault();
     this.touches = b.touches;
     b =
@@ -7976,9 +7911,7 @@ class EventHandler {
     1 === this.touches.length &&
       this.touchOneFingerStarted &&
       Math.abs(this.touchOneFingerStartX - this.getTouchX(this.touches[0])) +
-        Math.abs(
-          this.touchOneFingerStartY - this.getTouchY(this.touches[0])
-        ) >
+        Math.abs(this.touchOneFingerStartY - this.getTouchY(this.touches[0])) >
         this.touchSlop *
           OneView.core.ratio *
           OneView.core.domRatio *
@@ -8005,8 +7938,8 @@ class EventHandler {
           OneView.core.zopHandler.continueZoom(b, e));
     OneView.core.redraw(false);
     return false;
-  };
-  mouseMove (b) {
+  }
+  mouseMove(b) {
     b.preventDefault();
     if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
     else {
@@ -8050,8 +7983,8 @@ class EventHandler {
         OneView.core.redraw(false));
       return false;
     }
-  };
-  touchEnd (b) {
+  }
+  touchEnd(b) {
     b.preventDefault();
     if (!this.touchOneFingerStarted && !this.touchTwoFingerStarted)
       return false;
@@ -8070,9 +8003,7 @@ class EventHandler {
         (void 0 !== c && 0 !== c.length) ||
         (false === this.canBeAClick
           ? OneView.core.drawAreaEffects.startAutoScroll(
-              this.getTouchY(b[0]) *
-                OneView.core.ratio *
-                OneView.core.domRatio
+              this.getTouchY(b[0]) * OneView.core.ratio * OneView.core.domRatio
             )
           : this.click(
               b[0].pageX * OneView.core.ratio * OneView.core.domRatio,
@@ -8087,8 +8018,8 @@ class EventHandler {
     this.timeWhenLastTouchEnded = OneView.core.getTimeStamp();
     OneView.core.redraw(false);
     return false;
-  };
-  mouseUp (b) {
+  }
+  mouseUp(b) {
     b.preventDefault();
     if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
     else
@@ -8129,8 +8060,8 @@ class EventHandler {
         OneView.core.redraw(false),
         false
       );
-  };
-  mouseScroll (b) {
+  }
+  mouseScroll(b) {
     b.preventDefault();
     var c = b.wheelDelta ? b.wheelDelta : -b.detail;
     if (
@@ -8165,8 +8096,8 @@ class EventHandler {
       OneView.core.drawAreaEffects.startAutoZoom(e, d, false, function () {});
       return false;
     }
-  };
-  mouseLeave (b) {
+  }
+  mouseLeave(b) {
     if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
     else {
       OneView.core.appStateHandler.isAddButtonBeingDragged = false;
@@ -8181,8 +8112,7 @@ class EventHandler {
           OneView.core.zopHandler.endScroll(),
           OneView.core.drawAreaEffects.stopAllEffects()),
           this.mouseRightDown &&
-            ((this.mouseRightDown = false),
-            OneView.core.zopHandler.endZoom()),
+            ((this.mouseRightDown = false), OneView.core.zopHandler.endZoom()),
           OneView.core.appStateHandler.isMainMenuBeingDragged
             ? ((this.mouseLeftDown = false),
               OneView.core.mainMenuControl.endDragging())
@@ -8191,14 +8121,14 @@ class EventHandler {
               OneView.core.addButtonControl.endDragging());
       OneView.core.redraw(false);
     }
-  };
-  touchLeave (b) {
+  }
+  touchLeave(b) {
     OneView.core.appStateHandler.isAddButtonBeingDragged = false;
     OneView.core.zopHandler.endScroll();
     OneView.core.drawAreaEffects.stopAllEffects();
     OneView.core.zopHandler.endZoom();
     OneView.core.redraw(false);
-  };
+  }
 }
 
 OneView.EventHandler = EventHandler;
@@ -8238,7 +8168,7 @@ class ZopHandler {
         0;
     this.scrolling = false;
   }
-  setAbsoluteMinMax (a, c) {
+  setAbsoluteMinMax(a, c) {
     this.absoluteMinZOP = a;
     this.absoluteMaxZOP = c;
     this.zopSizeOfYear =
@@ -8259,59 +8189,55 @@ class ZopHandler {
     this.zopSizeOf5Minutes =
       this.dateToZOP(new Date(2005, 1, 1, 2, 10, 0)) -
       this.dateToZOP(new Date(2005, 1, 1, 2, 5, 0));
-  };
-  initSize (a, c, e, d) {
+  }
+  initSize(a, c, e, d) {
     this.topPixel = a;
     this.bottomPixel = c;
     this.leftPixel = e;
     this.rightPixel = d;
-  };
-  getZoom () {
+  }
+  getZoom() {
     return this.currentZoom;
-  };
-  setZoom (a, c, e, d) {
+  }
+  setZoom(a, c, e, d) {
     this.currentZoom = (c - a) / (d - e);
     0 === this.currentZoom && (this.currentZoom = 1e3);
     this.validateZoomValues();
     this.currentDelta = a - (e - this.topPixel) * this.currentZoom;
     this.setZOPBounds(
-      this.getZOPFromPixel2(
-        this.topPixel,
-        this.currentZoom,
-        this.currentDelta
-      ),
+      this.getZOPFromPixel2(this.topPixel, this.currentZoom, this.currentDelta),
       (this.bottomZOP = this.getZOPFromPixel2(
         this.bottomPixel,
         this.currentZoom,
         this.currentDelta
       ))
     );
-  };
-  setZOPBounds (a, c) {
+  }
+  setZOPBounds(a, c) {
     this.topZOP = a;
     this.bottomZOP = c;
     var b = this.bottomZOP - this.topZOP;
     this.extendedTopZOP = this.topZOP - b;
     this.extendedBottomZOP = this.bottomZOP + b;
-  };
-  isObjectAboveScreen (a) {
+  }
+  isObjectAboveScreen(a) {
     return a < this.topZOP ? true : false;
-  };
-  isObjectBelowScreen (a) {
+  }
+  isObjectBelowScreen(a) {
     return a > this.bottomZOP ? true : false;
-  };
-  isObjectAboveExtendedScreen (a) {
+  }
+  isObjectAboveExtendedScreen(a) {
     return a < this.extendedTopZOP ? true : false;
-  };
-  isObjectBelowExtendedScreen (a) {
+  }
+  isObjectBelowExtendedScreen(a) {
     return a > this.extendedBottomZOP ? true : false;
-  };
-  startScroll (a) {
+  }
+  startScroll(a) {
     this.originalDelta = this.currentDelta;
     this.currentYPixel = this.originalYPixel = a;
     this.scrolling = true;
-  };
-  continueScroll (b) {
+  }
+  continueScroll(b) {
     if (this.scrolling) {
       OneView.core.getTimeStamp();
       this.originalYPixel != b && OneView.core.getTimeStamp();
@@ -8336,11 +8262,11 @@ class ZopHandler {
       );
       this.validateZoomValues();
     }
-  };
-  endScroll () {
+  }
+  endScroll() {
     this.scrolling = false;
-  };
-  startZoom (a, c) {
+  }
+  startZoom(a, c) {
     this.originalDelta = this.currentDelta;
     this.originalZoom = this.currentZoom;
     this.originalYPixel = a;
@@ -8362,8 +8288,8 @@ class ZopHandler {
       this.originalZoom,
       this.originalDelta
     );
-  };
-  continueZoom (a, c) {
+  }
+  continueZoom(a, c) {
     this.currentYPixel = a;
     this.currentYPixel2 = c;
     if (this.currentYPixel > this.currentYPixel2) {
@@ -8379,25 +8305,28 @@ class ZopHandler {
         this.currentYPixel2
       ),
       this.validateZoomValues());
-  };
-  endZoom () {};
-  showInitialBounds (b) {
+  }
+  endZoom() {}
+  showInitialBounds(b: boolean) {
     var c =
-        OneView.core.calendarDataProxy &&
-        OneView.core.calendarDataProxy.demoVideoSpecial &&
-        500 < this.currentZoom,
-      e = this.dateToZOP(new Date()),
+      OneView.core.calendarDataProxy &&
+      OneView.core.calendarDataProxy.demoVideoSpecial &&
+      500 < this.currentZoom;
+    var e = this.dateToZOP(new Date());
+    debugger;
+    var d = OneView.core.calendarDateHandler.getCalendarDateObject(
+      e,
+      OneView.CalendarDateObjectType.Title.Day,
+      OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
+    );
+    if (5 > d.calendarEvents.length) {
       d = OneView.core.calendarDateHandler.getCalendarDateObject(
-        e,
-        OneView.CalendarDateObjectType.Title.Day,
-        OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
-      );
-    5 > d.calendarEvents.length &&
-      (d = OneView.core.calendarDateHandler.getCalendarDateObject(
         e,
         OneView.CalendarDateObjectType.Title.Month,
         OneView.core.calendarDateHandler.rootCalendarDateObjects[0]
-      ));
+      );
+    }
+
     4 > d.calendarEvents.length &&
       (d = OneView.core.calendarDateHandler.getCalendarDateObject(
         e,
@@ -8425,8 +8354,8 @@ class ZopHandler {
         "Initial Zoom",
         d - e
       );
-  };
-  validateZoomValues () {
+  }
+  validateZoomValues() {
     this.currentZoom < this.absoluteMinZoom &&
       ((this.currentZoom = this.absoluteMinZoom),
       OneView.core.drawAreaEffects.stopAllEffects());
@@ -8451,15 +8380,13 @@ class ZopHandler {
       (this.originalYPixel = this.currentYPixel),
       (this.originalYPixel2 = this.currentYPixel2),
       this.setZoom(b, c, this.topPixel, this.bottomPixel));
-  };
-  getPixelFromZOP (a) {
+  }
+  getPixelFromZOP(a) {
     return 0 === this.currentZoom
       ? 0
-      : Math.floor(
-          (a - this.currentDelta) / this.currentZoom + this.topPixel
-        );
-  };
-  get2PixelsFromZOPsForVErticalText (b, c) {
+      : Math.floor((a - this.currentDelta) / this.currentZoom + this.topPixel);
+  }
+  get2PixelsFromZOPsForVErticalText(b, c) {
     if (0 === this.currentZoom) return new OneView.NumberPair(0, 0);
     var e = (c - this.currentDelta) / this.currentZoom + this.topPixel,
       d = Math.floor(
@@ -8467,39 +8394,39 @@ class ZopHandler {
       ),
       e = Math.floor(e);
     return new OneView.NumberPair(e - d, e);
-  };
-  getZOPFromPixel2 (a, c, e) {
+  }
+  getZOPFromPixel2(a, c, e) {
     return (a - this.topPixel) * c + e;
-  };
-  getZOPFromPixel (a) {
+  }
+  getZOPFromPixel(a) {
     return this.getZOPFromPixel2(a, this.currentZoom, this.currentDelta);
-  };
-  getZOPFromPixelDiff (a) {
+  }
+  getZOPFromPixelDiff(a) {
     return (
       this.getZOPFromPixel2(a, this.currentZoom, this.currentDelta) -
       this.getZOPFromPixel2(0, this.currentZoom, this.currentDelta)
     );
-  };
-  getFractionalPixelDistance (a) {
+  }
+  getFractionalPixelDistance(a) {
     return 0 === this.currentZoom ? 0 : a / this.currentZoom;
-  };
-  updateStartEndZOP (a) {
+  }
+  updateStartEndZOP(a) {
     a.startZOP = this.dateToZOP(a.startDateTime);
     a.endZOP = this.dateToZOP(a.endDateTime) - 1;
-  };
-  dateToZOP (b) {
+  }
+  dateToZOP(b) {
     return (Number(b) - OneView.core.settings.globalMinDate) / 6e4;
-  };
-  getDateFromZOP (b) {
+  }
+  getDateFromZOP(b) {
     return new Date(6e4 * b + OneView.core.settings.globalMinDate);
-  };
-  getPixelFromDate (a) {
+  }
+  getPixelFromDate(a) {
     return this.getPixelFromZOP(this.dateToZOP(a));
-  };
-  getDateFromPixel (a) {
+  }
+  getDateFromPixel(a) {
     return this.getDateFromZOP(this.getZOPFromPixel(a));
-  };
-  getZOPSizeOf (b) {
+  }
+  getZOPSizeOf(b) {
     switch (b) {
       case OneView.CalendarDateObjectType.Title.Minutes5:
         return this.zopSizeOf5Minutes;
@@ -8516,8 +8443,8 @@ class ZopHandler {
       default:
         throw Error("Unhandled CalendarDateObjectType");
     }
-  };
-  getPixelSizeOf (b) {
+  }
+  getPixelSizeOf(b) {
     switch (b) {
       case OneView.CalendarDateObjectType.Title.Minutes5:
         return this.getPixelSizeOf5Minutes();
@@ -8534,25 +8461,25 @@ class ZopHandler {
       default:
         throw Error("Unhandled CalendarDateObjectType");
     }
-  };
-  getPixelSizeOfYear () {
+  }
+  getPixelSizeOfYear() {
     return this.zopSizeOfYear / this.currentZoom;
-  };
-  getPixelSizeOfMonth () {
+  }
+  getPixelSizeOfMonth() {
     return this.zopSizeOfMonth / this.currentZoom;
-  };
-  getPixelSizeOfWeek () {
+  }
+  getPixelSizeOfWeek() {
     return this.zopSizeOfWeek / this.currentZoom;
-  };
-  getPixelSizeOfDay () {
+  }
+  getPixelSizeOfDay() {
     return this.zopSizeOfDay / this.currentZoom;
-  };
-  getPixelSizeOfHour () {
+  }
+  getPixelSizeOfHour() {
     return this.zopSizeOfHour / this.currentZoom;
-  };
-  getPixelSizeOf5Minutes () {
+  }
+  getPixelSizeOf5Minutes() {
     return this.zopSizeOf5Minutes / this.currentZoom;
-  };
+  }
 }
 
 OneView.ZopHandler = ZopHandler;
@@ -8565,21 +8492,21 @@ class SpeedCache {
     this.nextCacheObjects = [];
     this.lastIndex = -1;
   }
-  startNewRound  () {
+  startNewRound() {
     this.lastIndex = -1;
     this.cacheKeys = this.nextCacheKeys;
     this.cacheObjects = this.nextCacheObjects;
     this.nextCacheKeys = [];
     this.nextCacheObjects = [];
-  };
-emptyCache  () {
+  }
+  emptyCache() {
     this.lastIndex = -1;
     this.cacheKeys = [];
     this.cacheObjects = [];
     this.nextCacheKeys = [];
     this.nextCacheObjects = [];
-  };
-findObject  (a) {
+  }
+  findObject(a) {
     var b = this.lastIndex + 1;
     if (1e4 < this.cacheKeys.length) throw Error("Cache too big!");
     for (; this.cacheKeys[b] !== a && b < this.cacheKeys.length; ) b++;
@@ -8591,11 +8518,11 @@ findObject  (a) {
         this.cacheObjects[b]
       );
     if (0 < this.lastIndex) return (this.lastIndex = 0), this.findObject(a);
-  };
-addObject  (a, c) {
+  }
+  addObject(a, c) {
     this.nextCacheKeys.push(a);
     this.nextCacheObjects.push(c);
-  };
+  }
 }
 
 OneView.SpeedCache = SpeedCache;
@@ -8605,15 +8532,15 @@ class Hashtable {
     this.keys = [];
     this.values = [];
   }
-  put  (a, b) {
+  put(a, b) {
     this.keys.push(a);
     this.values.push(b);
-  };
-  find  (a) {
+  }
+  find(a) {
     var b;
     for (b = 0; b < this.keys.length; b++)
       if (this.keys[b] == a) return this.values[b];
-  };
+  }
 }
 
 OneView.Hashtable = Hashtable;
@@ -8641,7 +8568,15 @@ OneView.Hashtable = Hashtable;
 })(OneView.CalendarDateObjectType || (OneView.CalendarDateObjectType = {}));
 
 class CalendarEventObject {
-  constructor(summary, description, location, startDateTime, endDateTime, calendarId, eventId) {
+  constructor(
+    summary,
+    description,
+    location,
+    startDateTime,
+    endDateTime,
+    calendarId,
+    eventId
+  ) {
     this.summary = summary || "";
     this.description = description || "";
     this.location = location;
@@ -8649,7 +8584,10 @@ class CalendarEventObject {
     this.endDateTime = endDateTime;
 
     if (endDateTime.getHours() === 0 && endDateTime.getMinutes() === 0) {
-      this.endDateTime = OneView.core.calendarDateHandler.addMinutes(endDateTime, -1);
+      this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+        endDateTime,
+        -1
+      );
     }
 
     OneView.core.zopHandler.updateStartEndZOP(this);
@@ -8659,7 +8597,7 @@ class CalendarEventObject {
     this.eventId = eventId;
   }
 }
-OneView.CalendarEventObject = CalendarEventObject
+OneView.CalendarEventObject = CalendarEventObject;
 
 class CalendarObject {
   constructor(a, c, e, d, g, m, n) {
@@ -8672,13 +8610,13 @@ class CalendarObject {
     this.defaultReminders = e;
     this.allEventsAreFullDay = true;
     this.countEvents = 0;
-  };
+  }
 }
-OneView.CalendarObject = CalendarObject
+OneView.CalendarObject = CalendarObject;
 
 class Reminder {
   constructor(a) {
-    this.minutes = +a
+    this.minutes = +a;
   }
 }
 
@@ -8799,7 +8737,7 @@ class CalendarDateObject {
       (this.longText = "OneView Calendar"),
       (this.detailsArePopulated = false));
     this.endZOP = OneView.core.zopHandler.dateToZOP(this.endDateTime);
-  };
+  }
 }
 
 OneView.CalendarDateObject = CalendarDateObject;
@@ -8810,7 +8748,7 @@ class PossibleEventTagsAtThisZoomLevel {
     this.calendarDate = c;
     this.calendarDateDetail = e;
     this.position = d;
-  };
+  }
 }
 
 OneView.PossibleEventTagsAtThisZoomLevel = PossibleEventTagsAtThisZoomLevel;
@@ -8822,10 +8760,10 @@ class CalendarEventTagGroup {
     this.parentBottomZOP = this.parentTopZOP = 0;
     this.calendarDateObject = a;
     this.availableSpace = c;
-  };
+  }
 }
 
-OneView.CalendarEventTagGroup = CalendarEventTagGroup
+OneView.CalendarEventTagGroup = CalendarEventTagGroup;
 
 class CalendarEventTagWrapper {
   constructor(a) {
@@ -8834,19 +8772,20 @@ class CalendarEventTagWrapper {
     this.parentCollidingFullEventWrappers = [];
     this.visible = true;
     this.calendarEvent = a;
-  };
+  }
 }
 
-class CalendarFullEventWrapper { constructor(a) {
-      this.widthPercentWhenTagsExist = this.widthPercent = 0;
-      this.preferredWidth = this.right = this.left = void 0;
-      this.collisionsHaveBeenChecked = false;
-      this.parentCollidingFullEventWrappers = [];
-      this.childCollidingFullEventWrappers = [];
-      this.childCollidingEventTagWrappers = [];
-      this.calendarEvent = a;
-    };
+class CalendarFullEventWrapper {
+  constructor(a) {
+    this.widthPercentWhenTagsExist = this.widthPercent = 0;
+    this.preferredWidth = this.right = this.left = void 0;
+    this.collisionsHaveBeenChecked = false;
+    this.parentCollidingFullEventWrappers = [];
+    this.childCollidingFullEventWrappers = [];
+    this.childCollidingEventTagWrappers = [];
+    this.calendarEvent = a;
   }
+}
 OneView.CalendarFullEventWrapper = CalendarFullEventWrapper;
 
 class Badge {
@@ -8855,43 +8794,43 @@ class Badge {
   }
 }
 
-OneView.Badge = Badge
+OneView.Badge = Badge;
 
 class OccupiedSpaceObject {
   constructor() {
     this.left = this.maxZOP = this.minZOP = 0;
-  };
+  }
 }
 
-OneView.OccupiedSpaceObject = OccupiedSpaceObject
+OneView.OccupiedSpaceObject = OccupiedSpaceObject;
 
 class TagSurface {
   constructor() {
     this.parentCollidingFullEventWrapper = void 0;
     this.maxZOP = this.minZOP = 0;
-  };
+  }
 }
-OneView.TagSurface = TagSurface
+OneView.TagSurface = TagSurface;
 
 class TagDataToPaint {
   constructor() {}
 }
 
-OneView.TagDataToPaint = TagDataToPaint
+OneView.TagDataToPaint = TagDataToPaint;
 
 class NumberPair {
   constructor(a, c) {
     this.value1 = a;
     this.value2 = c;
-  };
+  }
 }
-OneView.NumberPair = NumberPair
+OneView.NumberPair = NumberPair;
 
 class NumberStringPair {
   constructor(a, c) {
     this.valueNumber = a;
     this.valueString = c;
-  };
+  }
 }
 OneView.NumberStringPair = NumberStringPair;
 
@@ -8946,19 +8885,19 @@ class Settings {
     this.lineThickness = 2;
     this.reloadThemesSettings(a);
   }
-  reloadThemesSettings  (e) {
+  reloadThemesSettings(e) {
     this.themes = new OneView.Dictionary();
     this.themes.add("0", new FreeTheme());
     e.licenceDarkTheme && this.themes.add("3", new DarkTheme());
     e.licenceCandyTheme && this.themes.add("4", new CandyTheme());
     this.themes.containsKey(e.theme) || (e.theme = "0");
     this.theme = this.themes[e.theme];
-  };
-  reloadTheme  () {
+  }
+  reloadTheme() {
     this.themes.containsKey(OneView.core.commonUserSettings.theme) ||
       (OneView.core.commonUserSettings.theme = "0");
     this.theme = this.themes[OneView.core.commonUserSettings.theme];
-  };
+  }
 }
 
 OneView.Settings = Settings;
@@ -9019,71 +8958,72 @@ class OriginalColorTheme {
     this.textFontThin = this.textFontBold = this.textFont = "Arial";
     this.badgeColorIsTagTextColor = false;
     this.addButtonWidthFactor = 0.9;
-  };
+  }
 }
 
 OneView.OriginalColorTheme = OriginalColorTheme;
 
-class MaterialColorTheme {    
+class MaterialColorTheme {
   constructor() {
-  this.themeName = "Vivid Material";
-  this.colorBlack = "#000000";
-  this.colorDark = "#01518E";
-  this.colorBigDateDividerStr = "rgba( 173, 176, 181, ";
-  this.colorTitleBackground = "#01518E";
-  this.colorTitleText = "#FFFFFF";
-  this.colorGrayText = "#454545";
-  this.colorHorizontalTitle = this.colorDarkText = "#000000";
-  this.colorRedDayText = "#C91E1E";
-  this.colorDarkSoft = "#999999";
-  this.colorLightSoft = "#BBBBBB";
-  this.colorTag2 = this.colorTag = "#E50081";
-  this.colorWhite =
-    this.colorLight =
-    this.colorBackground =
-    this.colorTagText =
-      "#FFFFFF";
-  this.colorRed = "#01518E";
-  this.colorMarker = "#4C88DB";
-  this.colorBlue = "#2890D1";
-  this.colorAddButton = "#01518E";
-  this.colorDim = "rgba(0; 0; 0; 0.5)";
-  this.colorLightDim = "rgba(125; 125; 125; 0.9)";
-  this.colorToday = [225, 210, 220];
-  this.color1 = "#333333";
-  this.colorFadeOut = "rgba(125, 125, 125, 0.5)";
-  this.colorWeekNumberShadow = "#E9EAEC";
-  this.colorWeekNumberText = "#FFFFFF";
-  this.colorWeekNumberCircle = "#707070";
-  this.eventColors =
-    "#016DD5 #E91E63 #009688 #FF9800 #9C27B0 #70A83C #F23E2B #965F30 #FF3886 #38C0AF #FFA938 #CC43E4 #85C848 #FF543E #BE7E46 #8E1C4E #11635B #A66E1B #830BCD #537200 #FF5513 #63452B #757575 #656565 #555555 #808080 #707070 #606060".split(
-      " "
-    );
-  this.eventTextColors =
-    "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
-      " "
-    );
-  this.eventColorsForFirstCalendar = [
-    "#303F9F",
-    "#3949AB",
-    "#3F51B5",
-    "#5C6BC0",
-    "#7986CB",
-  ];
-  this.eventsFarLeft = 0;
-  this.tagTextIsBold = false;
-  this.titleWidthFactor = 50;
-  this.triangleColorStr = "rgba( 1, 81, 142, ";
-  this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
-  this.titleBarFont = "RobotoL";
-  this.titleBarFontSize = 16;
-  this.titleBarFontBold = "RobotoB";
-  this.textFont = "Roboto";
-  this.textFontBold = "RobotoB";
-  this.textFontThin = "RobotoL";
-  this.badgeColorIsTagTextColor = false;
-  this.addButtonWidthFactor = 1.1;
-};}
+    this.themeName = "Vivid Material";
+    this.colorBlack = "#000000";
+    this.colorDark = "#01518E";
+    this.colorBigDateDividerStr = "rgba( 173, 176, 181, ";
+    this.colorTitleBackground = "#01518E";
+    this.colorTitleText = "#FFFFFF";
+    this.colorGrayText = "#454545";
+    this.colorHorizontalTitle = this.colorDarkText = "#000000";
+    this.colorRedDayText = "#C91E1E";
+    this.colorDarkSoft = "#999999";
+    this.colorLightSoft = "#BBBBBB";
+    this.colorTag2 = this.colorTag = "#E50081";
+    this.colorWhite =
+      this.colorLight =
+      this.colorBackground =
+      this.colorTagText =
+        "#FFFFFF";
+    this.colorRed = "#01518E";
+    this.colorMarker = "#4C88DB";
+    this.colorBlue = "#2890D1";
+    this.colorAddButton = "#01518E";
+    this.colorDim = "rgba(0; 0; 0; 0.5)";
+    this.colorLightDim = "rgba(125; 125; 125; 0.9)";
+    this.colorToday = [225, 210, 220];
+    this.color1 = "#333333";
+    this.colorFadeOut = "rgba(125, 125, 125, 0.5)";
+    this.colorWeekNumberShadow = "#E9EAEC";
+    this.colorWeekNumberText = "#FFFFFF";
+    this.colorWeekNumberCircle = "#707070";
+    this.eventColors =
+      "#016DD5 #E91E63 #009688 #FF9800 #9C27B0 #70A83C #F23E2B #965F30 #FF3886 #38C0AF #FFA938 #CC43E4 #85C848 #FF543E #BE7E46 #8E1C4E #11635B #A66E1B #830BCD #537200 #FF5513 #63452B #757575 #656565 #555555 #808080 #707070 #606060".split(
+        " "
+      );
+    this.eventTextColors =
+      "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
+        " "
+      );
+    this.eventColorsForFirstCalendar = [
+      "#303F9F",
+      "#3949AB",
+      "#3F51B5",
+      "#5C6BC0",
+      "#7986CB",
+    ];
+    this.eventsFarLeft = 0;
+    this.tagTextIsBold = false;
+    this.titleWidthFactor = 50;
+    this.triangleColorStr = "rgba( 1, 81, 142, ";
+    this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
+    this.titleBarFont = "RobotoL";
+    this.titleBarFontSize = 16;
+    this.titleBarFontBold = "RobotoB";
+    this.textFont = "Roboto";
+    this.textFontBold = "RobotoB";
+    this.textFontThin = "RobotoL";
+    this.badgeColorIsTagTextColor = false;
+    this.addButtonWidthFactor = 1.1;
+  }
+}
 
 OneView.MaterialColorTheme = MaterialColorTheme;
 
@@ -9147,7 +9087,7 @@ class FreeTheme {
     this.textFontThin = "RobotoL";
     this.badgeColorIsTagTextColor = false;
     this.addButtonWidthFactor = 1.1;
-  };
+  }
 }
 
 OneView.FreeTheme = FreeTheme;
@@ -9215,7 +9155,7 @@ class DarkTheme {
 OneView.DarkTheme = DarkTheme;
 
 class CandyTheme {
-  constructor () {
+  constructor() {
     this.themeName = "Candy theme";
     this.colorBlack = "#000000";
     this.colorDark = "#AA6990";
@@ -9274,7 +9214,7 @@ class CandyTheme {
     this.textFontThin = "RobotoL";
     this.badgeColorIsTagTextColor = true;
     this.addButtonWidthFactor = 1.1;
-  };
+  }
 }
 
 OneView.CandyTheme = CandyTheme;
@@ -9351,7 +9291,7 @@ class Core {
     this.appStateHandler = new OneView.AppStateHandler();
     this.dateTimeSelectionHandler = new OneView.DateTimeSelectionHandler();
   }
-  init () {
+  init() {
     this.setSizeSettings();
     this.domHandler.init();
     this.dateTimeSelectionHandler.init();
@@ -9359,8 +9299,8 @@ class Core {
     this.debugTexts = [];
     this.redrawCore = this.redrawCore.bind(this);
     this.loadGraphics();
-  };
-  loadDataProxy () {
+  }
+  loadDataProxy() {
     this.isCordovaApp
       ? ((this.populateCalendars = this.populateCalendars.bind(this)),
         this.populateCalendars())
@@ -9370,16 +9310,16 @@ class Core {
           "js",
           function () {}
         ));
-  };
-  redraw (a) {
+  }
+  redraw(a) {
     this.hardRedraw = a;
     this.redrawCountdown = 1;
-  };
-  startDrawLoop () {
+  }
+  startDrawLoop() {
     this.redrawCountdown = 1;
     this.redrawCore();
-  };
-  redrawCore () {
+  }
+  redrawCore() {
     this.debugtextDiv
       ? this.debugtextDiv.innerText !== this.debugtext &&
         (this.debugtextDiv.innerText = this.debugtext)
@@ -9394,8 +9334,7 @@ class Core {
       this.lastDrawTime = this.getTimeStamp();
       b = this.drawAreaEffects.runEffects();
       this.alreadyRedrawing = true;
-      this.appStateHandler.isMainMenuShowing &&
-        this.mainMenuControl.setSizes();
+      this.appStateHandler.isMainMenuShowing && this.mainMenuControl.setSizes();
       this.zopDrawArea.clearDrawArea();
       this.drawArea.startNewRound();
       this.addButtonControl.isAnimationActive() &&
@@ -9430,15 +9369,15 @@ class Core {
         --this.redrawCountdown;
     }
     this.requestAnimFrame.call(window, this.redrawCore);
-  };
-  getTimeStamp () {
+  }
+  getTimeStamp() {
     return window.performance && window.performance.now
       ? window.performance.now()
       : window.performance && window.performance.webkitNow
       ? window.performance.webkitNow()
       : new Date().getTime();
-  };
-  reopenApp () {
+  }
+  reopenApp() {
     OneView.core.helper.canShowDatePicker() &&
       ((this.onSuccessX = this.onSuccessX.bind(this)),
       (this.onErrorX = this.onErrorX.bind(this)),
@@ -9448,29 +9387,30 @@ class Core {
         this.onSuccessX,
         this.onErrorX
       ));
-  };
-  onSuccessX (a) {
+  }
+  onSuccessX(a) {
     datePicker.restartApp(
       function () {},
       function () {}
     );
-  };
-  onErrorX (a) {};
-  reloadAllCalendarData () {
+  }
+  onErrorX(a) {}
+  reloadAllCalendarData() {
     this.calendarDateHandler.reset();
     this.calendarDataProxy
       ? this.calendarDataProxy.reload()
       : this.loadDataProxy();
-  };
-  persistChangesToCalendars () {
+  }
+  persistChangesToCalendars() {
     OneView.core.calendarDataProxy.saveSettings();
-  };
-  populateCalendars () {
+  }
+  populateCalendars() {
     var b = this;
     OneView.core && OneView.core.pageLoaded
       ? (this.calendarDataProxy ||
           (this.isCordovaApp
-            ? ((this.calendarDataProxy = new OneView.AndroidCalendarDataProxy()),
+            ? ((this.calendarDataProxy =
+                new OneView.AndroidCalendarDataProxy()),
               this.calendarDataProxy.analyticsEvent("Event", "App started"))
             : -1 < document.URL.indexOf("rio2016")
             ? ((this.enableGoogle = this.enableDemoMode = false),
@@ -9487,14 +9427,14 @@ class Core {
         }))
       : ((this.populateCalendars = this.populateCalendars.bind(this)),
         window.setTimeout(this.populateCalendars, 100));
-  };
-  dataLoadReady () {
+  }
+  dataLoadReady() {
     this.firstTouchMade || OneView.core.zopHandler.showInitialBounds(true);
     OneView.core.calendarEventHandler.dataLoadReady();
     OneView.core.loadingHandler.stopLoading();
     this.redraw(true);
-  };
-  dynamicallyLoadFile (a, c, e) {
+  }
+  dynamicallyLoadFile(a, c, e) {
     var b = this;
     -1 < this.loadedFiles.indexOf(a)
       ? e && e()
@@ -9515,8 +9455,8 @@ class Core {
         c.setAttribute("href", a),
         document.getElementsByTagName("head")[0].appendChild(c),
         this.loadedFiles.push(a));
-  };
-  getCalendar (b) {
+  }
+  getCalendar(b) {
     var c;
     for (c = 0; c < this.calendars.length; c++)
       if (this.calendars[c].id === b) return this.calendars[c];
@@ -9529,8 +9469,8 @@ class Core {
       true,
       true
     );
-  };
-  setSizeSettings () {
+  }
+  setSizeSettings() {
     var b = Math.max(
       6.67,
       Math.min(
@@ -9557,9 +9497,7 @@ class Core {
       (this.settings.eventsFarLeft =
         this.settings.badgesLeft + 6 * this.ratio * this.settings.zoom);
     this.settings.useMiniBadges = 10 > b;
-    this.settings.tagHeight = Math.floor(
-      26 * this.ratio * this.settings.zoom
-    );
+    this.settings.tagHeight = Math.floor(26 * this.ratio * this.settings.zoom);
     this.zopHandler.absoluteMinZoom =
       (0.001 * this.settings.tagHeight) / this.ratio;
     this.zopHandler.absoluteMaxZoom = 4e5 / this.settings.tagHeight;
@@ -9606,11 +9544,11 @@ class Core {
         : 34 > this.settings.menuTextHeight
         ? 3.2 * b
         : 4.8 * b;
-  };
-  showBackButtons () {
+  }
+  showBackButtons() {
     return !new OneView.Helper().isAndroid() || !OneView.core.isCordovaApp;
-  };
-  loadGraphics () {
+  }
+  loadGraphics() {
     this.drawAreaEffects = new OneView.DrawAreaEffects();
     this.calendarEventHandler = new OneView.CalendarEventHandler();
     this.calendarDateHandler = new OneView.CalendarDateHandler();
@@ -9628,8 +9566,8 @@ class Core {
     this.redraw(true);
     this.preloadAllImages();
     this.pageLoaded = true;
-  };
-  preloadAllImages () {
+  }
+  preloadAllImages() {
     this.preloadImage(this.charCodeReload);
     this.preloadImage(this.charCodeLogin);
     this.preloadImage(this.charCodeLogout);
@@ -9645,10 +9583,10 @@ class Core {
     this.preloadImage(this.charCodeCancel);
     this.preloadImage(this.charCodeMenu);
     this.preloadImage(this.charCodeAdd);
-  };
-  preloadImage (b) {
+  }
+  preloadImage(b) {
     OneView.core.drawArea.drawIcon(b, -100, -100, 16, 16);
-  };
+  }
 }
 
 OneView.Core = Core;
@@ -9696,319 +9634,304 @@ class Translate {
     for (c = 0; c < xTranslations.length; c++)
       this.keys.push(xTranslations[c][this.defaultLanguageIndex]);
   }
-  d.languageExists = function (a) {
+  languageExists(a) {
     return (
       0 <= xLanguageAbbreviations.indexOf(a) || 0 <= xLanguageNames.indexOf(a)
     );
-  };
-  get (a) {
+  }
+  get(a) {
     var b = this.keys.indexOf(a);
     if (0 > b) return a;
     b = xTranslations[b][this.currentLanguageIndex];
     return void 0 !== b && null !== b && "" != b ? b : a;
-  };
+  }
 }
 OneView.Translate = Translate;
 
 class Dictionary {
-    constructor() {
-      this._keys = [];
-      this._values = [];
-    }
-    setup  (a, c) {
-      for (var b = 0; b < a.length; b++) this.add(a[b], c[b]);
-    };
-    syncArrays  () {
-      for (var a = 0; a < this._values.length; a++)
-        this._values[a] = this[this._keys[a]];
-    };
-    add (a, c) {
-      this[a] = c;
-      this._keys.push(a);
-      this._values.push(c);
-    };
-    remove  (a) {
-      var b = this._keys.indexOf(a, 0);
-      this._keys.splice(b, 1);
-      this._values.splice(b, 1);
-      delete this[a];
-    };
-    keys  () {
-      return this._keys;
-    };
-    values  () {
-      return this._values;
-    };
-    containsKey  (a) {
-      return "undefined" === typeof this[a] ? false : true;
-    };
-    toLookup  () {
-      return this;
-    };
+  constructor() {
+    this._keys = [];
+    this._values = [];
   }
+  setup(a, c) {
+    for (var b = 0; b < a.length; b++) this.add(a[b], c[b]);
+  }
+  syncArrays() {
+    for (var a = 0; a < this._values.length; a++)
+      this._values[a] = this[this._keys[a]];
+  }
+  add(a, c) {
+    this[a] = c;
+    this._keys.push(a);
+    this._values.push(c);
+  }
+  remove(a) {
+    var b = this._keys.indexOf(a, 0);
+    this._keys.splice(b, 1);
+    this._values.splice(b, 1);
+    delete this[a];
+  }
+  keys() {
+    return this._keys;
+  }
+  values() {
+    return this._values;
+  }
+  containsKey(a) {
+    return "undefined" === typeof this[a] ? false : true;
+  }
+  toLookup() {
+    return this;
+  }
+}
 
-  OneView.Dictionary = Dictionary;
+OneView.Dictionary = Dictionary;
 
-  class CanvasHorizontalCacheObject {
-    constructor(a, b) {
+class CanvasHorizontalCacheObject {
+  constructor(a, b) {
+    this.cachedTags = [];
+    this.cachedDates = [];
+    this.cachedDates2 = [];
+    this.cachedBadges = [];
+    this.badgeRowHeight =
+      this.date2RowHeight =
+      this.dateRowHeight =
+      this.tagRowHeight =
+      this.badgeTextHeight =
+      this.date2TextHeight =
+      this.dateTextHeight =
+      this.tagTextHeight =
+        0;
+    this.previousFont = "";
+    this.canvas = a;
+    this.canvasContext = b;
+  }
+  setTagHeight(a) {
+    if (this.tagTextHeight !== a) {
+      this.tagTextHeight = a;
+      this.tagRowHeight = this.tagTextHeight + 2;
       this.cachedTags = [];
-      this.cachedDates = [];
-      this.cachedDates2 = [];
-      this.cachedBadges = [];
-      this.badgeRowHeight =
-        this.date2RowHeight =
-        this.dateRowHeight =
-        this.tagRowHeight =
-        this.badgeTextHeight =
-        this.date2TextHeight =
-        this.dateTextHeight =
-        this.tagTextHeight =
-          0;
-      this.previousFont = "";
-      this.canvas = a;
-      this.canvasContext = b;
-    }
-    setTagHeight (a) {
-      if (this.tagTextHeight !== a) {
-        this.tagTextHeight = a;
-        this.tagRowHeight = this.tagTextHeight + 2;
-        this.cachedTags = [];
-        this.canvasContext.clearRect(
-          this.tagsLeft,
-          this.tagsTop,
-          this.tagsWidth,
-          this.tagsHeight
-        );
-        a = Math.floor(this.canvas.height / this.tagRowHeight);
-        var b;
-        for (b = 0; b < a; b++) this.cachedTags.push(new d());
-      }
-    };
-    setDateHeights (a, b) {
-      if (this.dateTextHeight !== a || this.date2TextHeight !== b) {
-        this.dateTextHeight = a;
-        this.dateRowHeight = this.dateTextHeight + 2;
-        this.date2TextHeight = b;
-        this.date2RowHeight = this.date2TextHeight + 2;
-        this.cachedDates = [];
-        this.canvasContext.clearRect(
-          this.datesLeft,
-          this.datesTop,
-          this.datesWidth,
-          this.datesHeight
-        );
-        var c = Math.floor(
-            this.canvas.height / (this.dateRowHeight + this.date2RowHeight)
-          ),
-          e;
-        for (e = 0; e < c; e++) this.cachedDates.push(new d());
-        this.cachedDates2 = [];
-        this.canvasContext.clearRect(
-          this.dates2Left,
-          this.dates2Top,
-          this.dates2Width,
-          this.dates2Height
-        );
-        for (e = 0; e < c; e++) this.cachedDates2.push(new d());
-        this.setBoundries();
-      }
-    };
-    setBadgeHeight (a) {
-      if (this.badgeTextHeight !== a) {
-        this.badgeRowHeight = this.badgeTextHeight = a;
-        this.cachedBadges = [];
-        this.canvasContext.clearRect(
-          this.badgesLeft,
-          this.badgesTop,
-          this.badgesWidth,
-          this.badgesHeight
-        );
-        a = Math.floor(this.canvas.height / a);
-        var b;
-        for (b = 0; b < a; b++) this.cachedBadges.push(new d());
-      }
-    };
-    emptyCache () {
-      var a;
-      for (a = 0; a < this.cachedTags.length; a++)
-        this.cachedTags[a].isEmpty = true;
-      for (a = 0; a < this.cachedDates.length; a++)
-        this.cachedDates[a].isEmpty = true;
-      for (a = 0; a < this.cachedDates2.length; a++)
-        this.cachedDates2[a].isEmpty = true;
-      for (a = 0; a < this.cachedBadges.length; a++)
-        this.cachedBadges[a].isEmpty = true;
-      this.setBoundries();
-    };
-    setBoundries () {
-      this.tagsLeft = OneView.core.settings.eventsFarLeft;
-      this.tagsTop = 0;
-      this.tagsWidth = this.canvas.width - this.tagsLeft;
-      this.tagsHeight = this.canvas.height;
-      this.badgesLeft = OneView.core.settings.badgesLeft;
-      this.badgesTop = 0;
-      this.badgesWidth = this.tagsLeft - this.badgesLeft;
-      this.badgesHeight = this.canvas.height;
-      this.datesLeft = OneView.core.settings.titleWidth;
-      this.datesTop = 0;
-      this.datesWidth = this.badgesLeft - this.datesLeft;
-      this.datesHeight =
-        Math.floor(
-          this.canvas.height / (this.dateTextHeight + this.date2TextHeight)
-        ) * this.dateTextHeight;
-      this.dates2Left = OneView.core.settings.titleWidth;
-      this.dates2Top = this.datesHeight;
-      this.dates2Width = this.badgesLeft - this.dates2Left;
-      this.dates2Height =
-        Math.floor(
-          this.canvas.height / (this.dateTextHeight + this.date2TextHeight)
-        ) * this.date2TextHeight;
-    };
-    startRedraw () {
-      var a;
-      for (a = 0; a < this.cachedTags.length; a++)
-        this.cachedTags[a].wasUsedLast = false;
-      for (a = 0; a < this.cachedDates.length; a++)
-        this.cachedDates[a].wasUsedLast = false;
-      for (a = 0; a < this.cachedDates2.length; a++)
-        this.cachedDates2[a].wasUsedLast = false;
-      for (a = 0; a < this.cachedBadges.length; a++)
-        this.cachedBadges[a].wasUsedLast = false;
-    };
-    endRedraw () {
-      var a;
-      for (a = 0; a < this.cachedTags.length; a++)
-        false === this.cachedTags[a].wasUsedLast &&
-          (this.cachedTags[a].isEmpty = true);
-      for (a = 0; a < this.cachedDates.length; a++)
-        false === this.cachedDates[a].wasUsedLast &&
-          (this.cachedDates[a].isEmpty = true);
-      for (a = 0; a < this.cachedDates2.length; a++)
-        false === this.cachedDates2[a].wasUsedLast &&
-          (this.cachedDates2[a].isEmpty = true);
-      for (a = 0; a < this.cachedBadges.length; a++)
-        false === this.cachedBadges[a].wasUsedLast &&
-          (this.cachedBadges[a].isEmpty = true);
-    };
-    drawTagText (a, b, d, g, m, n, l) {
-      this.drawTextHelper(
-        this.cachedTags,
-        a,
-        b,
-        d,
-        g,
-        m,
-        n,
-        l,
-        this.tagTextHeight,
-        this.tagRowHeight + 4,
+      this.canvasContext.clearRect(
         this.tagsLeft,
+        this.tagsTop,
         this.tagsWidth,
-        this.tagsTop
+        this.tagsHeight
       );
-    };
-    drawDateText (a, b, d, g, m, n, l, h) {
-      b === this.dateTextHeight
-        ? this.drawTextHelper(
-            this.cachedDates,
-            a,
-            d,
-            g,
-            m,
-            n,
-            l,
-            h,
-            this.dateTextHeight,
-            this.dateRowHeight,
-            this.datesLeft,
-            this.datesWidth,
-            this.datesTop
-          )
-        : this.drawTextHelper(
-            this.cachedDates2,
-            a,
-            d,
-            g,
-            m,
-            n,
-            l,
-            h,
-            this.date2TextHeight,
-            this.date2RowHeight,
-            this.dates2Left,
-            this.dates2Width,
-            this.dates2Top
-          );
-    };
-    drawBadgeText (a, b, d, g, m, n, l) {
-      this.drawTextHelper(
-        this.cachedBadges,
-        a,
-        b,
-        d,
-        g,
-        m,
-        n,
-        l,
-        this.badgeTextHeight,
-        this.badgeRowHeight,
+      a = Math.floor(this.canvas.height / this.tagRowHeight);
+      var b;
+      for (b = 0; b < a; b++) this.cachedTags.push(new d());
+    }
+  }
+  setDateHeights(a, b) {
+    if (this.dateTextHeight !== a || this.date2TextHeight !== b) {
+      this.dateTextHeight = a;
+      this.dateRowHeight = this.dateTextHeight + 2;
+      this.date2TextHeight = b;
+      this.date2RowHeight = this.date2TextHeight + 2;
+      this.cachedDates = [];
+      this.canvasContext.clearRect(
+        this.datesLeft,
+        this.datesTop,
+        this.datesWidth,
+        this.datesHeight
+      );
+      var c = Math.floor(
+          this.canvas.height / (this.dateRowHeight + this.date2RowHeight)
+        ),
+        e;
+      for (e = 0; e < c; e++) this.cachedDates.push(new d());
+      this.cachedDates2 = [];
+      this.canvasContext.clearRect(
+        this.dates2Left,
+        this.dates2Top,
+        this.dates2Width,
+        this.dates2Height
+      );
+      for (e = 0; e < c; e++) this.cachedDates2.push(new d());
+      this.setBoundries();
+    }
+  }
+  setBadgeHeight(a) {
+    if (this.badgeTextHeight !== a) {
+      this.badgeRowHeight = this.badgeTextHeight = a;
+      this.cachedBadges = [];
+      this.canvasContext.clearRect(
         this.badgesLeft,
+        this.badgesTop,
         this.badgesWidth,
-        this.badgesTop
+        this.badgesHeight
       );
-    };
-    drawTextHelper (
+      a = Math.floor(this.canvas.height / a);
+      var b;
+      for (b = 0; b < a; b++) this.cachedBadges.push(new d());
+    }
+  }
+  emptyCache() {
+    var a;
+    for (a = 0; a < this.cachedTags.length; a++)
+      this.cachedTags[a].isEmpty = true;
+    for (a = 0; a < this.cachedDates.length; a++)
+      this.cachedDates[a].isEmpty = true;
+    for (a = 0; a < this.cachedDates2.length; a++)
+      this.cachedDates2[a].isEmpty = true;
+    for (a = 0; a < this.cachedBadges.length; a++)
+      this.cachedBadges[a].isEmpty = true;
+    this.setBoundries();
+  }
+  setBoundries() {
+    this.tagsLeft = OneView.core.settings.eventsFarLeft;
+    this.tagsTop = 0;
+    this.tagsWidth = this.canvas.width - this.tagsLeft;
+    this.tagsHeight = this.canvas.height;
+    this.badgesLeft = OneView.core.settings.badgesLeft;
+    this.badgesTop = 0;
+    this.badgesWidth = this.tagsLeft - this.badgesLeft;
+    this.badgesHeight = this.canvas.height;
+    this.datesLeft = OneView.core.settings.titleWidth;
+    this.datesTop = 0;
+    this.datesWidth = this.badgesLeft - this.datesLeft;
+    this.datesHeight =
+      Math.floor(
+        this.canvas.height / (this.dateTextHeight + this.date2TextHeight)
+      ) * this.dateTextHeight;
+    this.dates2Left = OneView.core.settings.titleWidth;
+    this.dates2Top = this.datesHeight;
+    this.dates2Width = this.badgesLeft - this.dates2Left;
+    this.dates2Height =
+      Math.floor(
+        this.canvas.height / (this.dateTextHeight + this.date2TextHeight)
+      ) * this.date2TextHeight;
+  }
+  startRedraw() {
+    var a;
+    for (a = 0; a < this.cachedTags.length; a++)
+      this.cachedTags[a].wasUsedLast = false;
+    for (a = 0; a < this.cachedDates.length; a++)
+      this.cachedDates[a].wasUsedLast = false;
+    for (a = 0; a < this.cachedDates2.length; a++)
+      this.cachedDates2[a].wasUsedLast = false;
+    for (a = 0; a < this.cachedBadges.length; a++)
+      this.cachedBadges[a].wasUsedLast = false;
+  }
+  endRedraw() {
+    var a;
+    for (a = 0; a < this.cachedTags.length; a++)
+      false === this.cachedTags[a].wasUsedLast &&
+        (this.cachedTags[a].isEmpty = true);
+    for (a = 0; a < this.cachedDates.length; a++)
+      false === this.cachedDates[a].wasUsedLast &&
+        (this.cachedDates[a].isEmpty = true);
+    for (a = 0; a < this.cachedDates2.length; a++)
+      false === this.cachedDates2[a].wasUsedLast &&
+        (this.cachedDates2[a].isEmpty = true);
+    for (a = 0; a < this.cachedBadges.length; a++)
+      false === this.cachedBadges[a].wasUsedLast &&
+        (this.cachedBadges[a].isEmpty = true);
+  }
+  drawTagText(a, b, d, g, m, n, l) {
+    this.drawTextHelper(
+      this.cachedTags,
       a,
       b,
-      f,
+      d,
       g,
       m,
       n,
       l,
-      h,
-      k,
-      p,
-      q,
-      r,
-      v
-    ) {
-      h = Math.min(h, r);
-      a = new d();
-      a.text = b;
-      a.textColor = f;
-      this.paintImageToCacheCanvas(a, m, k, p, n, h, l);
-    };
-    paintImageToCacheCanvas (a, b, d, g, m, n, l) {
-      b === this.canvasContext && b.clearRect(m, l, n, g);
-      this.setFont(d, b);
-      b.fillStyle = a.textColor;
-      b.fillText(a.text, m, l + d);
-    };
-    getImageFromCacheCanvas (a, b, d, g, m, n, l, h) {
-      b.drawImage(
-        this.canvas,
-        d,
-        Math.ceil(g),
-        h,
-        m - 1,
-        Math.ceil(n),
-        Math.floor(l),
-        h,
-        m - 1
-      );
-    };
-    setFont (a, b) {
-      var c = "normal lighter " + a + "px Roboto";
-      b !== this.canvasContext
-        ? (b.font = c)
-        : this.previousFont !== c &&
-          ((this.previousFont = c), (b.font = this.previousFont));
-    };
+      this.tagTextHeight,
+      this.tagRowHeight + 4,
+      this.tagsLeft,
+      this.tagsWidth,
+      this.tagsTop
+    );
   }
+  drawDateText(a, b, d, g, m, n, l, h) {
+    b === this.dateTextHeight
+      ? this.drawTextHelper(
+          this.cachedDates,
+          a,
+          d,
+          g,
+          m,
+          n,
+          l,
+          h,
+          this.dateTextHeight,
+          this.dateRowHeight,
+          this.datesLeft,
+          this.datesWidth,
+          this.datesTop
+        )
+      : this.drawTextHelper(
+          this.cachedDates2,
+          a,
+          d,
+          g,
+          m,
+          n,
+          l,
+          h,
+          this.date2TextHeight,
+          this.date2RowHeight,
+          this.dates2Left,
+          this.dates2Width,
+          this.dates2Top
+        );
+  }
+  drawBadgeText(a, b, d, g, m, n, l) {
+    this.drawTextHelper(
+      this.cachedBadges,
+      a,
+      b,
+      d,
+      g,
+      m,
+      n,
+      l,
+      this.badgeTextHeight,
+      this.badgeRowHeight,
+      this.badgesLeft,
+      this.badgesWidth,
+      this.badgesTop
+    );
+  }
+  drawTextHelper(a, b, f, g, m, n, l, h, k, p, q, r, v) {
+    h = Math.min(h, r);
+    a = new d();
+    a.text = b;
+    a.textColor = f;
+    this.paintImageToCacheCanvas(a, m, k, p, n, h, l);
+  }
+  paintImageToCacheCanvas(a, b, d, g, m, n, l) {
+    b === this.canvasContext && b.clearRect(m, l, n, g);
+    this.setFont(d, b);
+    b.fillStyle = a.textColor;
+    b.fillText(a.text, m, l + d);
+  }
+  getImageFromCacheCanvas(a, b, d, g, m, n, l, h) {
+    b.drawImage(
+      this.canvas,
+      d,
+      Math.ceil(g),
+      h,
+      m - 1,
+      Math.ceil(n),
+      Math.floor(l),
+      h,
+      m - 1
+    );
+  }
+  setFont(a, b) {
+    var c = "normal lighter " + a + "px Roboto";
+    b !== this.canvasContext
+      ? (b.font = c)
+      : this.previousFont !== c &&
+        ((this.previousFont = c), (b.font = this.previousFont));
+  }
+}
 OneView.CanvasHorizontalCacheObject = CanvasHorizontalCacheObject;
- 
-class ZopDrawArea {
 
+class ZopDrawArea {
   constructor() {
     this.canvasContext = this.canvas = void 0;
     this.zopAreaWidth =
@@ -10022,24 +9945,24 @@ class ZopDrawArea {
     this.textMeasuresCache = new OneView.SpeedCache();
     this.drawInfos = [];
   }
-  init (b, c) {
+  init(b, c) {
     this.canvas = b;
     this.canvasContext = c;
     OneView.core.eventHandler.addBatchEventsTo(this.canvas);
-  };
-  setCanvas (b, c) {
+  }
+  setCanvas(b, c) {
     this.canvas = b;
     this.canvasContext = c;
     OneView.core.drawArea = new OneView.DrawArea();
-  };
-  fillDrawArea  (a) {
+  }
+  fillDrawArea(a) {
     this.canvasContext.fillStyle = a;
     this.canvasContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
-  };
-  emptyDrawArea  () {
+  }
+  emptyDrawArea() {
     this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  };
-  clearDrawArea  () {
+  }
+  clearDrawArea() {
     this.characterFitCache.startNewRound();
     this.textMeasuresCache.startNewRound();
     OneView.core.drawArea.drawFilledRectangle(
@@ -10061,8 +9984,8 @@ class ZopDrawArea {
       OneView.core.settings.theme.colorTitleBackground,
       false
     );
-  };
-  resetDrawAreaSize  (b, c) {
+  }
+  resetDrawAreaSize(b, c) {
     this.zopAreaTop = 0;
     this.zopAreaHeight = b;
     this.zopAreaLeft = 0;
@@ -10085,16 +10008,16 @@ class ZopDrawArea {
       this.zopAreaTop,
       this.zopAreaTop + this.zopAreaHeight
     );
-  };
-  setShadow  (b) {
+  }
+  setShadow(b) {
     b &&
       ((this.canvasContext.shadowOffsetX = 1 * OneView.core.ratio),
       (this.canvasContext.shadowOffsetY = 2 * OneView.core.ratio),
       (this.canvasContext.shadowBlur = 4 * OneView.core.ratio),
       (this.canvasContext.shadowColor = "#555555"));
-  };
-  clearTextDivs  () {};
-  drawCalendarDateObjectName  (b, c, e, d, l, h, k, p) {
+  }
+  clearTextDivs() {}
+  drawCalendarDateObjectName(b, c, e, d, l, h, k, p) {
     if (3 > l) return 0;
     c += e;
     e = OneView.core.settings.theme.colorDarkText;
@@ -10137,8 +10060,8 @@ class ZopDrawArea {
           false,
           false
         );
-  };
-  drawBadge  (b, c, e, d, l, h, k) {
+  }
+  drawBadge(b, c, e, d, l, h, k) {
     if (OneView.core.settings.useMiniBadges)
       this.drawFilledCircle2(
         b,
@@ -10174,8 +10097,8 @@ class ZopDrawArea {
           false
         );
     }
-  };
-  howManyCharactersFit (a, b, e, d) {
+  }
+  howManyCharactersFit(a, b, e, d) {
     var f = a + "&&" + b,
       g = this.characterFitCache.findObject(f);
     if (void 0 !== g) {
@@ -10184,8 +10107,7 @@ class ZopDrawArea {
         var m = this.measureTextWidth(a.substring(0, k), b, false, d);
         if (g.lastMaxPixelWidth > e)
           for (; 0 < k && m >= e; )
-            --k,
-              (m = this.measureTextWidth(a.substring(0, k), b, false, true));
+            --k, (m = this.measureTextWidth(a.substring(0, k), b, false, true));
         else {
           for (d = m; k < a.length && m < e; )
             (k += 1),
@@ -10199,28 +10121,24 @@ class ZopDrawArea {
       return k;
     }
     k = a.length;
-    for (
-      m = this.measureTextWidthIfRisky(a, b, e, false, d);
-      0 < k && m >= e;
-
-    )
+    for (m = this.measureTextWidthIfRisky(a, b, e, false, d); 0 < k && m >= e; )
       --k, (m = this.measureTextWidth(a.substring(0, k), b, false, d));
     this.characterFitCache.addObject(f, new c(k, e));
     return k;
-  };
-  measureTextWidth  (a, b, c, e) {
+  }
+  measureTextWidth(a, b, c, e) {
     var f = a + "##" + b,
       g = this.textMeasuresCache.findObject(f);
     void 0 === g &&
       ((g = new d(this.canvasContext, a, b, c, e)),
       this.textMeasuresCache.addObject(f, g));
     return g.pixelLength;
-  };
-  measureTextWidthIfRisky  (a, b, c, e, d) {
+  }
+  measureTextWidthIfRisky(a, b, c, e, d) {
     var f = a.length * b * 0.85;
     return f > c ? this.measureTextWidth(a, b, e, d) : f;
-  };
-  drawTag  (b, c, e, d, l, h, k, p) {
+  }
+  drawTag(b, c, e, d, l, h, k, p) {
     var f = c + 1;
     e -= OneView.core.settings.margin;
     var g = Math.min(OneView.core.settings.tagColorWidth, e),
@@ -10262,8 +10180,8 @@ class ZopDrawArea {
           false,
           OneView.core.settings.theme.tagTextIsBold
         )));
-  };
-  drawFullEvent (b, c, e, d, l, h, k) {
+  }
+  drawFullEvent(b, c, e, d, l, h, k) {
     var f = Math.max(OneView.core.zopHandler.getPixelFromZOP(c) + 1, 0),
       g = Math.max(OneView.core.zopHandler.getPixelFromZOP(e), 0),
       m =
@@ -10292,14 +10210,7 @@ class ZopDrawArea {
           false
         );
       0 < d - n &&
-        OneView.core.drawArea.drawFilledRectangle(
-          b + n,
-          f,
-          d - n,
-          g,
-          l,
-          false
-        );
+        OneView.core.drawArea.drawFilledRectangle(b + n, f, d - n, g, l, false);
       1.6 * d > m || m < 2 * OneView.core.settings.tagHeight
         ? this.drawText(
             k,
@@ -10328,8 +10239,8 @@ class ZopDrawArea {
             OneView.core.settings.theme.tagTextIsBold
           ));
     }
-  };
-  drawPartialTag (b, c, e, d, l) {
+  }
+  drawPartialTag(b, c, e, d, l) {
     e -= OneView.core.settings.margin;
     4 > l ||
       OneView.core.drawArea.drawFilledRectangle(
@@ -10340,15 +10251,15 @@ class ZopDrawArea {
         d,
         false
       );
-  };
-  drawTextDiv  (a, b, c, e, d, h, k, p, q, r) {};
-  drawFilledRectangle  (b, c, e, d, l, h) {
+  }
+  drawTextDiv(a, b, c, e, d, h, k, p, q, r) {}
+  drawFilledRectangle(b, c, e, d, l, h) {
     this.canvasContext.fillStyle = l;
     c = OneView.core.zopHandler.getPixelFromZOP(c);
     d = Math.max(OneView.core.zopHandler.getPixelFromZOP(d) - c, h);
     this.canvasContext.fillRect(b, c, e, d);
-  };
-  drawTriangle  (b, c, e, d, l, h, k, p) {
+  }
+  drawTriangle(b, c, e, d, l, h, k, p) {
     this.setShadow(p);
     c = OneView.core.zopHandler.getPixelFromZOP(c);
     d = c + d;
@@ -10361,15 +10272,15 @@ class ZopDrawArea {
     this.canvasContext.closePath();
     this.canvasContext.fill();
     this.removeShadow(p);
-  };
-  removeShadow (a) {
+  }
+  removeShadow(a) {
     a &&
       ((this.canvasContext.shadowOffsetX = 0),
       (this.canvasContext.shadowOffsetY = 0),
       (this.canvasContext.shadowBlur = 0),
       (this.canvasContext.shadowColor = "#000000"));
-  };
-  drawHorizontalLine (b, c, e, d, l) {
+  }
+  drawHorizontalLine(b, c, e, d, l) {
     this.drawHorizontalLineThick(
       b,
       c,
@@ -10378,8 +10289,8 @@ class ZopDrawArea {
       OneView.core.settings.lineThickness,
       l
     );
-  };
-  drawFilledCircle (b, c, e, d, l) {
+  }
+  drawFilledCircle(b, c, e, d, l) {
     this.setShadow(l);
     c = Math.floor(OneView.core.zopHandler.getPixelFromZOP(c)) + 0.5;
     this.canvasContext.beginPath();
@@ -10387,23 +10298,23 @@ class ZopDrawArea {
     this.canvasContext.fillStyle = d;
     this.canvasContext.fill();
     this.removeShadow(l);
-  };
-  drawFilledCircle2 (a, b, c, e, d) {
+  }
+  drawFilledCircle2(a, b, c, e, d) {
     this.setShadow(d);
     this.canvasContext.beginPath();
     this.canvasContext.arc(a, b, c, 0, 2 * Math.PI, false);
     this.canvasContext.fillStyle = e;
     this.canvasContext.fill();
     this.removeShadow(d);
-  };
-  drawHorizontalLineThick (b, c, e, d, l, h) {
+  }
+  drawHorizontalLineThick(b, c, e, d, l, h) {
     c = Math.floor(OneView.core.zopHandler.getPixelFromZOP(c));
     OneView.core.drawArea.drawHorizontalLineNotZOP(b, c, e, d, l, h);
-  };
-  startTextDelayedDraw () {
+  }
+  startTextDelayedDraw() {
     this.delayedDraw = true;
-  };
-  endTextDelayedDraw () {
+  }
+  endTextDelayedDraw() {
     this.delayedDraw = false;
     this.drawInfos.sort(function (a, b) {
       return a.textHeight - b.textHeight;
@@ -10425,8 +10336,8 @@ class ZopDrawArea {
       );
     }
     this.drawInfos = [];
-  };
-  drawText (c, e, d, n, l, h, k, p, q, r, v) {
+  }
+  drawText(c, e, d, n, l, h, k, p, q, r, v) {
     if (this.delayedDraw)
       return this.drawInfos.push(new b(c, e, d, n, l, h, k, p, q, r, v)), c;
     d = Math.floor(d + n);
@@ -10434,8 +10345,8 @@ class ZopDrawArea {
     c = c.substring(0, this.howManyCharactersFit(c, l, q, true));
     OneView.core.drawArea.drawText(c, e, d, l, h, false, false, r, v);
     return c;
-  };
-  drawVerticalTitle (b, c, e, d, l, h, k, p, q) {
+  }
+  drawVerticalTitle(b, c, e, d, l, h, k, p, q) {
     OneView.core.drawArea.setFont(l, p, false, q);
     q = OneView.core.zopHandler.get2PixelsFromZOPsForVErticalText(b, c);
     b = q.value1 + k;
@@ -10451,20 +10362,13 @@ class ZopDrawArea {
       (f = q - OneView.core.zopHandler.bottomPixel);
     c = q - b - k - f;
     q = 0;
-    for (
-      f = this.measureTextWidth(d, l, p, true) + 5;
-      1 < d.length && f >= c;
-
-    )
+    for (f = this.measureTextWidth(d, l, p, true) + 5; 1 < d.length && f >= c; )
       (d = d.substring(0, d.length - 1)),
         (f = this.measureTextWidth(d, l, p, true) + 5),
         (q = c - f);
     this.measureTextWidth(d, l, p, true) + 5 < c &&
       (this.canvasContext.save(),
-      this.canvasContext.translate(
-        Math.floor(e + 0.85 * l),
-        Math.floor(c / 2)
-      ),
+      this.canvasContext.translate(Math.floor(e + 0.85 * l), Math.floor(c / 2)),
       this.canvasContext.rotate(-Math.PI / 2),
       (this.canvasContext.textAlign = "center"),
       (this.canvasContext.fillStyle = h),
@@ -10474,8 +10378,8 @@ class ZopDrawArea {
         Math.floor(OneView.core.zopHandler.leftPixel)
       ),
       this.canvasContext.restore());
-  };
-  debugTexts (b) {
+  }
+  debugTexts(b) {
     if (void 0 != b) {
       var c = 20 * OneView.core.ratio,
         e;
@@ -10499,55 +10403,52 @@ class ZopDrawArea {
           ),
           (c += 22 * OneView.core.ratio);
     }
-  };
-  debugText  (b) {
+  }
+  debugText(b) {
     void 0 != b &&
       0 != b.length &&
       ((this.canvasContext.fillStyle = "#FF0000"),
       OneView.core.drawArea.setFont(14),
       this.canvasContext.fillText(b, 90, 330),
       60 < b.length && this.canvasContext.fillText(b.substring(60), 90, 360),
-      120 < b.length &&
-        this.canvasContext.fillText(b.substring(120), 90, 420),
-      180 < b.length &&
-        this.canvasContext.fillText(b.substring(180), 90, 480),
-      240 < b.length &&
-        this.canvasContext.fillText(b.substring(240), 90, 540));
-  };
+      120 < b.length && this.canvasContext.fillText(b.substring(120), 90, 420),
+      180 < b.length && this.canvasContext.fillText(b.substring(180), 90, 480),
+      240 < b.length && this.canvasContext.fillText(b.substring(240), 90, 540));
+  }
 }
 OneView.ZopDrawArea = ZopDrawArea;
 
-  // var d = (function () {
-  //     return function (b, c, d, m, n) {
-  //       this.text = c;
-  //       this.textHeight = d;
-  //       n || OneView.core.drawArea.setFont(d, m);
-  //       this.pixelLength = b.measureText(c).width;
-  //     };
-  //   })(),
-  //   b = (function () {
-  //     return function (a, b, c, d, n, l, h, k, p, q, r) {
-  //       this.text = a;
-  //       this.left = b;
-  //       this.topPixel = c;
-  //       this.topPixelShift = d;
-  //       this.textHeight = n;
-  //       this.color = l;
-  //       this.bgColor = h;
-  //       this.useShadow = k;
-  //       this.maxWidth = p;
-  //       this.isThinner = q;
-  //       this.isBold = r;
-  //     };
-  //   })(),
-  //   c = (function () {
-  //     return function (a, b) {
-  //       this.lettersCount = a;
-  //       this.lastMaxPixelWidth = b;
-  //     };
-  //   })();
+// var d = (function () {
+//     return function (b, c, d, m, n) {
+//       this.text = c;
+//       this.textHeight = d;
+//       n || OneView.core.drawArea.setFont(d, m);
+//       this.pixelLength = b.measureText(c).width;
+//     };
+//   })(),
+//   b = (function () {
+//     return function (a, b, c, d, n, l, h, k, p, q, r) {
+//       this.text = a;
+//       this.left = b;
+//       this.topPixel = c;
+//       this.topPixelShift = d;
+//       this.textHeight = n;
+//       this.color = l;
+//       this.bgColor = h;
+//       this.useShadow = k;
+//       this.maxWidth = p;
+//       this.isThinner = q;
+//       this.isBold = r;
+//     };
+//   })(),
+//   c = (function () {
+//     return function (a, b) {
+//       this.lettersCount = a;
+//       this.lastMaxPixelWidth = b;
+//     };
+//   })();
 
-  // (function (a) {
+// (function (a) {
 //   var p = (function (d) {
 //     function b() {
 //       d.call(this);
@@ -12669,7 +12570,7 @@ class ShopControl {
       '<div id="calendarsTopBar" class="topBar">    <button id="shopBack" class="topBarButton" style="width:50%"><img src="images/arrow-left.svg" class="topBarImage"/></span><span>{#Back#}</span></button>    <button id="emptyButton" class="topBarButton" style="width:50%"></button>    <div id="shopTitle" class="topBarTitle" style="width:100%">{#Shop#}</div></div><div id="shopArea" class="pageContent pageTopPadding">    <div id="darkThemeArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="darkThemeTitle" class="shopItemTitle"></div>            <div id="darkThemeDescription" class="shopItemDescription"></div>            <button id="darkThemePrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/darkTheme_mini.png">        </div>    </div>    <div id="candyThemeArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="candyThemeTitle" class="shopItemTitle"></div>            <div id="candyThemeDescription" class="shopItemDescription"></div>            <button id="candyThemePrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/candyTheme_mini.png">        </div>    </div>    <div id="colorPickerArea" class="shopItemArea" >        <div class="shopItemAreaLeft" >            <div id="colorPickerTitle" class="shopItemTitle"></div>            <div id="colorPickerDescription" class="shopItemDescription"></div>            <button id="colorPickerPrice" class="shopItemButton"> ? </button>        </div>        <div class="shopItemAreaRight">            <img class="shopImage" src="images/colorPicker_mini.png">        </div>    </div></div>';
     this.alreadyRegistered = false;
   }
-  reloadShopItems () {
+  reloadShopItems() {
     this.text = "ok";
     this.setupColorPicker = this.setupColorPicker.bind(this);
     this.setupDarkTheme = this.setupDarkTheme.bind(this);
@@ -12725,8 +12626,8 @@ class ShopControl {
       this.itemClicked,
       this
     );
-  };
-  productOk (a) {
+  }
+  productOk(a) {
     return (
       a.owned ||
       a.downloading ||
@@ -12737,35 +12638,35 @@ class ShopControl {
       "finnished" == a.state ||
       "owned" == a.state
     );
-  };
-  productNotFinished (a) {
+  }
+  productNotFinished(a) {
     return "approved" == a.state;
-  };
-  setupColorPicker (b) {
+  }
+  setupColorPicker(b) {
     this.productColorPicker = b;
     this.setupItem(b, "colorPicker");
     this.productOk(b)
       ? (OneView.core.commonUserSettings.licenceColorPicker = true)
       : (OneView.core.commonUserSettings.licenceColorPicker = false);
     this.productNotFinished(b) && b.finish();
-  };
-  setupDarkTheme (b) {
+  }
+  setupDarkTheme(b) {
     this.productDarkTheme = b;
     this.setupItem(b, "darkTheme");
     this.productOk(b)
       ? (OneView.core.commonUserSettings.licenceDarkTheme = true)
       : (OneView.core.commonUserSettings.licenceDarkTheme = false);
     this.productNotFinished(b) && b.finish();
-  };
-  setupCandyTheme (b) {
+  }
+  setupCandyTheme(b) {
     this.productCandyTheme = b;
     this.setupItem(b, "candyTheme");
     this.productOk(b)
       ? (OneView.core.commonUserSettings.licenceCandyTheme = true)
       : (OneView.core.commonUserSettings.licenceCandyTheme = false);
     this.productNotFinished(b) && b.finish();
-  };
-  setupItem (a, c) {
+  }
+  setupItem(a, c) {
     document.getElementById(c + "Title").innerHTML = a.alias;
     document.getElementById(c + "Price").innerHTML = a.price;
     a.owned || !a.canPurchase
@@ -12781,8 +12682,8 @@ class ShopControl {
         document
           .getElementById(c + "Price")
           .classList.remove("shopItemButtonInactive");
-  };
-  show () {
+  }
+  show() {
     OneView.core.domHandler.hideCanvas();
     this.timestamp = OneView.core.getTimeStamp();
     OneView.core.calendarDataProxy.analyticsPage("Shop page");
@@ -12804,31 +12705,27 @@ class ShopControl {
       OneView.core.settings.titleWidth / OneView.core.ratio / 2 + 1 + "px";
     document.getElementById("shopArea").style.top = "54px";
     OneView.core.showBackButtons()
-      ? (OneView.core.domHandler.addClickEvent(
-          "shopBack",
-          this.shopBack,
-          this
-        ),
+      ? (OneView.core.domHandler.addClickEvent("shopBack", this.shopBack, this),
         (document.getElementById("shopTitle").style.display = "none"))
       : ((document.getElementById("shopBack").style.display = "none"),
         (document.getElementById("emptyButton").style.display = "none"));
-  };
-  hide () {
+  }
+  hide() {
     OneView.core.appStateHandler.shopControlIsShowing = false;
     window.store.off(this.setupColorPicker);
     window.store.off(this.setupDarkTheme);
     window.store.off(this.setupCandyTheme);
     OneView.core.domHandler.showCanvas();
     OneView.core.domHandler.removeElement(this.shopPage.id);
-  };
-  reshow () {
+  }
+  reshow() {
     this.show();
-  };
-  getEventTarget (a) {
+  }
+  getEventTarget(a) {
     a = a || window.event;
     return a.target || a.srcElement;
-  };
-  itemClicked (b) {
+  }
+  itemClicked(b) {
     b.preventDefault();
     var c = OneView.core.getTimeStamp();
     (this.lastClickTime && this.lastClickTime + 250 > c) ||
@@ -12841,11 +12738,11 @@ class ShopControl {
           window.store.order(this.darkThemeId),
         b == document.getElementById("candyThemePrice") &&
           window.store.order(this.candyThemeId)));
-  };
-  shopBack (b) {
+  }
+  shopBack(b) {
     300 > OneView.core.getTimeStamp() - this.timestamp ||
       OneView.core.appStateHandler.back();
-  };
+  }
 }
 
 OneView.ShopControl = ShopControl;
