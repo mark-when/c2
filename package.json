@@ -4,13 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "vite --port=5150",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && vite build",
     "watch": "tsc --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.1.6"
+    "@types/node": "^20.4.8",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9"
+  },
+  "dependencies": {
+    "moment": "^2.29.4"
   }
 }

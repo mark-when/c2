@@ -1,4 +1,4 @@
-var xLanguageNames = [
+export var xLanguageNames = [
   "English",
   "German",
   "Russian",
@@ -15,7 +15,7 @@ var xLanguageNames = [
   "Norwegian",
   "Romanian",
 ];
-var xLanguageAbbreviations = [
+export var xLanguageAbbreviations = [
   "en",
   "de",
   "ru",
@@ -32,7 +32,7 @@ var xLanguageAbbreviations = [
   "nb",
   "ro",
 ];
-var xTranslations = [
+export var xTranslations = [
   [
     "4 months",
     "4 Monate",

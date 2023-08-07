@@ -1,3 +1,6 @@
+import moment from "moment";
+import { xLanguageAbbreviations, xLanguageNames, xTranslations } from "./translations"
+
 var oneview9;
 (function (a) {
   var p;
