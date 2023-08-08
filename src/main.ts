@@ -3273,7 +3273,7 @@ namespace OneView {
     monthesLong = new OneView.Hashtable();
     weekdayShort = new OneView.Hashtable();
     weekdayLong = new OneView.Hashtable();
-    
+
     colorToRGBA(a, c) {
       var b = parseInt(a.substr(1), 16);
       return (
@@ -9024,128 +9024,175 @@ namespace OneView {
     }
   }
 
-  export class FreeTheme {
-    constructor() {
-      this.themeName = "Free theme";
-      this.colorBlack = "#000000";
-      this.colorDark = "#233142";
-      this.colorBigDateDividerStr = "rgba( 173, 176, 181, ";
-      this.colorTitleBackground = "#233142";
-      this.colorTitleText = "#FFFFFF";
-      this.colorGrayText = "#454545";
-      this.colorDarkText = "#7B838E";
-      this.colorHorizontalTitle = "#4B5056";
-      this.colorRedDayText = "#C91E1E";
-      this.colorDarkSoft = "#999999";
-      this.colorLightSoft = "#BBBBBB";
-      this.colorTag2 = this.colorTag = "#E50081";
-      this.colorWhite =
-        this.colorLight =
-        this.colorBackground =
-        this.colorTagText =
-          "#FFFFFF";
-      this.colorRed = "#233142";
-      this.colorMarker = "#E53935";
-      this.colorBlue = "#2890D1";
-      this.colorAddButton = "#233142";
-      this.colorDim = "rgba(0; 0; 0; 0.5)";
-      this.colorLightDim = "rgba(125; 125; 125; 0.9)";
-      this.colorToday = [225, 210, 220];
-      this.color1 = "#333333";
-      this.colorFadeOut = "rgba(125, 125, 125, 0.5)";
-      this.colorWeekNumberShadow = "#E9EAEC";
-      this.colorWeekNumberText = "#233142";
-      this.colorWeekNumberCircle = "#FFFFFF";
-      this.eventColors =
-        "#3878DB #E12FB7 #22B297 #AD45C6 #FF9800 #EF4134 #2291BB #94006C #1ECD63 #620094 #FF6633 #F3C600 #173B91 #D65BBE #00793F #926DB5 #775234 #A5713A #00C1C4 #F4116D #5FBF98 #D905FF #C6110D #C24F05 #394E6B #967292 #7D9673 #454545 #757575 #A0A0A0".split(
-          " "
-        );
-      this.eventTextColors =
-        "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
-          " "
-        );
-      this.eventColorsForFirstCalendar = [
-        "#303F9F",
-        "#3949AB",
-        "#3F51B5",
-        "#5C6BC0",
-        "#7986CB",
-      ];
-      this.eventsFarLeft = 0;
-      this.tagTextIsBold = false;
-      this.titleWidthFactor = 50;
-      this.triangleColorStr = "rgba( 1, 81, 142, ";
-      this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
-      this.titleBarFont = "RobotoL";
-      this.titleBarFontSize = 16;
-      this.titleBarFontBold = "RobotoB";
-      this.textFont = "Roboto";
-      this.textFontBold = "RobotoB";
-      this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = false;
-      this.addButtonWidthFactor = 1.1;
-    }
+  export interface Theme {
+    themeName: string;
+    colorBlack: string;
+    colorDark: string;
+    colorBigDateDividerStr: string;
+    colorTitleBackground: string;
+    colorTitleText: string;
+    colorGrayText: string;
+    colorDarkText: string;
+    colorHorizontalTitle: string;
+    colorRedDayText: string;
+    colorDarkSoft: string;
+    colorLightSoft: string;
+    colorTag2: string;
+    colorTag: string;
+    colorWhite: string;
+    colorLight: string;
+    colorBackground: string;
+    colorTagText: string;
+    colorRed: string;
+    colorMarker: string;
+    colorBlue: string;
+    colorAddButton: string;
+    colorDim: string;
+    colorLightDim: string;
+    colorToday: [number, number, number];
+    color1: string;
+    colorFadeOut: string;
+    colorWeekNumberShadow: string;
+    colorWeekNumberText: string;
+    colorWeekNumberCircle: string;
+    eventColors: string[];
+    eventTextColors: string[];
+    eventColorsForFirstCalendar: string[];
+    eventsFarLeft: number;
+    tagTextIsBold: boolean;
+    titleWidthFactor: number;
+    triangleColorStr: string;
+    triangleTextNudgeY: number;
+    triangleTextNudgeX: number;
+    titleBarFont: string;
+    titleBarFontSize: number;
+    titleBarFontBold: string;
+    textFont: string;
+    textFontBold: string;
+    textFontThin: string;
+    badgeColorIsTagTextColor: boolean;
+    addButtonWidthFactor: number;
   }
 
-  export class DarkTheme {
-    constructor() {
-      this.themeName = "Dark theme";
-      this.colorBlack = "#000000";
-      this.colorDark = "#333333";
-      this.colorBigDateDividerStr = "rgba( 133, 136, 131, ";
-      this.colorTitleBackground = "#333333";
-      this.colorTitleText = "#8B8B8B";
-      this.colorGrayText = "#808080";
-      this.colorDarkText = "#A49C91";
-      this.colorHorizontalTitle = "#7C7C7C";
-      this.colorRedDayText = "#3BE7EB";
-      this.colorDarkSoft = "#999999";
-      this.colorLightSoft = "#BBBBBB";
-      this.colorTag2 = this.colorTag = "#E50081";
-      this.colorTagText = "#FFFFFF";
-      this.colorBackground = "#191919";
-      this.colorWhite = this.colorLight = "#FFFFFF";
-      this.colorRed = "#333333";
-      this.colorMarker = "#3BE7EB";
-      this.colorBlue = "#2890D1";
-      this.colorAddButton = "#333333";
-      this.colorDim = "rgba(0; 0; 0; 0.5)";
-      this.colorLightDim = "rgba(125; 125; 125; 0.9)";
-      this.colorToday = [225, 210, 220];
-      this.color1 = "#333333";
-      this.colorFadeOut = "rgba(125, 125, 125, 0.5)";
-      this.colorWeekNumberShadow = "#2D2B2A";
-      this.colorWeekNumberText = "#A49C91";
-      this.colorWeekNumberCircle = "#191919";
-      this.eventColors =
-        "#3878DB #E12FB7 #22B297 #AD45C6 #FF9800 #EF4134 #2291BB #94006C #1ECD63 #620094 #FF6633 #F3C600 #173B91 #D65BBE #00793F #926DB5 #775234 #926DB5 #00C1C4 #F4116D #5FBF98 #D905FF #C6110D #C24F05 #394E6B #967292 #7D9673 #454545 #757575 #A0A0A0".split(
-          " "
-        );
-      this.eventTextColors =
-        "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
-          " "
-        );
-      this.eventColorsForFirstCalendar = [
-        "#303F9F",
-        "#3949AB",
-        "#3F51B5",
-        "#5C6BC0",
-        "#7986CB",
-      ];
-      this.eventsFarLeft = 0;
-      this.tagTextIsBold = false;
-      this.titleWidthFactor = 50;
-      this.triangleColorStr = "rgba( 1, 81, 142, ";
-      this.triangleTextNudgeY = this.triangleTextNudgeX = 0;
-      this.titleBarFont = "RobotoL";
-      this.titleBarFontSize = 16;
-      this.titleBarFontBold = "RobotoB";
-      this.textFont = "Roboto";
-      this.textFontBold = "RobotoB";
-      this.textFontThin = "RobotoL";
-      this.badgeColorIsTagTextColor = true;
-      this.addButtonWidthFactor = 1.1;
-    }
+  export class FreeTheme implements Theme {
+    themeName = "Free theme";
+    colorBlack = "#000000";
+    colorDark = "#233142";
+    colorBigDateDividerStr = "rgba( 173, 176, 181, ";
+    colorTitleBackground = "#233142";
+    colorTitleText = "#FFFFFF";
+    colorGrayText = "#454545";
+    colorDarkText = "#7B838E";
+    colorHorizontalTitle = "#4B5056";
+    colorRedDayText = "#C91E1E";
+    colorDarkSoft = "#999999";
+    colorLightSoft = "#BBBBBB";
+    colorTag2 = "#E50081";
+    colorTag = "#E50081";
+    colorWhite = "#FFFFFF";
+    colorLight = "#FFFFFF";
+    colorBackground = "#FFFFFF";
+    colorTagText = "#FFFFFF";
+    colorRed = "#233142";
+    colorMarker = "#E53935";
+    colorBlue = "#2890D1";
+    colorAddButton = "#233142";
+    colorDim = "rgba(0; 0; 0; 0.5)";
+    colorLightDim = "rgba(125; 125; 125; 0.9)";
+    colorToday = [225, 210, 220];
+    color1 = "#333333";
+    colorFadeOut = "rgba(125, 125, 125, 0.5)";
+    colorWeekNumberShadow = "#E9EAEC";
+    colorWeekNumberText = "#233142";
+    colorWeekNumberCircle = "#FFFFFF";
+    eventColors =
+      "#3878DB #E12FB7 #22B297 #AD45C6 #FF9800 #EF4134 #2291BB #94006C #1ECD63 #620094 #FF6633 #F3C600 #173B91 #D65BBE #00793F #926DB5 #775234 #A5713A #00C1C4 #F4116D #5FBF98 #D905FF #C6110D #C24F05 #394E6B #967292 #7D9673 #454545 #757575 #A0A0A0".split(
+        " "
+      );
+    eventTextColors =
+      "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
+        " "
+      );
+    eventColorsForFirstCalendar = [
+      "#303F9F",
+      "#3949AB",
+      "#3F51B5",
+      "#5C6BC0",
+      "#7986CB",
+    ];
+    eventsFarLeft = 0;
+    tagTextIsBold = false;
+    titleWidthFactor = 50;
+    triangleColorStr = "rgba( 1, 81, 142, ";
+    triangleTextNudgeY = 0;
+    triangleTextNudgeX = 0;
+    titleBarFont = "RobotoL";
+    titleBarFontSize = 16;
+    titleBarFontBold = "RobotoB";
+    textFont = "Roboto";
+    textFontBold = "RobotoB";
+    textFontThin = "RobotoL";
+    badgeColorIsTagTextColor = false;
+    addButtonWidthFactor = 1.1;
+  }
+
+  export class DarkTheme implements Theme {
+    themeName = "Dark theme";
+    colorBlack = "#000000";
+    colorDark = "#333333";
+    colorBigDateDividerStr = "rgba( 133, 136, 131, ";
+    colorTitleBackground = "#333333";
+    colorTitleText = "#8B8B8B";
+    colorGrayText = "#808080";
+    colorDarkText = "#A49C91";
+    colorHorizontalTitle = "#7C7C7C";
+    colorRedDayText = "#3BE7EB";
+    colorDarkSoft = "#999999";
+    colorLightSoft = "#BBBBBB";
+    colorTag2 = (this.colorTag = "#E50081");
+    colorTagText = "#FFFFFF";
+    colorBackground = "#191919";
+    colorWhite = (this.colorLight = "#FFFFFF");
+    colorRed = "#333333";
+    colorMarker = "#3BE7EB";
+    colorBlue = "#2890D1";
+    colorAddButton = "#333333";
+    colorDim = "rgba(0; 0; 0; 0.5)";
+    colorLightDim = "rgba(125; 125; 125; 0.9)";
+    colorToday = [225, 210, 220];
+    color1 = "#333333";
+    colorFadeOut = "rgba(125, 125, 125, 0.5)";
+    colorWeekNumberShadow = "#2D2B2A";
+    colorWeekNumberText = "#A49C91";
+    colorWeekNumberCircle = "#191919";
+    eventColors =
+      "#3878DB #E12FB7 #22B297 #AD45C6 #FF9800 #EF4134 #2291BB #94006C #1ECD63 #620094 #FF6633 #F3C600 #173B91 #D65BBE #00793F #926DB5 #775234 #926DB5 #00C1C4 #F4116D #5FBF98 #D905FF #C6110D #C24F05 #394E6B #967292 #7D9673 #454545 #757575 #A0A0A0".split(
+        " "
+      );
+    eventTextColors =
+      "#FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF #FFFFFF".split(
+        " "
+      );
+    eventColorsForFirstCalendar = [
+      "#303F9F",
+      "#3949AB",
+      "#3F51B5",
+      "#5C6BC0",
+      "#7986CB",
+    ];
+    eventsFarLeft = 0;
+    tagTextIsBold = false;
+    titleWidthFactor = 50;
+    triangleColorStr = "rgba( 1, 81, 142, ";
+    triangleTextNudgeY = (this.triangleTextNudgeX = 0);
+    titleBarFont = "RobotoL";
+    titleBarFontSize = 16;
+    titleBarFontBold = "RobotoB";
+    textFont = "Roboto";
+    textFontBold = "RobotoB";
+    textFontThin = "RobotoL";
+    badgeColorIsTagTextColor = true;
+    addButtonWidthFactor = 1.1;
   }
 
   export class CandyTheme {
