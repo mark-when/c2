@@ -290,7 +290,7 @@ namespace OneView {
     previousFont = "";
     canvasCache = new OneView.SpeedCache();
 
-    debugText(b) {
+    debugText(b: string) {
       OneView.core.zopDrawArea.canvasContext.fillStyle = "#FF0000";
       this.setFont(20);
       OneView.core.zopDrawArea.canvasContext.fillText(b, 5, 30);
@@ -386,19 +386,21 @@ namespace OneView {
       );
       OneView.core.zopDrawArea.removeShadow(d);
     }
-    setFont(b, c, e, f) {
+    setFont(fontSize: number, c, e, f) {
       void 0 === c && (c = false);
       void 0 === e && (e = false);
       void 0 === f && (f = false);
       c
-        ? ((c = b + "px " + OneView.core.settings.theme.titleBarFont),
-          f && (c = b + "px " + OneView.core.settings.theme.titleBarFontBold),
-          e && (c = b + "px " + OneView.core.settings.theme.textFont))
+        ? ((c = fontSize + "px " + OneView.core.settings.theme.titleBarFont),
+          f &&
+            (c =
+              fontSize + "px " + OneView.core.settings.theme.titleBarFontBold),
+          e && (c = fontSize + "px " + OneView.core.settings.theme.textFont))
         : (c = f
-            ? b + "px " + OneView.core.settings.theme.textFontBold
+            ? fontSize + "px " + OneView.core.settings.theme.textFontBold
             : e
-            ? b + "px " + OneView.core.settings.theme.textFontThin
-            : b + "px " + OneView.core.settings.theme.textFont);
+            ? fontSize + "px " + OneView.core.settings.theme.textFontThin
+            : fontSize + "px " + OneView.core.settings.theme.textFont);
       OneView.core.zopDrawArea.canvasContext.font !== c &&
         (OneView.core.zopDrawArea.canvasContext.font = c);
     }
@@ -1660,11 +1662,9 @@ namespace OneView {
   }
 
   export class AddButtonControl {
-    constructor() {
-      this.animationLength = 2e3;
-      this.precision = 4;
-      this.animationActive = false;
-    }
+    animationLength = 2e3;
+    precision = 4;
+    animationActive = false;
 
     drawAreaResized() {
       OneView.core.appStateHandler.isAddButtonBeingDragged && this.redraw();
@@ -2118,9 +2118,9 @@ namespace OneView {
   }
 
   export class MenuItemInfo {
+    isHighlited = false;
+    isVisible = true;
     constructor(a, b, c) {
-      this.isHighlited = false;
-      this.isVisible = true;
       this.text = a;
       this.charCode = b;
       this.onMenuItemClicked = c;
@@ -2128,12 +2128,11 @@ namespace OneView {
   }
 
   export class EditEventControl {
-    constructor() {
-      this.pageHtml =
-        '<div id="message" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="messageText" class="base menuItem" style="text-align:center">{#Error#}</div>    <div>        <button id="messageOk" class="topBarButton" style="width:100%"><img src="images/check.svg" height="24px" style="vertical-align: text-bottom"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="noColorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Color picker?#}</div>    <div>        <button id="gotoShopCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="gotoShopOk" class="topBarButton" style="width:50%"><img src="images/shop.svg" class="topBarImage"/><span>{#Shop#}</span></button>    </div></div></div></div><div id="colorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner" >          <div id="colorPickerArea" style="padding: 20px; padding-top: 12px;"></div></div></div></div><div id="editEventTopBar" class="topBar">    <button id="editEventCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="editEventOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div><div class="pageContent" id="editEventArea" style="float:left; background-color: #E9E9E9;">        <div class="editEventPopupContent pageTopPadding" id="editEventPopupContent">            <div class="miniTitle sizedTitle">{#Title#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventTitle" required /></div></div>            <div class="miniTitle sizedTitle">{#Start#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateStart" min="0001-01-01" max="4000-01-01" /><span id="fakeDateStart" class="base inputBase dateFake" ></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeStart" step="60"></div></div>            <div class="miniTitle sizedTitle">{#End#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><select id="editEventDuration" class="base inputBase">            </select></div></div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateEnd" min="0001-01-01" max="4000-01-01" ><span id="fakeDateEnd" class="base inputBase dateFake"></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeEnd"  step="60"/></div></div>            <div class="miniTitle sizedTitle" id="remindersTitle">{#Reminders#}</div>            <div style="position: relative"><div class="inputBox"><select id="editEventReminders" class="base inputBase maybeBig" multiple="multiple" >            </select></div></div>            <div class="miniTitle sizedTitle">{#Where#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventLocation" ></div></div>            <div class="miniTitle sizedTitle">{#Details#}</div>            <div style="position: relative"><div class="inputBox"><textarea class="base inputBase inputTwoLiner" name="task" id="editEventDetails" ></textarea></div></div>            <div id="spaceForColors"></div>                        <div class="miniTitle sizedTitle">{#Calendar#}</div>                        <div style="position: relative"><div id="calendarSelWrapper" class="inputBox"><select id="editEventCalendar" class="base inputBase inputOneLiner" >                        </select></div><div id="editEventColor" class="square"></div>            <table style ="width:100%">                <tr>                    <td style="white-space: nowrap">                        <div class="miniTitle sizedTitle">{#Recurrence#}</div>                        <div><div class="inputBox"><div class="base inputBase inputOneLiner" id="editEventRecurrenceWrapper"><span class="pageContentText" id="editEventRecurrence" style="cursor: pointer" style="float:left" taborder="10"></span></div></div></div>                    </td><td style="width:80%"></td>                 </tr>            </table>            </div> </div>         </div></div>';
-      this.isShowingDatePickerForStartTime = false;
-      this.canEditReccur = true;
-    }
+    pageHtml =
+      '<div id="message" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="messageText" class="base menuItem" style="text-align:center">{#Error#}</div>    <div>        <button id="messageOk" class="topBarButton" style="width:100%"><img src="images/check.svg" height="24px" style="vertical-align: text-bottom"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="noColorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Color picker?#}</div>    <div>        <button id="gotoShopCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="gotoShopOk" class="topBarButton" style="width:50%"><img src="images/shop.svg" class="topBarImage"/><span>{#Shop#}</span></button>    </div></div></div></div><div id="colorPickerWindow" class="outer" style="display: none" > <div class="middle" > <div class="inner" >          <div id="colorPickerArea" style="padding: 20px; padding-top: 12px;"></div></div></div></div><div id="editEventTopBar" class="topBar">    <button id="editEventCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="editEventOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div><div class="pageContent" id="editEventArea" style="float:left; background-color: #E9E9E9;">        <div class="editEventPopupContent pageTopPadding" id="editEventPopupContent">            <div class="miniTitle sizedTitle">{#Title#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventTitle" required /></div></div>            <div class="miniTitle sizedTitle">{#Start#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateStart" min="0001-01-01" max="4000-01-01" /><span id="fakeDateStart" class="base inputBase dateFake" ></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeStart" step="60"></div></div>            <div class="miniTitle sizedTitle">{#End#}</div>            <div style="position: relative"><div class="inputBox lessSpace"><select id="editEventDuration" class="base inputBase">            </select></div></div>            <div style="position: relative"><div class="inputBox lessSpace"><input type="date" class="base inputBase inputDate" id="editEventDateEnd" min="0001-01-01" max="4000-01-01" ><span id="fakeDateEnd" class="base inputBase dateFake"></span></div></div>            <div style="position: relative"><div class="inputBox"><input type="time" class="base inputBase inputDate androidDown" id="editEventTimeEnd"  step="60"/></div></div>            <div class="miniTitle sizedTitle" id="remindersTitle">{#Reminders#}</div>            <div style="position: relative"><div class="inputBox"><select id="editEventReminders" class="base inputBase maybeBig" multiple="multiple" >            </select></div></div>            <div class="miniTitle sizedTitle">{#Where#}</div>            <div style="position: relative"><div class="inputBox"><input type="text" class="base inputBase inputOneLiner" name="task" id="editEventLocation" ></div></div>            <div class="miniTitle sizedTitle">{#Details#}</div>            <div style="position: relative"><div class="inputBox"><textarea class="base inputBase inputTwoLiner" name="task" id="editEventDetails" ></textarea></div></div>            <div id="spaceForColors"></div>                        <div class="miniTitle sizedTitle">{#Calendar#}</div>                        <div style="position: relative"><div id="calendarSelWrapper" class="inputBox"><select id="editEventCalendar" class="base inputBase inputOneLiner" >                        </select></div><div id="editEventColor" class="square"></div>            <table style ="width:100%">                <tr>                    <td style="white-space: nowrap">                        <div class="miniTitle sizedTitle">{#Recurrence#}</div>                        <div><div class="inputBox"><div class="base inputBase inputOneLiner" id="editEventRecurrenceWrapper"><span class="pageContentText" id="editEventRecurrence" style="cursor: pointer" style="float:left" taborder="10"></span></div></div></div>                    </td><td style="width:80%"></td>                 </tr>            </table>            </div> </div>         </div></div>';
+    isShowingDatePickerForStartTime = false;
+    canEditReccur = true;
+
     reshow() {
       OneView.core.appStateHandler.editEventControlIsShowing = true;
       this.updateRecurrenceHtml();
@@ -2696,10 +2695,8 @@ namespace OneView {
   }
 
   export class EditRecurrenceControl {
-    constructor() {
-      this.pageHtml =
-        '<div id="editRecurrenceTopBar" class="topBar">    <button id="editRecurrenceCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/></span><span>{#Cancel#}</span></button>    <button id="editRecurrenceOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/></span><span>{#Ok#}</span></button></div><div class="pageContent" id="editRecurrenceArea" style="float:left; background-color: #E9E9E9;">        <div class="editRecurrencePopupContent pageTopPadding" id="editRecurrencePopupContent">            <div class="miniTitle sizedTitle">{#Frequency#}</div>            <div style="position: relative"><div class="inputBox">                <select class="base inputBase" id="editRecurrenceFrequency">                    <option class="inputOption" value="none">{#Not repeated#}</option>                    <option class="inputOption" value="day">{#Day#}</option>                    <option class="inputOption" value="week">{#Week#}</option>                    <option class="inputOption" value="month">{#Month#}</option>                    <option class="inputOption" value="year">{#Year#}</option>                </select>            </div></div>            <div id="daySelectionArea">                <div class="miniTitle sizedTitle">{#Every X day(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="dayInterval">                </div></div>            </div>            <div id="weekSelectionArea">                <div class="miniTitle sizedTitle">{#Every X week(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="weekInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Week days#}</div>                <div style="position: relative"><div class="inputBox">                    <select id="weekDays" class="base inputBase maybeBig" multiple="multiple">                    </select>                </div></div>            </div>            <div id="monthSelectionArea">                <div class="miniTitle sizedTitle">{#Every X month(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="monthInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Type#}</div>                <div style="position: relative"> <div class="inputBox">                     <select class="base inputBase" id="editRecurrenceMonthType">                        <option class="inputOption" value="date">?</option>                        <option class="inputOption" value="weekday">?</option>                    </select>                </div></div>            </div>            <div id="yearSelectionArea">                <div class="miniTitle sizedTitle">{#Every X year(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="yearInterval">                </div></div>            </div>            <div class="miniTitle sizedTitle">{#End#}</div>                <div style="position: relative"><div class="inputBox">                     <select class="base inputBase" id="editRecurrenceEnd">                         <option class="inputOption" value="forever">{#Forever#}</option>                         <option class="inputOption" value="untildate">{#End before a date#}</option>                         <option class="inputOption" value="numberoftimes">{#Repeat X times#}</option>                    </select>                </div></div>                <div class="miniTitle sizedTitle" id="numberoftimes_input_title">{#Repeat X times#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="number" class="base inputBase" name="task" id="numberoftimes_input">                </div></div>                <div class="miniTitle sizedTitle" id="untildate_input_title">{#End before#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="date" class="base inputBase inputDate" name="task" id="untildate_input">                </div></div>            </div>        </div></div><br/><br/>';
-    }
+    pageHtml =
+      '<div id="editRecurrenceTopBar" class="topBar">    <button id="editRecurrenceCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/></span><span>{#Cancel#}</span></button>    <button id="editRecurrenceOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/></span><span>{#Ok#}</span></button></div><div class="pageContent" id="editRecurrenceArea" style="float:left; background-color: #E9E9E9;">        <div class="editRecurrencePopupContent pageTopPadding" id="editRecurrencePopupContent">            <div class="miniTitle sizedTitle">{#Frequency#}</div>            <div style="position: relative"><div class="inputBox">                <select class="base inputBase" id="editRecurrenceFrequency">                    <option class="inputOption" value="none">{#Not repeated#}</option>                    <option class="inputOption" value="day">{#Day#}</option>                    <option class="inputOption" value="week">{#Week#}</option>                    <option class="inputOption" value="month">{#Month#}</option>                    <option class="inputOption" value="year">{#Year#}</option>                </select>            </div></div>            <div id="daySelectionArea">                <div class="miniTitle sizedTitle">{#Every X day(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="dayInterval">                </div></div>            </div>            <div id="weekSelectionArea">                <div class="miniTitle sizedTitle">{#Every X week(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="weekInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Week days#}</div>                <div style="position: relative"><div class="inputBox">                    <select id="weekDays" class="base inputBase maybeBig" multiple="multiple">                    </select>                </div></div>            </div>            <div id="monthSelectionArea">                <div class="miniTitle sizedTitle">{#Every X month(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="monthInterval">                </div></div>                <div class="miniTitle sizedTitle">{#Type#}</div>                <div style="position: relative"> <div class="inputBox">                     <select class="base inputBase" id="editRecurrenceMonthType">                        <option class="inputOption" value="date">?</option>                        <option class="inputOption" value="weekday">?</option>                    </select>                </div></div>            </div>            <div id="yearSelectionArea">                <div class="miniTitle sizedTitle">{#Every X year(s)#}</div>                <div style="position: relative"><div class="inputBox">                    <input type="number" class="base inputBase" name="task" id="yearInterval">                </div></div>            </div>            <div class="miniTitle sizedTitle">{#End#}</div>                <div style="position: relative"><div class="inputBox">                     <select class="base inputBase" id="editRecurrenceEnd">                         <option class="inputOption" value="forever">{#Forever#}</option>                         <option class="inputOption" value="untildate">{#End before a date#}</option>                         <option class="inputOption" value="numberoftimes">{#Repeat X times#}</option>                    </select>                </div></div>                <div class="miniTitle sizedTitle" id="numberoftimes_input_title">{#Repeat X times#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="number" class="base inputBase" name="task" id="numberoftimes_input">                </div></div>                <div class="miniTitle sizedTitle" id="untildate_input_title">{#End before#}</div>                <div style="position: relative"><div class="inputBox">                     <input type="date" class="base inputBase inputDate" name="task" id="untildate_input">                </div></div>            </div>        </div></div><br/><br/>';
     reshow() {
       this.show();
     }
@@ -2937,10 +2934,8 @@ namespace OneView {
   }
 
   export class ViewEventControl {
-    constructor() {
-      this.pageHtml =
-        '<div id="editRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="editRecurrenceOnlyOne" class="base menuItem">{#Only edit this event#}</div>    <div id="editRecurrenceAll" class="base menuItem">{#Edit the whole series#}</div>    \x3c!--<div id="editRecurrenceFuture" class="base menuItem">{#Edit this and future events#}</div>--\x3e    <div id="editRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="noEditMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItemInfo">{#Sorry, this event can\'t be edited#}</div>    <div id="noEditOk" class="base menuItem">{#Ok#}</div></div></div></div><div id="deleteConfirmPopup" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Delete?#}</div>    <div>        <button id="deleteConfirmCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="deleteConfirmOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="deleteRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="deleteRecurrenceOnlyOne" class="base menuItem">{#Only delete this event#}</div>    <div id="deleteRecurrenceAll" class="base menuItem">{#Delete the whole series#}</div>    \x3c!--<div id="deleteRecurrenceFuture" class="base menuItem">{#Delete this and future events#}</div>--\x3e    <div id="deleteRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="viewEventTopBar" class="topBar">    <button id="viewEventBack" class="topBarButton" style="width:39%">        _insertBackButtonImage        <span id="viewEventBackText" style="color: _buttonImageColor">{#Back#}</span>    </button>    \x3c!--<button id="viewEventMove" class="topBarButton" style="width:?%"><img src="images/clock.svg" class="topBarImage"/><span id="viewEventMoveText">{#Move#}</span></button>--\x3e    <button id="viewEventDelete" class="topBarButton" style="width:23%">        _insertTrashButtonImage    </button>    <button id="viewEventEdit" class="topBarButton" style="width:38%">        _insertPencilButtonImage        <span id="viewEventEditText" style="color: _buttonImageColor">{#Edit#}</span>    </button></div><div class="pageContent" id="viewEventArea" style="float:left">    <div id="viewEventTitle" class="topBarTitleX" style="width:100%"></div>    <div class="pagePadding pageTopPadding" style="padding-left:20px;padding-right:20px;">        <div class="editEventPopupContent" id="editEventPopupContent">            <br>            <br>            <div>                <div class="miniTitle">{#When#}</div>                <div class="pageContentText" id="viewEventTime1"></div>                <div class="pageContentText" id="viewEventTime2"></div>                <br>            </div>            <div id="viewEventBoxWhere">                <div class="miniTitle" id="viewEventTitleWhere">{#Where#}</div>                <div class="pageContentText" id="viewEventLocation"></div>                <br>            </div>            <div id="viewEventBoxDetails">                <div class="miniTitle" id="viewEventTitleDetails">{#Details#}</div>                <div class="pageContentText" id="viewEventDetails" style="white-space: pre-wrap;"></div>                <br>            </div>            <div>                <div class="miniTitle">{#Calendar#}</div>                <div class="pageContentText" id="viewEventCalendar"></div>                <br>            </div>            <div id="viewEventBoxReminders">                <div class="miniTitle">{#Reminders#}</div>                <div class="pageContentText" id="viewEventReminders"></div>                <br>            </div>            <div id="viewEventBoxInvited">                <div class="miniTitle">{#Invited#}</div>                <div class="pageContentText" id="viewEventInvited"></div>                <br>            </div>        </div>    </div></div><br/><br/>';
-    }
+    pageHtml =
+      '<div id="editRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="editRecurrenceOnlyOne" class="base menuItem">{#Only edit this event#}</div>    <div id="editRecurrenceAll" class="base menuItem">{#Edit the whole series#}</div>    \x3c!--<div id="editRecurrenceFuture" class="base menuItem">{#Edit this and future events#}</div>--\x3e    <div id="editRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="noEditMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItemInfo">{#Sorry, this event can\'t be edited#}</div>    <div id="noEditOk" class="base menuItem">{#Ok#}</div></div></div></div><div id="deleteConfirmPopup" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div class="base menuItem" style="text-align:center">{#Delete?#}</div>    <div>        <button id="deleteConfirmCancel" class="topBarButton" style="width:50%"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>        <button id="deleteConfirmOk" class="topBarButton" style="width:50%"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button>    </div></div></div></div><div id="deleteRecurrenceMenu" class="outer" style="display: none" > <div class="middle" > <div class="inner menu" >    <div id="deleteRecurrenceOnlyOne" class="base menuItem">{#Only delete this event#}</div>    <div id="deleteRecurrenceAll" class="base menuItem">{#Delete the whole series#}</div>    \x3c!--<div id="deleteRecurrenceFuture" class="base menuItem">{#Delete this and future events#}</div>--\x3e    <div id="deleteRecurrenceCancel" class="base menuItem">{#Cancel#}</div></div></div></div><div id="viewEventTopBar" class="topBar">    <button id="viewEventBack" class="topBarButton" style="width:39%">        _insertBackButtonImage        <span id="viewEventBackText" style="color: _buttonImageColor">{#Back#}</span>    </button>    \x3c!--<button id="viewEventMove" class="topBarButton" style="width:?%"><img src="images/clock.svg" class="topBarImage"/><span id="viewEventMoveText">{#Move#}</span></button>--\x3e    <button id="viewEventDelete" class="topBarButton" style="width:23%">        _insertTrashButtonImage    </button>    <button id="viewEventEdit" class="topBarButton" style="width:38%">        _insertPencilButtonImage        <span id="viewEventEditText" style="color: _buttonImageColor">{#Edit#}</span>    </button></div><div class="pageContent" id="viewEventArea" style="float:left">    <div id="viewEventTitle" class="topBarTitleX" style="width:100%"></div>    <div class="pagePadding pageTopPadding" style="padding-left:20px;padding-right:20px;">        <div class="editEventPopupContent" id="editEventPopupContent">            <br>            <br>            <div>                <div class="miniTitle">{#When#}</div>                <div class="pageContentText" id="viewEventTime1"></div>                <div class="pageContentText" id="viewEventTime2"></div>                <br>            </div>            <div id="viewEventBoxWhere">                <div class="miniTitle" id="viewEventTitleWhere">{#Where#}</div>                <div class="pageContentText" id="viewEventLocation"></div>                <br>            </div>            <div id="viewEventBoxDetails">                <div class="miniTitle" id="viewEventTitleDetails">{#Details#}</div>                <div class="pageContentText" id="viewEventDetails" style="white-space: pre-wrap;"></div>                <br>            </div>            <div>                <div class="miniTitle">{#Calendar#}</div>                <div class="pageContentText" id="viewEventCalendar"></div>                <br>            </div>            <div id="viewEventBoxReminders">                <div class="miniTitle">{#Reminders#}</div>                <div class="pageContentText" id="viewEventReminders"></div>                <br>            </div>            <div id="viewEventBoxInvited">                <div class="miniTitle">{#Invited#}</div>                <div class="pageContentText" id="viewEventInvited"></div>                <br>            </div>        </div>    </div></div><br/><br/>';
     init(a) {
       this.calendarEvent = a;
     }
@@ -3274,12 +3269,11 @@ namespace OneView {
   }
 
   export class Helper {
-    constructor() {
-      this.monthesShort = new OneView.Hashtable();
-      this.monthesLong = new OneView.Hashtable();
-      this.weekdayShort = new OneView.Hashtable();
-      this.weekdayLong = new OneView.Hashtable();
-    }
+    monthesShort = new OneView.Hashtable();
+    monthesLong = new OneView.Hashtable();
+    weekdayShort = new OneView.Hashtable();
+    weekdayLong = new OneView.Hashtable();
+    
     colorToRGBA(a, c) {
       var b = parseInt(a.substr(1), 16);
       return (
@@ -4380,38 +4374,35 @@ namespace OneView {
   }
 
   export class AppStateHandler {
-    constructor() {
-      this.isEditingEvent = this.isCreatingNewEvent = 0;
-      this.isChoosingDateTimeForEvent = false;
-      this.isAutoZooming =
-        this.isAutoScrolling =
-        this.isManuallyZooming =
-        this.isManuaullyScrolling =
-          0;
-      this.isPopupEditRecurringMenuShowing =
-        this.isPopupMainMenuShowing =
-        this.isMainMenuBeingDragged =
-        this.isAddButtonBeingDragged =
-        this.isMainMenuShowing =
-          false;
-      this.isPopupDissabled = 0;
-      this.sizesInitiated =
-        this.settingsControlIsShowing =
-        this.shopControlIsShowing =
-        this.calendarsControlIsShowing =
-        this.editEventControlIsShowing =
-        this.viewEventControlIsShowing =
-        this.isDraggingBottomMarker =
-        this.isDraggingTopMarker =
-          false;
-      this.visibleControls = [];
-      this.settingsControl = new OneView.SettingsControl();
-      this.calendarsControl = new OneView.CalendarsControl();
-      this.shopControl = new OneView.ShopControl();
-      this.viewEventControl = new OneView.ViewEventControl();
-      this.editEventControl = new OneView.EditEventControl();
-      this.editRecurrenceControl = new OneView.EditRecurrenceControl();
-    }
+    isEditingEvent = 0;
+    isCreatingNewEvent = 0;
+    isChoosingDateTimeForEvent = false;
+    isAutoZooming = 0;
+    isAutoScrolling = 0;
+    isManuallyZooming = 0;
+    isManuaullyScrolling = 0;
+    isPopupEditRecurringMenuShowing = false;
+    isPopupMainMenuShowing = false;
+    isMainMenuBeingDragged = false;
+    isAddButtonBeingDragged = false;
+    isMainMenuShowing = false;
+    isPopupDissabled = 0;
+    sizesInitiated = false;
+    settingsControlIsShowing = false;
+    shopControlIsShowing = false;
+    calendarsControlIsShowing = false;
+    editEventControlIsShowing = false;
+    viewEventControlIsShowing = false;
+    isDraggingBottomMarker = false;
+    isDraggingTopMarker = false;
+    visibleControls = [];
+    settingsControl = new OneView.SettingsControl();
+    calendarsControl = new OneView.CalendarsControl();
+    shopControl = new OneView.ShopControl();
+    viewEventControl = new OneView.ViewEventControl();
+    editEventControl = new OneView.EditEventControl();
+    editRecurrenceControl = new OneView.EditRecurrenceControl();
+
     isMainWindowShowing() {
       return (
         !this.isMainMenuShowing &&
@@ -7284,6 +7275,7 @@ namespace OneView {
     startDragTopDateTime = undefined;
     originalBottomDateTime = undefined;
     originalTopDateTime = undefined;
+    calendarEventObject?: CalendarEventObject;
 
     bottomText = "";
     topText = "";
@@ -8865,37 +8857,38 @@ namespace OneView {
   }
 
   export class Settings {
+    absoluteMinDate = moment("1900-01-01 00:00:00").toDate();
+    absoluteMaxDate = moment("2100-01-01 00:00:00").toDate();
+    globalMinDate = Number(moment("1900-01-01 00:00:00").toDate());
+    margin = 0;
+    redDay = 0;
+    menuIconHeight = 0;
+    menuItemHeight = 0;
+    menuTextHeight = 0;
+    title2FontSize = 0;
+    title1FontSize = 0;
+    title0FontSize = 0;
+    weekCircleDiameter = 0;
+    innerTopMaxMargin = 0;
+    innerLeftMargin = 0;
+    titleWidth = 0;
+    dateBigTextSize = 0;
+    badgeTextHeight = 0;
+    tagTextHeight = 0;
+    tagColorWidth = 0;
+    minDateHeight = 0;
+    tagHeight = 0;
+    rightToLeft = true;
+    eventsFarLeft = 0;
+    useMiniBadges = false;
+    zoom = (this.menuButtonBottom = this.badgesLeft = 0);
+    allowWeekNumber = true;
+    lineThickness = 2;
+
     constructor(a) {
-      this.absoluteMinDate = moment("1900-01-01 00:00:00").toDate();
-      this.absoluteMaxDate = moment("2100-01-01 00:00:00").toDate();
-      this.globalMinDate = Number(moment("1900-01-01 00:00:00").toDate());
-      this.margin =
-        this.redDay =
-        this.menuIconHeight =
-        this.menuItemHeight =
-        this.menuTextHeight =
-        this.title2FontSize =
-        this.title1FontSize =
-        this.title0FontSize =
-        this.weekCircleDiameter =
-        this.innerTopMaxMargin =
-        this.innerLeftMargin =
-        this.titleWidth =
-        this.dateBigTextSize =
-        this.badgeTextHeight =
-        this.tagTextHeight =
-        this.tagColorWidth =
-        this.minDateHeight =
-        this.tagHeight =
-          0;
-      this.rightToLeft = true;
-      this.eventsFarLeft = 0;
-      this.useMiniBadges = false;
-      this.zoom = this.menuButtonBottom = this.badgesLeft = 0;
-      this.allowWeekNumber = true;
-      this.lineThickness = 2;
       this.reloadThemesSettings(a);
     }
+
     reloadThemesSettings(e) {
       this.themes = new OneView.Dictionary();
       this.themes.add("0", new FreeTheme());
@@ -9901,7 +9894,7 @@ namespace OneView {
   }
 
   export class ZopDrawArea {
-    canvasContext?: CanvasRenderingContext2D = undefined;
+    canvasContext!: CanvasRenderingContext2D = undefined;
     canvas: HTMLCanvasElement = undefined;
     zopAreaWidth = 0;
     zopAreaLeft = 0;
