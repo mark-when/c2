@@ -1,30 +1,9 @@
 import moment from "moment";
-import { xLanguageAbbreviations, xLanguageNames, xTranslations } from "./translations"
-
-var oneview9;
-(function (a) {
-  var p;
-  (function (a) {
-    function b() {
-      document.addEventListener("pause", c, false);
-      document.addEventListener("resume", e, false);
-      document.addEventListener("menubutton", f, false);
-    }
-    function c() {}
-    function e() {}
-    function f() {
-      OneView.core &&
-        OneView.core.appStateHandler &&
-        OneView.core.appStateHandler.showMainMenu(true);
-    }
-    a.initialize = function () {
-      document.addEventListener("deviceready", b, false);
-    };
-  })((p = a.Application || (a.Application = {})));
-  window.onload = function () {
-    p.initialize();
-  };
-})(oneview9 || (oneview9 = {}));
+import {
+  xLanguageAbbreviations,
+  xLanguageNames,
+  xTranslations,
+} from "./translations";
 
 namespace OneView {
   // LocalStorage class
@@ -1301,45 +1280,51 @@ namespace OneView {
         0,
         -this.transparency
       );
-      var b = OneView.core.zopHandler.dateToZOP(new Date()),
-        e = Math.min(
+      var currentZop = OneView.core.zopHandler.dateToZOP(new Date()),
+        maxTitleWidth = Math.min(
           0.6 * OneView.core.settings.titleWidth,
           20 * OneView.core.ratio * OneView.core.settings.zoom
         ),
-        f = (OneView.core.settings.titleWidth - e) / 2,
-        g = OneView.core.zopDrawArea.zopAreaTop + f,
-        d = this.movingMenuWidth - OneView.core.settings.titleWidth + f,
-        f = OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP,
-        b = Math.max(
+        titleOffset = (OneView.core.settings.titleWidth - maxTitleWidth) / 2,
+        g = OneView.core.zopDrawArea.zopAreaTop + titleOffset,
+        d =
+          this.movingMenuWidth - OneView.core.settings.titleWidth + titleOffset,
+        titleOffset =
+          OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP,
+        currentZop = Math.max(
           0,
-          (Math.abs(b - (OneView.core.zopHandler.topZOP + f / 2)) - 0.45 * f) /
-            (0.1 * f)
+          (Math.abs(
+            currentZop - (OneView.core.zopHandler.topZOP + titleOffset / 2)
+          ) -
+            0.45 * titleOffset) /
+            (0.1 * titleOffset)
         ),
-        n = 1 - Math.min(1, b),
-        l = 1 - 3 * Math.max(0, Math.min(1.333, b) - 1),
-        b = OneView.core.settings.lineThickness,
-        h = g + e / 5,
-        k = g + e / 2,
-        p = g + e - e / 5,
-        q = g + e / 2,
-        r = d + e / 6,
-        v = d + e - e / 6,
-        t = (d + e / 2) * n + (d + e / 2) * (1 - n),
+        n = 1 - Math.min(1, currentZop),
+        l = 1 - 3 * Math.max(0, Math.min(1.333, currentZop) - 1),
+        currentZop = OneView.core.settings.lineThickness,
+        h = g + maxTitleWidth / 5,
+        k = g + maxTitleWidth / 2,
+        p = g + maxTitleWidth - maxTitleWidth / 5,
+        q = g + maxTitleWidth / 2,
+        r = d + maxTitleWidth / 6,
+        v = d + maxTitleWidth - maxTitleWidth / 6,
+        t = (d + maxTitleWidth / 2) * n + (d + maxTitleWidth / 2) * (1 - n),
         w = h * n + g * (1 - n),
-        z = (d + e - b) * n + (d + e) * (1 - n),
+        z =
+          (d + maxTitleWidth - currentZop) * n + (d + maxTitleWidth) * (1 - n),
         x = h * n + q * (1 - n),
-        f = (d + b) * n + r * (1 - n),
-        A = k * n + (g + e - b / 2) * (1 - n),
-        r = (d + e - b) * n + r * (1 - n),
-        k = k * n + (q - e / 7) * (1 - n),
-        u = (d + b) * n + v * (1 - n),
-        g = p * n + (g + e - b / 2) * (1 - n),
-        v = (d + e - b) * n + v * (1 - n),
-        p = p * n + (q - e / 7) * (1 - n);
+        titleOffset = (d + currentZop) * n + r * (1 - n),
+        A = k * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
+        r = (d + maxTitleWidth - currentZop) * n + r * (1 - n),
+        k = k * n + (q - maxTitleWidth / 7) * (1 - n),
+        u = (d + currentZop) * n + v * (1 - n),
+        g = p * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
+        v = (d + maxTitleWidth - currentZop) * n + v * (1 - n),
+        p = p * n + (q - maxTitleWidth / 7) * (1 - n);
       OneView.core.drawArea.startLines(
-        (d + b) * n + d * (1 - n),
+        (d + currentZop) * n + d * (1 - n),
         h * n + q * (1 - n),
-        b,
+        currentZop,
         OneView.core.settings.theme.colorTitleText
       );
       OneView.core.drawArea.continueLines(t, w);
@@ -1347,11 +1332,11 @@ namespace OneView {
       OneView.core.drawArea.endLines();
       1 <= l &&
         (OneView.core.drawArea.drawLine2(
-          f,
+          titleOffset,
           A,
           r,
           k,
-          b,
+          currentZop,
           OneView.core.settings.theme.colorTitleText,
           false
         ),
@@ -1360,20 +1345,21 @@ namespace OneView {
           g,
           v,
           p,
-          b,
+          currentZop,
           OneView.core.settings.theme.colorTitleText,
           false
         ));
-      var y = e / 5;
+      var y = maxTitleWidth / 5;
       if (
         1 > l &&
-        ((e = f * l + ((f + u - y) / 2) * (1 - l)),
+        ((maxTitleWidth =
+          titleOffset * l + ((titleOffset + u - y) / 2) * (1 - l)),
         (d = p * l + A * (1 - l)),
-        (n = u * l + ((f + u + y) / 2) * (1 - l)),
+        (n = u * l + ((titleOffset + u + y) / 2) * (1 - l)),
         (h = p * l + A * (1 - l)),
         (x = 2 * y),
         1 > l &&
-          ((q = e * l + e * (1 - l)),
+          ((q = maxTitleWidth * l + maxTitleWidth * (1 - l)),
           (t = d * l + (d - x) * (1 - l)),
           (w = n * l + n * (1 - l)),
           (z = h * l + (h - x) * (1 - l)),
@@ -1387,18 +1373,18 @@ namespace OneView {
         OneView.core.drawArea.startLines(
           r,
           k,
-          b,
+          currentZop,
           OneView.core.settings.theme.colorTitleText
         );
-        OneView.core.drawArea.continueLines(f, A);
-        OneView.core.drawArea.continueLines(e, d);
+        OneView.core.drawArea.continueLines(titleOffset, A);
+        OneView.core.drawArea.continueLines(maxTitleWidth, d);
         OneView.core.drawArea.continueLines(q, t);
         OneView.core.drawArea.continueLines(x, C);
         OneView.core.drawArea.endLines();
         OneView.core.drawArea.startLines(
           v,
           p,
-          b,
+          currentZop,
           OneView.core.settings.theme.colorTitleText
         );
         OneView.core.drawArea.continueLines(u, g);
@@ -5314,8 +5300,7 @@ namespace OneView {
         OneView.core.settings.minDateHeight &&
         ((this.lowestLevelCalendarDateObjectType =
           OneView.CalendarDateObjectType.Month),
-        (this.titleBarDateObjectType =
-          OneView.CalendarDateObjectType.Year),
+        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Year),
         (this.horizontalDateObjectType = void 0),
         (this.showMonthSpecialDetails =
           OneView.core.zopHandler.getPixelSizeOfMonth() >=
@@ -5324,8 +5309,7 @@ namespace OneView {
         OneView.core.settings.minDateHeight &&
         ((this.lowestLevelCalendarDateObjectType =
           OneView.CalendarDateObjectType.Day),
-        (this.titleBarDateObjectType =
-          OneView.CalendarDateObjectType.Month),
+        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Month),
         (this.horizontalDateObjectType = void 0),
         (this.showMonthSpecialDetails =
           OneView.core.zopHandler.getPixelSizeOfDay() >=
@@ -5334,10 +5318,8 @@ namespace OneView {
         OneView.core.settings.minDateHeight &&
         ((this.lowestLevelCalendarDateObjectType =
           OneView.CalendarDateObjectType.Hour),
-        (this.titleBarDateObjectType =
-          OneView.CalendarDateObjectType.Month),
-        (this.horizontalDateObjectType =
-          OneView.CalendarDateObjectType.Day),
+        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Month),
+        (this.horizontalDateObjectType = OneView.CalendarDateObjectType.Day),
         (this.showMonthSpecialDetails =
           OneView.core.zopHandler.getPixelSizeOfHour() >=
           6 * OneView.core.settings.minDateHeight));
@@ -5347,10 +5329,8 @@ namespace OneView {
           OneView.CalendarDateObjectType.Minutes5),
         (this.title4CalendarDateObjectType =
           OneView.CalendarDateObjectType.Hour),
-        (this.titleBarDateObjectType =
-          OneView.CalendarDateObjectType.Month),
-        (this.horizontalDateObjectType =
-          OneView.CalendarDateObjectType.Day),
+        (this.titleBarDateObjectType = OneView.CalendarDateObjectType.Month),
+        (this.horizontalDateObjectType = OneView.CalendarDateObjectType.Day),
         (this.showMonthSpecialDetails =
           OneView.core.zopHandler.getPixelSizeOf5Minutes() >=
           6 * OneView.core.settings.minDateHeight));
@@ -5657,17 +5637,14 @@ namespace OneView {
             new Date(c.getTime())
           )),
           c.setFullYear(c.getFullYear() + 1));
-        if (
-          b.calendarDateObjectType === OneView.CalendarDateObjectType.Year
-        )
+        if (b.calendarDateObjectType === OneView.CalendarDateObjectType.Year)
           (e = new OneView.CalendarDateObject(
             OneView.CalendarDateObjectType.Month,
             new Date(c.getTime())
           )),
             c.setMonth(c.getMonth() + 1);
         else if (
-          b.calendarDateObjectType ===
-          OneView.CalendarDateObjectType.Month
+          b.calendarDateObjectType === OneView.CalendarDateObjectType.Month
         )
           (e = new OneView.CalendarDateObject(
             OneView.CalendarDateObjectType.Day,
@@ -5691,8 +5668,7 @@ namespace OneView {
           )),
             (c = this.addMinutes(c, 5));
         else if (
-          b.calendarDateObjectType ===
-          OneView.CalendarDateObjectType.Minutes5
+          b.calendarDateObjectType === OneView.CalendarDateObjectType.Minutes5
         )
           break;
         void 0 !== e &&
@@ -5989,10 +5965,13 @@ namespace OneView {
         OneView.core.zopHandler.rightPixel +
           OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged
       );
-      (OneView.core.hardRedraw ||
+      if (
+        OneView.core.hardRedraw ||
         this.recalc ||
-        this.getNewZoomLevelString() !== this.zoomLevel) &&
+        this.getNewZoomLevelString() !== this.zoomLevel
+      ) {
         this.somethingChanged();
+      }
       this.recalc = !this.recalc;
       this.calculateAllWidths();
       this.visibleBadges = [];
@@ -7286,41 +7265,38 @@ namespace OneView {
   }
 
   export class DateTimeSelectionHandler {
-    constructor() {
-      this.markerLeft =
-        this.markerWidth =
-        this.markerHeight =
-        this.margin =
-        this.topPanelHeight =
-        this.topPanelTop =
-        this.topPanelWidth =
-        this.topPanelLeft =
-          0;
-      this.textColor = this.markerColor = "";
-      this.bottomMarkerY =
-        this.topMarkerY =
-        this.draggingBottomMarkerOffset =
-        this.draggingTopMarkerOffset =
-          0;
-      this.startDragBottomY =
-        this.startDragTopY =
-        this.startDragBottomDateTime =
-        this.startDragTopDateTime =
-        this.originalBottomDateTime =
-        this.originalTopDateTime =
-          void 0;
-      this.bottomText = this.topText = "";
-      this.precision = 4;
-      this.buttonHeight =
-        this.buttonWidth =
-        this.cancelButtonLeft =
-        this.cancelButtonTop =
-        this.okButtonLeft =
-        this.okButtonTop =
-          0;
-      this.pageHtml =
-        '<div id="dateTimeSelectionTopBar" class="topBar" style="position:relative; z-index:1000">    <button id="dateTimeSelectionCancel" class="topBarButton" style="width:50%; z-index:1000"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="dateTimeSelectionOk" class="topBarButton" style="width:50%; z-index:1000"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div>';
-    }
+    markerLeft = 0;
+    markerWidth = 0;
+    markerHeight = 0;
+    margin = 0;
+    topPanelHeight = 0;
+    topPanelTop = 0;
+    topPanelWidth = 0;
+    topPanelLeft = 0;
+    textColor = (this.markerColor = "");
+    bottomMarkerY = 0;
+    topMarkerY = 0;
+    draggingBottomMarkerOffset = 0;
+    draggingTopMarkerOffset = 0;
+    startDragBottomY = undefined;
+    startDragTopY = undefined;
+    startDragBottomDateTime = undefined;
+    startDragTopDateTime = undefined;
+    originalBottomDateTime = undefined;
+    originalTopDateTime = undefined;
+
+    bottomText = "";
+    topText = "";
+    precision = 4;
+    buttonHeight = 0;
+    buttonWidth = 0;
+    cancelButtonLeft = 0;
+    cancelButtonTop = 0;
+    okButtonLeft = 0;
+    okButtonTop = 0;
+    pageHtml =
+      '<div id="dateTimeSelectionTopBar" class="topBar" style="position:relative; z-index:1000">    <button id="dateTimeSelectionCancel" class="topBarButton" style="width:50%; z-index:1000"><img src="images/cross.svg" class="topBarImage"/><span>{#Cancel#}</span></button>    <button id="dateTimeSelectionOk" class="topBarButton" style="width:50%; z-index:1000"><img src="images/check.svg" class="topBarImage"/><span>{#Ok#}</span></button></div>';
+
     init() {
       this.topPanelHeight = OneView.core.settings.titleWidth;
     }
@@ -9305,9 +9281,6 @@ namespace OneView {
     appStateHandler = new OneView.AppStateHandler();
     dateTimeSelectionHandler = new OneView.DateTimeSelectionHandler();
 
-    constructor() {
-      console.log("core constructor");
-    }
     // dynamicallyLoadFile("css/style.css", "css", function () {});
     init() {
       this.setSizeSettings();
@@ -9322,8 +9295,8 @@ namespace OneView {
     loadDataProxy() {
       this.populateCalendars();
     }
-    redraw(a) {
-      this.hardRedraw = a;
+    redraw(hard: boolean) {
+      this.hardRedraw = hard;
       this.redrawCountdown = 1;
     }
     startDrawLoop() {
@@ -10398,7 +10371,6 @@ namespace OneView {
         this.canvasContext.restore());
     }
     debugTexts(b) {
-      console.log(b);
       if (void 0 != b) {
         var c = 20 * OneView.core.ratio,
           e;
@@ -10424,7 +10396,6 @@ namespace OneView {
       }
     }
     debugText(b) {
-      console.log(b);
       void 0 != b &&
         0 != b.length &&
         ((this.canvasContext.fillStyle = "#FF0000"),
@@ -11622,10 +11593,10 @@ namespace OneView {
             b[f].id == OneView.core.calendars[d].id &&
               (OneView.core.calendars[d].visibility = b[f].newVisibility);
     }
-    analyticsEvent (a, b) {};
-    analyticsPage (a) {};
-    analyticsValue (a, b, d, g) {};
-    analyticsTiming (a, b) {};
+    analyticsEvent(a, b) {}
+    analyticsPage(a) {}
+    analyticsValue(a, b, d, g) {}
+    analyticsTiming(a, b) {}
   }
   // (function (a) {
   //   var p = (function (d) {
