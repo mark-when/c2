@@ -468,18 +468,18 @@ namespace OneView {
       OneView.core.zopDrawArea.canvasContext.strokeStyle = f;
       OneView.core.zopDrawArea.canvasContext.stroke();
     }
-    drawCenteredText(b, c, e, f, g, d, n, l, h) {
+    drawCenteredText(text: string, c, e, f, g, d, n, l, h) {
       void 0 === h && (h = false);
       for (
         n = Math.max(
           0,
-          (f - OneView.core.zopDrawArea.measureTextWidth(b, g, l, false)) / 2
+          (f - OneView.core.zopDrawArea.measureTextWidth(text, g, l, false)) / 2
         );
-        OneView.core.zopDrawArea.measureTextWidth(b, g, l, false) > f;
+        OneView.core.zopDrawArea.measureTextWidth(text, g, l, false) > f;
 
       )
-        b = b.substring(0, b.length - 1);
-      OneView.core.drawArea.drawText(b, c + n, e, g, d, false, l, h, false);
+        text = text.substring(0, text.length - 1);
+      OneView.core.drawArea.drawText(text, c + n, e, g, d, false, l, h, false);
     }
     startNewRound() {
       this.canvasCache.startNewRound();
@@ -1088,12 +1088,15 @@ namespace OneView {
   }
 
   export class MainMenuControl {
+    nudgeBecauseMenuBeingDragged = 0;
+    menuItems = [];
+    transparency = -1;
+    animationDuration = 600;
+    lastDragDirection = 0;
+    currentMaxRight = 0;
+    movingMenuWidth = 0
+
     constructor() {
-      this.nudgeBecauseMenuBeingDragged = 0;
-      this.menuItems = [];
-      this.transparency = -1;
-      this.animationDuration = 600;
-      this.lastDragDirection = this.currentMaxRight = 0;
       this.movingMenuWidth = OneView.core.settings.titleWidth;
     }
 
@@ -1173,31 +1176,31 @@ namespace OneView {
     safeBack() {
       OneView.core.appStateHandler.safeBack(this) || this.startCloseAnimation();
     }
-    click(b, e) {
+    click(x: number, y: number) {
       500 > OneView.core.getTimeStamp() - this.showTime
         ? (this.showTime = OneView.core.getTimeStamp())
         : ((this.showTime = OneView.core.getTimeStamp()),
           this.isFullyExpanded() &&
             (this.safeBack(),
-            this.hitTest(this.menuItemLogin, b, e)
+            this.hitTest(this.menuItemLogin, x, y)
               ? this.menuItemLogin_Click()
-              : this.hitTest(this.menuItemReload, b, e)
+              : this.hitTest(this.menuItemReload, x, y)
               ? this.menuItemReload_Click()
-              : this.hitTest(this.menuItemLogout, b, e)
+              : this.hitTest(this.menuItemLogout, x, y)
               ? this.menuItemLogout_Click()
-              : this.hitTest(this.menuItemFake, b, e)
+              : this.hitTest(this.menuItemFake, x, y)
               ? this.menuItemFake_Click()
-              : this.hitTest(this.menuItemCalendars, b, e)
+              : this.hitTest(this.menuItemCalendars, x, y)
               ? this.menuItemCalendars_Click()
-              : this.hitTest(this.menuItemShop, b, e)
+              : this.hitTest(this.menuItemShop, x, y)
               ? this.menuItemShop_Click()
-              : this.hitTest(this.menuItemSettings, b, e)
+              : this.hitTest(this.menuItemSettings, x, y)
               ? this.menuItemSettings_Click()
-              : this.hitTest(this.menuItemAbout, b, e)
+              : this.hitTest(this.menuItemAbout, x, y)
               ? this.menuItemAbout_Click()
-              : this.hitTest(this.menuItemRate, b, e)
+              : this.hitTest(this.menuItemRate, x, y)
               ? this.menuItemRate_Click()
-              : this.hitTest(this.menuItemFeedback, b, e) &&
+              : this.hitTest(this.menuItemFeedback, x, y) &&
                 this.menuItemFeedback_Click()));
     }
     hide() {
@@ -1397,13 +1400,16 @@ namespace OneView {
       }
       OneView.core.zopDrawArea.canvasContext.globalAlpha = 1;
     }
-    hitMenuButton(b, e) {
-      return 0 < b &&
-        b < OneView.core.settings.titleWidth &&
-        0 < e &&
-        e < OneView.core.settings.titleWidth
-        ? true
-        : false;
+    hitMenuButton(x: number, y: number) {
+      if (
+        0 < x &&
+        x < OneView.core.settings.titleWidth &&
+        0 < y &&
+        y < OneView.core.settings.titleWidth
+      ) {
+        return true;
+      }
+      return false;
     }
     redraw() {
       this.setSizes();
@@ -1512,12 +1518,12 @@ namespace OneView {
         OneView.core.settings.menuIconHeight
       );
     }
-    hitTest(a, b, f) {
+    hitTest(a, x: number, y: number) {
       return -1 < this.menuItems.indexOf(a) &&
-        b > this.menuLeft &&
-        b < this.menuLeft + this.expandedMenuWidth &&
-        f > this.menuTop + a.top &&
-        f < this.menuTop + a.bottom
+        x > this.menuLeft &&
+        x < this.menuLeft + this.expandedMenuWidth &&
+        y > this.menuTop + a.top &&
+        y < this.menuTop + a.bottom
         ? true
         : false;
     }
@@ -9126,12 +9132,12 @@ namespace OneView {
     triangleColorStr = "rgba( 1, 81, 142, ";
     triangleTextNudgeY = 0;
     triangleTextNudgeX = 0;
-    titleBarFont = "RobotoL";
+    titleBarFont = "system-ui";
     titleBarFontSize = 16;
-    titleBarFontBold = "RobotoB";
-    textFont = "Roboto";
-    textFontBold = "RobotoB";
-    textFontThin = "RobotoL";
+    titleBarFontBold = "system-ui";
+    textFont = "system-ui";
+    textFontBold = "system-ui";
+    textFontThin = "system-ui";
     badgeColorIsTagTextColor = false;
     addButtonWidthFactor = 1.1;
   }
