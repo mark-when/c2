@@ -10377,7 +10377,7 @@ namespace OneView {
       isThinner: boolean,
       isBold: boolean
     ) {
-      if (this.delayedDraw)
+      if (this.delayedDraw) {
         return (
           this.drawInfos.push(
             new TextDrawer(
@@ -10390,14 +10390,15 @@ namespace OneView {
               backgroundColor,
               useShadow,
               maxWidth,
-              isThinner: boolean,
+              isThinner,
               isBold
             )
           ),
           text
         );
+      }
       topPixel = Math.floor(topPixel + topPixelShift);
-      OneView.core.drawArea.setFont(textHeight, false, isThinner: boolean, isBold);
+      OneView.core.drawArea.setFont(textHeight, false, isThinner, isBold);
       text = text.substring(
         0,
         this.howManyCharactersFit(text, textHeight, maxWidth, true)
@@ -10410,7 +10411,7 @@ namespace OneView {
         color,
         false,
         false,
-        isThinner: boolean,
+        isThinner,
         isBold
       );
       return text;
@@ -10506,7 +10507,8 @@ namespace OneView {
   }
 
   export class TextDrawer {
-    constructor(text: string,
+    constructor(
+      text: string,
       left: number,
       topPixel: number,
       topPixelShift: number,
@@ -10516,13 +10518,14 @@ namespace OneView {
       useShadow: boolean,
       maxWidth: number,
       isThinner: boolean,
-      isBold: boolean) {
+      isBold: boolean
+    ) {
       this.text = text;
       this.left = left;
       this.topPixel = topPixel;
       this.topPixelShift = topPixelShift;
       this.textHeight = textHeight;
-      this.color = string;
+      this.color = color;
       this.bgColor = backgroundColor;
       this.useShadow = useShadow;
       this.maxWidth = maxWidth;
