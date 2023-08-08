@@ -1094,7 +1094,7 @@ namespace OneView {
     animationDuration = 600;
     lastDragDirection = 0;
     currentMaxRight = 0;
-    movingMenuWidth = 0
+    movingMenuWidth = 0;
 
     constructor() {
       this.movingMenuWidth = OneView.core.settings.titleWidth;
@@ -10364,17 +10364,56 @@ namespace OneView {
       }
       this.drawInfos = [];
     }
-    drawText(c, e, d, n, l, h, k, p, q, r, v) {
+    drawText(
+      text: string,
+      left: number,
+      topPixel: number,
+      topPixelShift: number,
+      textHeight: number,
+      color: string,
+      backgroundColor: string,
+      useShadow: boolean,
+      maxWidth: number,
+      isThinner: boolean,
+      isBold: boolean
+    ) {
       if (this.delayedDraw)
         return (
-          this.drawInfos.push(new TextDrawer(c, e, d, n, l, h, k, p, q, r, v)),
-          c
+          this.drawInfos.push(
+            new TextDrawer(
+              text,
+              left,
+              topPixel,
+              topPixelShift,
+              textHeight,
+              color,
+              backgroundColor,
+              useShadow,
+              maxWidth,
+              isThinner: boolean,
+              isBold
+            )
+          ),
+          text
         );
-      d = Math.floor(d + n);
-      OneView.core.drawArea.setFont(l, false, r, v);
-      c = c.substring(0, this.howManyCharactersFit(c, l, q, true));
-      OneView.core.drawArea.drawText(c, e, d, l, h, false, false, r, v);
-      return c;
+      topPixel = Math.floor(topPixel + topPixelShift);
+      OneView.core.drawArea.setFont(textHeight, false, isThinner: boolean, isBold);
+      text = text.substring(
+        0,
+        this.howManyCharactersFit(text, textHeight, maxWidth, true)
+      );
+      OneView.core.drawArea.drawText(
+        text,
+        left,
+        topPixel,
+        textHeight,
+        color,
+        false,
+        false,
+        isThinner: boolean,
+        isBold
+      );
+      return text;
     }
     drawVerticalTitle(b, c, e, d, l, h, k, p, q) {
       OneView.core.drawArea.setFont(l, p, false, q);
@@ -10467,18 +10506,28 @@ namespace OneView {
   }
 
   export class TextDrawer {
-    constructor(a, b, c, d, n, l, h, k, p, q, r) {
-      this.text = a;
-      this.left = b;
-      this.topPixel = c;
-      this.topPixelShift = d;
-      this.textHeight = n;
-      this.color = l;
-      this.bgColor = h;
-      this.useShadow = k;
-      this.maxWidth = p;
-      this.isThinner = q;
-      this.isBold = r;
+    constructor(text: string,
+      left: number,
+      topPixel: number,
+      topPixelShift: number,
+      textHeight: number,
+      color: string,
+      backgroundColor: string,
+      useShadow: boolean,
+      maxWidth: number,
+      isThinner: boolean,
+      isBold: boolean) {
+      this.text = text;
+      this.left = left;
+      this.topPixel = topPixel;
+      this.topPixelShift = topPixelShift;
+      this.textHeight = textHeight;
+      this.color = string;
+      this.bgColor = backgroundColor;
+      this.useShadow = useShadow;
+      this.maxWidth = maxWidth;
+      this.isThinner = isThinner;
+      this.isBold = isBold;
     }
   }
 
