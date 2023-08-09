@@ -8023,50 +8023,70 @@ export namespace OneView {
       OneView.core.redraw(false);
       return false;
     }
-    mouseMove(b) {
-      b.preventDefault();
-      if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
-      else {
-        var c = b.pageY * OneView.core.ratio * OneView.core.domRatio,
-          e = b.pageX * OneView.core.ratio * OneView.core.domRatio,
-          d =
-            (b.pageY - OneView.core.domHandler.screenTopForDOM) *
-            OneView.core.ratio *
-            OneView.core.domRatio;
-        b =
-          (b.pageX - OneView.core.domHandler.screenLeftForDOM) *
-          OneView.core.ratio *
-          OneView.core.domRatio;
-        if (this.mouseLeftDown) {
-          this.longPressStartX != e &&
-            this.longPressStartY !== c &&
-            (this.canBeAClick = false);
-          if (OneView.core.appStateHandler.isPopupEditRecurringMenuShowing)
-            return;
-          this.mouseWasDragged += 1;
-          OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
-            this.testIfContinueDraggingMarker(c, 0);
-          !this.canBeAClick && this.startedInTitleArea
-            ? OneView.core.mainMenuControl.continueDragging(b, d)
-            : OneView.core.appStateHandler.isAddButtonBeingDragged
-            ? OneView.core.addButtonControl.continueDragging(b, d)
-            : OneView.core.appStateHandler.isDraggingTopMarker ||
-              OneView.core.appStateHandler.isDraggingBottomMarker ||
-              OneView.core.appStateHandler.isMainMenuShowing ||
-              OneView.core.appStateHandler.isPopupMainMenuShowing ||
-              OneView.core.appStateHandler.isAddButtonBeingDragged ||
-              (OneView.core.zopHandler.continueScroll(c),
-              OneView.core.drawAreaEffects.prepareAutoScroll(c));
-          OneView.core.redraw(false);
-        }
-        !this.mouseRightDown ||
-          OneView.core.appStateHandler.isMainMenuShowing ||
-          OneView.core.appStateHandler.isPopupMainMenuShowing ||
-          OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-          (OneView.core.zopHandler.continueZoom(this.mouseZoomY, c),
-          OneView.core.redraw(false));
-        return false;
+    mouseMove(event: MouseEvent) {
+      event.preventDefault();
+
+      if (OneView.core.touchEnabledDevice) {
+        this.removeAllMouseEvents();
+        return;
       }
+
+      const pageY = event.pageY * OneView.core.ratio * OneView.core.domRatio;
+      const pageX = event.pageX * OneView.core.ratio * OneView.core.domRatio;
+
+      const y =
+        (event.pageY - OneView.core.domHandler.screenTopForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+      const x =
+        (event.pageX - OneView.core.domHandler.screenLeftForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+
+      if (this.mouseLeftDown) {
+        if (this.longPressStartX !== pageX && this.longPressStartY !== pageY) {
+          this.canBeAClick = false;
+        }
+
+        if (OneView.core.appStateHandler.isPopupEditRecurringMenuShowing) {
+          return;
+        }
+
+        this.mouseWasDragged += 1;
+
+        if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+          this.testIfContinueDraggingMarker(pageY, 0);
+        }
+
+        if (!this.canBeAClick && this.startedInTitleArea) {
+          OneView.core.mainMenuControl.continueDragging(x, y);
+        } else if (OneView.core.appStateHandler.isAddButtonBeingDragged) {
+          OneView.core.addButtonControl.continueDragging(x, y);
+        } else if (
+          !OneView.core.appStateHandler.isDraggingTopMarker &&
+          !OneView.core.appStateHandler.isDraggingBottomMarker &&
+          !OneView.core.appStateHandler.isMainMenuShowing &&
+          !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+          !OneView.core.appStateHandler.isAddButtonBeingDragged
+        ) {
+          OneView.core.zopHandler.continueScroll(pageY);
+          OneView.core.drawAreaEffects.prepareAutoScroll(pageY);
+        }
+
+        OneView.core.redraw(false);
+      }
+
+      if (
+        this.mouseRightDown &&
+        !OneView.core.appStateHandler.isMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupEditRecurringMenuShowing
+      ) {
+        OneView.core.zopHandler.continueZoom(this.mouseZoomY, pageY);
+        OneView.core.redraw(false);
+      }
+
+      return false;
     }
     touchEnd(b) {
       b.preventDefault();
@@ -8105,8 +8125,8 @@ export namespace OneView {
       OneView.core.redraw(false);
       return false;
     }
-    mouseUp(b) {
-      b.preventDefault();
+    mouseUp(event: MouseEvent) {
+      event.preventDefault();
       if (OneView.core.touchEnabledDevice) {
         this.removeAllMouseEvents();
       } else {
@@ -8132,16 +8152,16 @@ export namespace OneView {
           ) {
             this.mouseWasDragged = 0;
             OneView.core.drawAreaEffects.prepareAutoScroll(
-              b.pageY * OneView.core.ratio * OneView.core.domRatio,
+              event.pageY * OneView.core.ratio * OneView.core.domRatio,
               200
             );
             OneView.core.drawAreaEffects.startAutoScroll(
-              b.pageY * OneView.core.ratio * OneView.core.domRatio
+              event.pageY * OneView.core.ratio * OneView.core.domRatio
             );
           } else {
             this.click(
-              b.pageX * OneView.core.ratio * OneView.core.domRatio,
-              b.pageY * OneView.core.ratio * OneView.core.domRatio
+              event.pageX * OneView.core.ratio * OneView.core.domRatio,
+              event.pageY * OneView.core.ratio * OneView.core.domRatio
             );
           }
           if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
