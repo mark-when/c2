@@ -1428,17 +1428,17 @@ export namespace OneView {
           this.logoSizeGrowing
         );
         this.menuTop += this.logoSize;
-        OneView.core.drawArea.drawCenteredText(
-          "OneView",
-          this.menuLeft,
-          this.menuTop,
-          this.expandedMenuWidth,
-          this.logoTextSize,
-          this.textColor,
-          false,
-          true,
-          true
-        );
+        // OneView.core.drawArea.drawCenteredText(
+        //   "OneView",
+        //   this.menuLeft,
+        //   this.menuTop,
+        //   this.expandedMenuWidth,
+        //   this.logoTextSize,
+        //   this.textColor,
+        //   false,
+        //   true,
+        //   true
+        // );
         this.menuTop += this.logoTextSize;
         OneView.core.drawArea.drawCenteredText(
           "Calendar",
@@ -5922,13 +5922,15 @@ export namespace OneView {
     getOwningCalendar(b) {
       return OneView.core.getCalendar(b.calendarId);
     }
-    gradeCalendarEvents(a) {
-      for (var b = 0; b < a.length; b++) this.gradeCalendarEvent(a[b]);
+    gradeCalendarEvents(events: CalendarEventObject[]) {
+      for (var b = 0; b < events.length; b++)
+        this.gradeCalendarEvent(events[b]);
     }
-    gradeCalendarEvent(a) {
-      a.grade =
-        100 * (a.endZOP - a.startZOP) + this.sumLettersInString(a.summary);
-      a.isGraded = true;
+    gradeCalendarEvent(event: CalendarEventObject) {
+      event.grade =
+        100 * (event.endZOP - event.startZOP) +
+        this.sumLettersInString(event.summary);
+      event.isGraded = true;
     }
     sumLettersInString(a) {
       var b = 0,
@@ -8614,6 +8616,16 @@ export namespace OneView {
   }
 
   export class CalendarEventObject {
+    summary: string;
+    description: string;
+    location: string;
+    startDateTime: Date;
+    endDateTime: Date;
+    isGraded = false;
+    grade: number = 0;
+    calendarId: string;
+    eventId: string;
+
     constructor(
       summary,
       description,
@@ -8648,7 +8660,7 @@ export namespace OneView {
     id: string;
     name: string;
     defaultReminders: unknown;
-    colorId: string;
+    colorId: number;
     visibility: unknown;
     canEditCalendar: boolean;
     canEditCalendarEvents: boolean;
@@ -8658,7 +8670,7 @@ export namespace OneView {
       id: string,
       name: string,
       defaultReminders,
-      colorId: string,
+      colorId: number,
       visibility,
       canEditCalendar: boolean,
       canEditCalendarEvents: boolean
@@ -8795,7 +8807,7 @@ export namespace OneView {
         (this.detailsArePopulated = false));
       b === OneView.CalendarDateObjectType.Title &&
         ((this.endDateTime = e),
-        (this.longText = "OneView Calendar"),
+        (this.longText = ""),
         (this.detailsArePopulated = false));
       this.endZOP = OneView.core.zopHandler.dateToZOP(this.endDateTime);
     }
@@ -9180,7 +9192,7 @@ export namespace OneView {
     colorBackground = "#0f162a";
     colorWhite = (this.colorLight = "#FFFFFF");
     colorRed = "#333333";
-    colorMarker = "#808cf8";
+    colorMarker = "#e0e7ff";
     colorBlue = "#2890D1";
     colorAddButton = "#333333";
     colorDim = "rgba(0; 0; 0; 0.5)";
@@ -9285,7 +9297,7 @@ export namespace OneView {
   }
 
   export class Core {
-    calendars = [];
+    calendars: CalendarObject[] = [];
     debugtext = "";
     touchEnabledDevice = false;
     charCodeReload = "reload";
@@ -11060,17 +11072,17 @@ export namespace OneView {
       OneView.core.getCalendar("My").allEventsAreFullDay = false;
       OneView.core.getCalendar("Other").allEventsAreFullDay = false;
       this.calendarEvents = [];
-      var e = moment().startOf("week"),
-        d = e.clone().add(1, "weeks").add(-28, "days"),
+      var startOfWeek = moment().startOf("week"),
+        monthPrior = startOfWeek.clone().add(1, "weeks").add(-28, "days"),
         g,
         m;
       for (b = 0; 30 > b; b++) {
-        (g = d
+        (g = monthPrior
           .clone()
           .add(-80 + 21 * b, "days")
           .add(17, "hours")
           .toDate()),
-          (m = d
+          (m = monthPrior
             .clone()
             .add(-80 + 21 * b, "days")
             .add(19.5, "hours")
@@ -11088,12 +11100,12 @@ export namespace OneView {
       }
       for (b = 0; 20 > b; b++) {
         3 === b && b++,
-          (g = d
+          (g = monthPrior
             .clone()
             .add(-100 + 28 * b, "days")
             .add(18, "hours")
             .toDate()),
-          (m = d
+          (m = monthPrior
             .clone()
             .add(-100 + 28 * b, "days")
             .add(22, "hours")
@@ -11217,8 +11229,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-22, "days").toDate();
-      m = e.clone().add(1, "weeks").add(10, "days").toDate();
+      g = startOfWeek.clone().add(1, "weeks").add(-22, "days").toDate();
+      m = startOfWeek.clone().add(1, "weeks").add(10, "days").toDate();
       g = new OneView.CalendarEventObject(
         "On diet",
         "Calorie drought",
@@ -11229,8 +11241,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-63, "weeks").add(-22, "days").toDate();
-      m = e.clone().add(-54, "weeks").add(10, "days").toDate();
+      g = startOfWeek.clone().add(-63, "weeks").add(-22, "days").toDate();
+      m = startOfWeek.clone().add(-54, "weeks").add(10, "days").toDate();
       g = new OneView.CalendarEventObject(
         "On diet",
         "Calorie drought",
@@ -11241,8 +11253,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(13, "days").toDate();
-      m = e.clone().add(1, "weeks").add(18, "days").toDate();
+      g = startOfWeek.clone().add(1, "weeks").add(13, "days").toDate();
+      m = startOfWeek.clone().add(1, "weeks").add(18, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Rent a car",
         "Abis",
@@ -11255,12 +11267,12 @@ export namespace OneView {
       this.calendarEvents.push(g);
       for (b = 0; 40 > b; b++)
         5 === b && b++,
-          (g = d
+          (g = monthPrior
             .clone()
             .add(-120 + 14 * b, "days")
             .add(17, "hours")
             .toDate()),
-          (m = d
+          (m = monthPrior
             .clone()
             .add(-120 + 14 * b, "days")
             .add(20, "hours")
@@ -11277,12 +11289,12 @@ export namespace OneView {
           this.calendarEvents.push(g);
       for (b = 0; 60 > b; b++)
         5 === b && b++,
-          (g = d
+          (g = monthPrior
             .clone()
             .add(-127 + 14 * b, "days")
             .add(7, "hours")
             .toDate()),
-          (m = d
+          (m = monthPrior
             .clone()
             .add(-127 + 14 * b, "days")
             .add(8, "hours")
@@ -11297,8 +11309,8 @@ export namespace OneView {
             this.calendarEvents.length.toString()
           )),
           this.calendarEvents.push(g);
-      g = e.clone().add(-52, "weeks").add(1, "days").toDate();
-      m = e.clone().add(-52, "weeks").add(31, "days").toDate();
+      g = startOfWeek.clone().add(-52, "weeks").add(1, "days").toDate();
+      m = startOfWeek.clone().add(-52, "weeks").add(31, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Family holiday",
         "Double check the hotel booking",
@@ -11309,8 +11321,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(10, "days").toDate();
-      m = e.clone().add(1, "weeks").add(23, "days").toDate();
+      g = startOfWeek.clone().add(1, "weeks").add(10, "days").toDate();
+      m = startOfWeek.clone().add(1, "weeks").add(23, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Family holiday",
         "Double check the hotel booking",
@@ -11321,8 +11333,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(30, "weeks").toDate();
-      m = e.clone().add(40, "weeks").toDate();
+      g = startOfWeek.clone().add(30, "weeks").toDate();
+      m = startOfWeek.clone().add(40, "weeks").toDate();
       g = new OneView.CalendarEventObject(
         "Course",
         "Double check the hotel booking",
@@ -11333,8 +11345,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-100, "weeks").toDate();
-      m = e.clone().add(-28, "weeks").toDate();
+      g = startOfWeek.clone().add(-100, "weeks").toDate();
+      m = startOfWeek.clone().add(-28, "weeks").toDate();
       g = new OneView.CalendarEventObject(
         "Previous job",
         "Double check the hotel booking",
@@ -11345,8 +11357,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-27, "weeks").toDate();
-      m = e.clone().add(-18, "weeks").toDate();
+      g = startOfWeek.clone().add(-27, "weeks").toDate();
+      m = startOfWeek.clone().add(-18, "weeks").toDate();
       g = new OneView.CalendarEventObject(
         "Intro period",
         "Double check the hotel booking",
@@ -11357,8 +11369,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-17, "weeks").toDate();
-      m = e.clone().add(-14, "weeks").toDate();
+      g = startOfWeek.clone().add(-17, "weeks").toDate();
+      m = startOfWeek.clone().add(-14, "weeks").toDate();
       g = new OneView.CalendarEventObject(
         "IT Course",
         "Double check the hotel booking",
@@ -11369,8 +11381,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-13, "weeks").toDate();
-      m = e.clone().add(-8, "weeks").toDate();
+      g = startOfWeek.clone().add(-13, "weeks").toDate();
+      m = startOfWeek.clone().add(-8, "weeks").toDate();
       g = new OneView.CalendarEventObject(
         "Smile project",
         "Double check the hotel booking",
@@ -11381,8 +11393,18 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(5, "days").add(18, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(8, "days").add(22, "hours").toDate();
+      g = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(5, "days")
+        .add(18, "hours")
+        .toDate();
+      m = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(8, "days")
+        .add(22, "hours")
+        .toDate();
       g = new OneView.CalendarEventObject(
         "Visit my parents",
         "",
@@ -11393,8 +11415,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(14, "days").toDate();
-      m = e.clone().add(1, "weeks").add(16, "days").toDate();
+      g = startOfWeek.clone().add(1, "weeks").add(14, "days").toDate();
+      m = startOfWeek.clone().add(1, "weeks").add(16, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Trip to mountains",
         "Bring tent",
@@ -11406,13 +11428,13 @@ export namespace OneView {
       );
       this.calendarEvents.push(g);
       for (b = 0; 30 > b; b++)
-        (g = e
+        (g = startOfWeek
           .clone()
           .add(-15, "weeks")
           .add(2 + 7 * b - 21, "days")
           .add(9, "hours")
           .toDate()),
-          (m = e
+          (m = startOfWeek
             .clone()
             .add(-15, "weeks")
             .add(2 + 7 * b - 21, "days")
@@ -11430,13 +11452,13 @@ export namespace OneView {
           )),
           this.calendarEvents.push(g);
       for (b = 0; 15 > b; b++)
-        (g = e
+        (g = startOfWeek
           .clone()
           .add(1, "weeks")
           .add(4 + 7 * b - 21, "days")
           .add(9, "hours")
           .toDate()),
-          (m = e
+          (m = startOfWeek
             .clone()
             .add(1, "weeks")
             .add(4 + 7 * b - 21, "days")
@@ -11453,8 +11475,8 @@ export namespace OneView {
             this.calendarEvents.length.toString()
           )),
           this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-7, "days").toDate();
-      m = e.clone().add(1, "weeks").add(0, "days").toDate();
+      g = startOfWeek.clone().add(1, "weeks").add(-7, "days").toDate();
+      m = startOfWeek.clone().add(1, "weeks").add(0, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Annual wrap-up",
         "Close all ongoing cases",
@@ -11465,8 +11487,8 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(-23, "weeks").add(-7, "days").toDate();
-      m = e.clone().add(-23, "weeks").add(0, "days").toDate();
+      g = startOfWeek.clone().add(-23, "weeks").add(-7, "days").toDate();
+      m = startOfWeek.clone().add(-23, "weeks").add(0, "days").toDate();
       g = new OneView.CalendarEventObject(
         "Annual wrap-up",
         "Close all ongoing cases",
@@ -11479,13 +11501,13 @@ export namespace OneView {
       this.calendarEvents.push(g);
       for (b = 0; 10 > b; b++)
         7 === b && (b += 2),
-          (g = d
+          (g = monthPrior
             .clone()
             .add(-3 + 7 * b, "days")
             .add(7, "hours")
             .add(30, "minutes")
             .toDate()),
-          (m = d
+          (m = monthPrior
             .clone()
             .add(-3 + 7 * b, "days")
             .add(10, "hours")
@@ -11500,8 +11522,18 @@ export namespace OneView {
             this.calendarEvents.length.toString()
           )),
           this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(-4, "days").add(11, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(-4, "days").add(13, "hours").toDate();
+      g = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(-4, "days")
+        .add(11, "hours")
+        .toDate();
+      m = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(-4, "days")
+        .add(13, "hours")
+        .toDate();
       g = new OneView.CalendarEventObject(
         "Meeting with R.P",
         "Your turn to take the bill",
@@ -11512,8 +11544,18 @@ export namespace OneView {
         this.calendarEvents.length.toString()
       );
       this.calendarEvents.push(g);
-      g = e.clone().add(1, "weeks").add(3, "days").add(13, "hours").toDate();
-      m = e.clone().add(1, "weeks").add(3, "days").add(16, "hours").toDate();
+      g = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(3, "days")
+        .add(13, "hours")
+        .toDate();
+      m = startOfWeek
+        .clone()
+        .add(1, "weeks")
+        .add(3, "days")
+        .add(16, "hours")
+        .toDate();
       g = new OneView.CalendarEventObject(
         "Meeting with R.P",
         "Bring the files",
