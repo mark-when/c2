@@ -1,11 +1,7 @@
 import { OneView } from "./oneview/oneview";
 import { useLpc } from "@markwhen/view-client";
 import { isEventNode, walk2 } from "@markwhen/parser/lib/Noder";
-import { EventDescription } from "@markwhen/parser/lib/Types";
 
-window.populateCalendars = function () {
-  OneView.core.populateCalendars();
-};
 function bob() {
   OneView.core = new OneView.Core();
   OneView.core.init();
@@ -18,7 +14,7 @@ function bob() {
         isDark = !!appState.isDark;
         OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
         OneView.core.settings.reloadTheme();
-        OneView.core.reloadAllCalendarData();
+        OneView.core.redraw(false)
       }
     },
     markwhenState(markwhenState) {

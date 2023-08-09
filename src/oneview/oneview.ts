@@ -9117,8 +9117,8 @@ export namespace OneView {
     colorBlack = "#000000";
     colorDark = "#233142";
     colorBigDateDividerStr = "rgba( 173, 176, 181, ";
-    colorTitleBackground = "#6b7281";
-    colorTitleText = "#FFFFFF";
+    colorTitleBackground = "#ffffff";
+    colorTitleText = "#334155";
     colorGrayText = "#454545";
     colorDarkText = "#7B838E";
     colorHorizontalTitle = "#4B5056";
@@ -9179,7 +9179,7 @@ export namespace OneView {
     colorBlack = "#000000";
     colorDark = "#333333";
     colorBigDateDividerStr = "rgba( 133, 136, 131, ";
-    colorTitleBackground = "#1e2a3b";
+    colorTitleBackground = "#0e162a";
     colorTitleText = "#95a2b8";
     colorGrayText = "#808080";
     colorDarkText = "#95a3b8";
