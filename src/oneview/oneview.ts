@@ -8280,7 +8280,7 @@ export namespace OneView {
         ) -
         (bottomZop + topZop) / 2;
       // event = 0 < delta ? 0.5 * event : -0.5 * event;
-      delta *= 0.015 * (bottomZop - topZop);
+      delta *= 0.005 * (bottomZop - topZop);
       topZop = topZop + delta;
       bottomZop = bottomZop - delta;
       OneView.core.drawAreaEffects.stopAllEffects();
