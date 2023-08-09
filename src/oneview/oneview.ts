@@ -7920,52 +7920,80 @@ export namespace OneView {
     getTouchY(b) {
       return b.pageY - OneView.core.domHandler.screenTopForDOM;
     }
-    mouseDown(b) {
-      b.preventDefault();
+    mouseDown(event: MouseEvent) {
+      event.preventDefault();
+
       OneView.core.firstTouchMade = true;
-      if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
-      else {
-        OneView.core.drawAreaEffects.stopAllEffects();
-        OneView.core.preloadAllImages();
-        this.mouseWasDragged = 0;
-        var c = b.pageY * OneView.core.ratio * OneView.core.domRatio,
-          e = b.pageX * OneView.core.ratio * OneView.core.domRatio,
-          d =
-            (b.pageY - OneView.core.domHandler.screenTopForDOM) *
-            OneView.core.ratio *
-            OneView.core.domRatio,
-          g =
-            (b.pageX - OneView.core.domHandler.screenLeftForDOM) *
-            OneView.core.ratio *
-            OneView.core.domRatio;
-        this.startedInTitleArea = OneView.core.mainMenuControl.startDragging(
-          g,
-          d
-        );
-        if (0 === b.button) {
-          this.canBeAClick = this.mouseLeftDown = true;
-          this.longPressStartX = e;
-          this.longPressStartY = c;
-          this.currentPressStartedTime = OneView.core.getTimeStamp();
-          OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
-            this.testIfStartDraggingMarker(e, c, 0);
-          if (OneView.core.addButtonControl.startDragging(g, d)) return;
-          OneView.core.appStateHandler.isDraggingTopMarker ||
-            OneView.core.appStateHandler.isDraggingBottomMarker ||
-            OneView.core.appStateHandler.isMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-            OneView.core.zopHandler.startScroll(c);
-        } else
-          OneView.core.appStateHandler.isMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-            ((this.mouseRightDown = true),
-            (this.mouseZoomY = c - 500),
-            OneView.core.zopHandler.startZoom(this.mouseZoomY, c));
-        OneView.core.redraw(false);
-        return false;
+
+      if (OneView.core.touchEnabledDevice) {
+        this.removeAllMouseEvents();
+        return;
       }
+
+      OneView.core.drawAreaEffects.stopAllEffects();
+      OneView.core.preloadAllImages();
+
+      this.mouseWasDragged = 0;
+
+      const pageY = event.pageY * OneView.core.ratio * OneView.core.domRatio;
+      const pageX = event.pageX * OneView.core.ratio * OneView.core.domRatio;
+
+      const y =
+        (event.pageY - OneView.core.domHandler.screenTopForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+
+      const x =
+        (event.pageX - OneView.core.domHandler.screenLeftForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+
+      this.startedInTitleArea = OneView.core.mainMenuControl.startDragging(
+        x,
+        y
+      );
+
+      if (event.button === 0) {
+        this.canBeAClick = true;
+        this.mouseLeftDown = true;
+
+        this.longPressStartX = pageX;
+        this.longPressStartY = pageY;
+
+        this.currentPressStartedTime = OneView.core.getTimeStamp();
+
+        if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+          this.testIfStartDraggingMarker(pageX, pageY, 0);
+        }
+
+        if (OneView.core.addButtonControl.startDragging(x, y)) {
+          return;
+        }
+
+        if (
+          !OneView.core.appStateHandler.isDraggingTopMarker &&
+          !OneView.core.appStateHandler.isDraggingBottomMarker &&
+          !OneView.core.appStateHandler.isMainMenuShowing &&
+          !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+          !OneView.core.appStateHandler.isPopupEditRecurringMenuShowing
+        ) {
+          OneView.core.zopHandler.startScroll(pageY);
+        }
+      } else {
+        if (
+          !OneView.core.appStateHandler.isMainMenuShowing &&
+          !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+          !OneView.core.appStateHandler.isPopupEditRecurringMenuShowing
+        ) {
+          this.mouseRightDown = true;
+          this.mouseZoomY = pageY - 500;
+          OneView.core.zopHandler.startZoom(this.mouseZoomY, pageY);
+        }
+      }
+
+      OneView.core.redraw(false);
+
+      return false;
     }
     touchMove(b) {
       b.preventDefault();
