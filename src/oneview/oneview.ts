@@ -500,10 +500,22 @@ export namespace OneView {
     azGoalBottomZOP: any;
     speedModifier: any;
     megaSlowZoom: any;
+    azTopZOPSpeed = 0;
+    azBottomZOPSpeed = 0;
+    azTopZOPSpeed_Linear = 0;
+    azBottomZOPSpeed_Linear = 0;
+    azLastZoomTime = 0;
+    azRunning = false;
+    azCallBack: () => void = () => {};
 
-    startAutoZoom(b, c, e, f) {
-      this.azGoalTopZOP = b;
-      this.azGoalBottomZOP = c;
+    startAutoZoom(
+      azGoalTopZOP: number,
+      azGoalBottomZOP: number,
+      e,
+      callback: () => void
+    ) {
+      this.azGoalTopZOP = azGoalTopZOP;
+      this.azGoalBottomZOP = azGoalBottomZOP;
       this.speedModifier = (this.megaSlowZoom = e) ? 4e6 : 6e3;
       this.azTopZOPSpeed = this.getAzTopZopSpeed();
       this.azBottomZOPSpeed = this.getAzBottomZopSpeed();
@@ -517,7 +529,7 @@ export namespace OneView {
           : this.azBottomZOPSpeed / 20;
       this.azLastZoomTime = OneView.core.getTimeStamp();
       this.azRunning = true;
-      this.azCallBack = f;
+      this.azCallBack = callback;
       OneView.core.redraw(false);
     }
     runAutoZoom() {
@@ -8206,40 +8218,37 @@ export namespace OneView {
   }
 
   export class ZopHandler {
-    constructor() {
-      this.currentDelta = 0;
-      this.currentZoom = 1;
-      this.absoluteMinZoom = 0.05;
-      this.absoluteMaxZoom = 9e3;
-      this.zopSizeOf5Minutes =
-        this.zopSizeOfHour =
-        this.zopSizeOfDay =
-        this.zopSizeOfWeek =
-        this.zopSizeOfMonth =
-        this.zopSizeOfYear =
-        this.originalZOP2 =
-        this.originalZOP =
-        this.currentYPixel2 =
-        this.currentYPixel =
-        this.originalYPixel2 =
-        this.originalYPixel =
-        this.originalZoom =
-        this.originalDelta =
-        this.absoluteMaxZOP =
-        this.absoluteMinZOP =
-          0;
-      this.maxScrollSpeed = 3;
-      this.rightPixel =
-        this.leftPixel =
-        this.bottomPixel =
-        this.topPixel =
-        this.extendedBottomZOP =
-        this.extendedTopZOP =
-        this.bottomZOP =
-        this.topZOP =
-          0;
-      this.scrolling = false;
-    }
+    currentDelta = 0;
+    currentZoom = 1;
+    absoluteMinZoom = 0.05;
+    absoluteMaxZoom = 9e3;
+    zopSizeOf5Minutes = 0;
+    zopSizeOfHour = 0;
+    zopSizeOfDay = 0;
+    zopSizeOfWeek = 0;
+    zopSizeOfMonth = 0;
+    zopSizeOfYear = 0;
+    originalZOP2 = 0;
+    originalZOP = 0;
+    currentYPixel2 = 0;
+    currentYPixel = 0;
+    originalYPixel2 = 0;
+    originalYPixel = 0;
+    originalZoom = 0;
+    originalDelta = 0;
+    absoluteMaxZOP = 0;
+    absoluteMinZOP = 0;
+    maxScrollSpeed = 3;
+    rightPixel = 0;
+    leftPixel = 0;
+    bottomPixel = 0;
+    topPixel = 0;
+    extendedBottomZOP = 0;
+    extendedTopZOP = 0;
+    bottomZOP = 0;
+    topZOP = 0;
+    scrolling = false;
+
     setAbsoluteMinMax(a, c) {
       this.absoluteMinZOP = a;
       this.absoluteMaxZOP = c;
@@ -8919,13 +8928,13 @@ export namespace OneView {
     zoom = (this.menuButtonBottom = this.badgesLeft = 0);
     allowWeekNumber = true;
     lineThickness = 2;
+    themes = new OneView.Dictionary()
 
     constructor(commonUserSettings: commonUserSettings) {
       this.reloadThemesSettings(commonUserSettings);
     }
 
     reloadThemesSettings(commonUserSettings: CommonUserSettings) {
-      this.themes = new OneView.Dictionary();
       this.themes.add("0", new FreeTheme());
       commonUserSettings.licenceDarkTheme &&
         this.themes.add("3", new DarkTheme());
