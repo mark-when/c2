@@ -8215,21 +8215,16 @@ export namespace OneView {
     mouseScroll(event: WheelEvent) {
       event.preventDefault();
       if (!event.ctrlKey) {
-        OneView.core.drawAreaEffects.prepareAutoScroll(
-          event.pageY * OneView.core.ratio * OneView.core.domRatio,
-          200
-        );
-        OneView.core.drawAreaEffects.startAutoScroll(
-          event.pageY * OneView.core.ratio * OneView.core.domRatio
-        );
-        OneView.core.drawAreaEffects.runAutoScroll();
-        console.log(event);
-        // OneView.core.zopHandler.originalDelta = event.wheelDeltaY
-        // if (OneView.core.zopHandler.scrolling) {
-        //   OneView.core.zopHandler.continueScroll(100);
-        // } else {
-        //   OneView.core.zopHandler.startScroll(event.wheelDeltaY);
-        // }
+        OneView.core.drawAreaEffects.stopAllEffects();
+
+        const pageY =
+          (event.pageY - OneView.core.domHandler.screenTopForDOM) *
+          OneView.core.ratio *
+          OneView.core.domRatio;
+        const delta = event.deltaY;
+        OneView.core.zopHandler.startScroll(pageY);
+        OneView.core.zopHandler.continueScroll(pageY - event.deltaY);
+
         OneView.core.redraw(false);
         return;
       }
@@ -8418,6 +8413,7 @@ export namespace OneView {
         );
         b = this.getZOPFromPixel2(b, this.currentZoom, this.originalDelta);
         this.currentDelta = this.originalDelta - (b - c);
+        console.log(c, b, this.currentDelta);
         this.setZOPBounds(
           this.getZOPFromPixel2(
             this.topPixel,
