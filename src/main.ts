@@ -1,5 +1,7 @@
 import { OneView } from "./oneview/oneview";
 import { useLpc } from "@markwhen/view-client";
+import { isEventNode, walk2 } from "@markwhen/parser/lib/Noder";
+import { EventDescription } from "@markwhen/parser/lib/Types";
 
 window.populateCalendars = function () {
   OneView.core.populateCalendars();
@@ -19,20 +21,57 @@ function bob() {
         OneView.core.reloadAllCalendarData();
       }
     },
-    markwhenState(markwhenState) {},
+    markwhenState(markwhenState) {
+      OneView.core.calendarEventHandler.clearAllEvents();
+      OneView.core.calendars = [
+        new OneView.CalendarObject(
+          "Default",
+          "default",
+          [],
+          0,
+          OneView.VisibilityType.Visible,
+          true,
+          true
+        ),
+      ];
+      OneView.core.calendarPrimaryId = "Default";
+      OneView.core.getCalendar("Default").allEventsAreFullDay = false;
+      const events = [];
+      for (const { node, path } of walk2(markwhenState.transformed, [])) {
+        if (node && isEventNode(node)) {
+          const eventObj = new OneView.CalendarEventObject(
+            node.value.eventDescription.eventDescription,
+            path.join(","),
+            "",
+            new Date(node.value.dateRangeIso.fromDateTimeIso),
+            new Date(node.value.dateRangeIso.toDateTimeIso),
+            "Default",
+            path.join(",")
+          );
+          events.push(eventObj);
+        }
+      }
+      OneView.core.calendarEventHandler.gradeCalendarEvents(events);
+      events.sort(function (a, b) {
+        return a.startZOP - b.startZOP;
+      });
+      events.forEach(e => OneView.core.calendarEventHandler.addEventToCalendar(e));
+      OneView.core.calendarEventHandler.findCommonTimes();
+      OneView.core.redraw(true);
+    },
   });
 
   postRequest("appState");
   postRequest("markwhenState");
 }
 window.onload = function () {
-  // window.setTimeout(function () {
-  //   try {
-  bob();
-  //   } catch (a) {
-  //     console.error(a);
-  //   }
-  // }, 50);
+  window.setTimeout(function () {
+    try {
+      bob();
+    } catch (a) {
+      console.error(a);
+    }
+  }, 50);
 };
 window.onpopstate = function (a) {
   OneView.core &&
