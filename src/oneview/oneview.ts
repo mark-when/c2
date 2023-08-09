@@ -7846,32 +7846,32 @@ export namespace OneView {
           (OneView.core.dateTimeSelectionHandler.endDraggingBottomMarker(),
           OneView.core.redraw(false));
     }
-    touchStart(b) {
-      b.preventDefault();
+    touchStart(event: TouchEvent) {
+      event.preventDefault();
       this.canBeAClick = true;
       OneView.core.drawAreaEffects.isScrollingOrZooming() &&
         (this.canBeAClick = false);
       OneView.core.preloadAllImages();
       OneView.core.drawAreaEffects.stopAllEffects();
       OneView.core.touchEnabledDevice = true;
-      this.touches = b.touches;
+      this.touches = event.touches;
       OneView.core.firstTouchMade = true;
-      b =
+      let adjustedX =
         this.getTouchX(this.touches[0]) *
         OneView.core.ratio *
         OneView.core.domRatio;
-      var c =
+      var adjustedY =
         this.getTouchY(this.touches[0]) *
         OneView.core.ratio *
         OneView.core.domRatio;
       this.startedInTitleArea = OneView.core.mainMenuControl.startDragging(
-        b,
-        c
+        adjustedX,
+        adjustedY
       );
       OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
         (1 <= this.touches.length &&
           (this.testIfEndDraggingMarker(),
-          this.testIfStartDraggingMarker(b, c, 0)),
+          this.testIfStartDraggingMarker(adjustedX, adjustedY, 0)),
         2 <= this.touches.length &&
           this.testIfStartDraggingMarker(
             this.getTouchX(this.touches[1]) *
@@ -7887,22 +7887,23 @@ export namespace OneView {
         (this.touchOneFingerStartX = this.getTouchX(this.touches[0])),
         (this.touchOneFingerStartY = this.getTouchY(this.touches[0])),
         (this.currentPressStartedTime = OneView.core.getTimeStamp()),
-        (this.longPressStartX = b),
-        (this.longPressStartY = c));
+        (this.longPressStartX = adjustedX),
+        (this.longPressStartY = adjustedY));
       2 <= this.touches.length &&
         ((this.touchOneFingerStarted = false),
         (this.touchTwoFingerStarted = true),
         (this.canBeAClick = false));
-      OneView.core.addButtonControl.startDragging(b, c) ||
+      OneView.core.addButtonControl.startDragging(adjustedX, adjustedY) ||
         OneView.core.appStateHandler.isDraggingTopMarker ||
         OneView.core.appStateHandler.isDraggingBottomMarker ||
         OneView.core.appStateHandler.isMainMenuShowing ||
         OneView.core.appStateHandler.isPopupMainMenuShowing ||
         OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-        (1 === this.touches.length && OneView.core.zopHandler.startScroll(c),
+        (1 === this.touches.length &&
+          OneView.core.zopHandler.startScroll(adjustedY),
         2 <= this.touches.length &&
           OneView.core.zopHandler.startZoom(
-            c,
+            adjustedY,
             this.getTouchY(this.touches[1]) *
               OneView.core.ratio *
               OneView.core.domRatio
@@ -8106,49 +8107,85 @@ export namespace OneView {
     }
     mouseUp(b) {
       b.preventDefault();
-      if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
-      else
-        return (
-          OneView.core.appStateHandler.isMainMenuBeingDragged
-            ? ((this.mouseLeftDown = false),
-              OneView.core.mainMenuControl.endDragging())
-            : OneView.core.appStateHandler.isAddButtonBeingDragged
-            ? ((this.mouseLeftDown = false),
-              OneView.core.addButtonControl.endDragging())
-            : this.mouseLeftDown &&
-              ((this.mouseLeftDown = false),
-              OneView.core.appStateHandler.isDraggingTopMarker ||
-                OneView.core.appStateHandler.isDraggingBottomMarker ||
-                (OneView.core.zopHandler.endScroll(),
-                3 < this.mouseWasDragged ||
-                this.currentPressStartedTime < OneView.core.getTimeStamp() - 650
-                  ? ((this.mouseWasDragged = 0),
-                    OneView.core.drawAreaEffects.prepareAutoScroll(
-                      b.pageY * OneView.core.ratio * OneView.core.domRatio,
-                      200
-                    ),
-                    OneView.core.drawAreaEffects.startAutoScroll(
-                      b.pageY * OneView.core.ratio * OneView.core.domRatio
-                    ))
-                  : this.click(
-                      b.pageX * OneView.core.ratio * OneView.core.domRatio,
-                      b.pageY * OneView.core.ratio * OneView.core.domRatio
-                    )),
-              OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
-                this.testIfEndDraggingMarker()),
-          !this.mouseRightDown ||
-            OneView.core.appStateHandler.isMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupMainMenuShowing ||
-            OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-            ((this.mouseRightDown = false), OneView.core.zopHandler.endZoom()),
-          (this.canBeAClick = false),
-          OneView.core.redraw(false),
-          false
-        );
+      if (OneView.core.touchEnabledDevice) {
+        this.removeAllMouseEvents();
+      } else {
+        if (OneView.core.appStateHandler.isMainMenuBeingDragged) {
+          this.mouseLeftDown = false;
+          OneView.core.mainMenuControl.endDragging();
+        } else if (OneView.core.appStateHandler.isAddButtonBeingDragged) {
+          this.mouseLeftDown = false;
+          OneView.core.addButtonControl.endDragging();
+        } else if (this.mouseLeftDown) {
+          this.mouseLeftDown = false;
+        }
+        if (
+          OneView.core.appStateHandler.isDraggingTopMarker ||
+          OneView.core.appStateHandler.isDraggingBottomMarker
+        ) {
+          // Do nothing
+        } else {
+          OneView.core.zopHandler.endScroll();
+          if (
+            this.mouseWasDragged > 3 ||
+            this.currentPressStartedTime < OneView.core.getTimeStamp() - 650
+          ) {
+            this.mouseWasDragged = 0;
+            OneView.core.drawAreaEffects.prepareAutoScroll(
+              b.pageY * OneView.core.ratio * OneView.core.domRatio,
+              200
+            );
+            OneView.core.drawAreaEffects.startAutoScroll(
+              b.pageY * OneView.core.ratio * OneView.core.domRatio
+            );
+          } else {
+            this.click(
+              b.pageX * OneView.core.ratio * OneView.core.domRatio,
+              b.pageY * OneView.core.ratio * OneView.core.domRatio
+            );
+          }
+          if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+            this.testIfEndDraggingMarker();
+          }
+        }
+      }
+      if (
+        this.mouseRightDown &&
+        !OneView.core.appStateHandler.isMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupEditRecurringMenuShowing
+      ) {
+        this.mouseRightDown = false;
+        OneView.core.zopHandler.endZoom();
+      }
+      this.canBeAClick = false;
+
+      OneView.core.redraw(false);
+
+      return false;
     }
-    mouseScroll(b) {
-      b.preventDefault();
-      var c = b.wheelDelta ? b.wheelDelta : -b.detail;
+    mouseScroll(event: WheelEvent) {
+      event.preventDefault();
+      if (!event.ctrlKey) {
+        OneView.core.drawAreaEffects.prepareAutoScroll(
+          event.pageY * OneView.core.ratio * OneView.core.domRatio,
+          200
+        );
+        OneView.core.drawAreaEffects.startAutoScroll(
+          event.pageY * OneView.core.ratio * OneView.core.domRatio
+        );
+        OneView.core.drawAreaEffects.runAutoScroll();
+        console.log(event);
+        // OneView.core.zopHandler.originalDelta = event.wheelDeltaY
+        // if (OneView.core.zopHandler.scrolling) {
+        //   OneView.core.zopHandler.continueScroll(100);
+        // } else {
+        //   OneView.core.zopHandler.startScroll(event.wheelDeltaY);
+        // }
+        OneView.core.redraw(false);
+        return;
+      }
+      var c = event.wheelDelta ? event.wheelDelta : -event.detail;
       if (
         0 !== c &&
         !(
@@ -8164,19 +8201,19 @@ export namespace OneView {
         OneView.core.drawAreaEffects.azRunning &&
           ((e = (OneView.core.drawAreaEffects.azGoalTopZOP + e) / 2),
           (d = (OneView.core.drawAreaEffects.azGoalBottomZOP + d) / 2));
-        b =
+        event =
           OneView.core.zopHandler.getZOPFromPixel(
-            (b.pageY -
+            (event.pageY -
               (OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
                 OneView.core.zopDrawArea.zopAreaTop)) *
               OneView.core.ratio *
               OneView.core.domRatio
           ) -
           (d + e) / 2;
-        b = 0 < c ? 0.5 * b : -0.5 * b;
+        event = 0 < c ? 0.5 * event : -0.5 * event;
         c *= 0.25 * (d - e);
-        e = e + b + c;
-        d = d + b - c;
+        e = e + event + c;
+        d = d + event - c;
         OneView.core.drawAreaEffects.stopAllEffects();
         OneView.core.drawAreaEffects.startAutoZoom(e, d, false, function () {});
         return false;
@@ -8351,11 +8388,11 @@ export namespace OneView {
     endScroll() {
       this.scrolling = false;
     }
-    startZoom(a, c) {
+    startZoom(originalYPixel: number, originalYPixel2: number) {
       this.originalDelta = this.currentDelta;
       this.originalZoom = this.currentZoom;
-      this.originalYPixel = a;
-      this.originalYPixel2 = c;
+      this.originalYPixel = originalYPixel;
+      this.originalYPixel2 = originalYPixel2;
       if (this.originalYPixel > this.originalYPixel2) {
         var b = this.originalYPixel;
         this.originalYPixel = this.originalYPixel2;
@@ -8928,7 +8965,7 @@ export namespace OneView {
     zoom = (this.menuButtonBottom = this.badgesLeft = 0);
     allowWeekNumber = true;
     lineThickness = 2;
-    themes = new OneView.Dictionary()
+    themes = new OneView.Dictionary();
 
     constructor(commonUserSettings: commonUserSettings) {
       this.reloadThemesSettings(commonUserSettings);
