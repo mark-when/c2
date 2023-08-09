@@ -5059,9 +5059,9 @@ export namespace OneView {
         )
       );
       "3" == OneView.core.commonUserSettings.theme &&
-        (b = Math.floor(25 + (255 - b) / 4));
-      this.oddWeekColor = "rgb(" + b + ", " + b + ", " + b + ")";
-      for (b = 0; b < this.weekCalendarDateObjects.length; b++)
+        (b = Math.floor(35 + (255 - b) / 4));
+      this.oddWeekColor = "rgb(" + b + ", " + (b + 10) + ", " + (b + 20) + ")";
+      for (b = 0; b < this.weekCalendarDateObjects.length; b++) {
         if (
           this.weekCalendarDateObjects[b].endZOP >
             OneView.core.zopHandler.topZOP &&
@@ -5126,6 +5126,7 @@ export namespace OneView {
                   false
                 ));
             }
+      }
     }
     paintWeekNumbers() {
       if (
@@ -9087,12 +9088,12 @@ export namespace OneView {
     colorBlack = "#000000";
     colorDark = "#233142";
     colorBigDateDividerStr = "rgba( 173, 176, 181, ";
-    colorTitleBackground = "#233142";
+    colorTitleBackground = "#6b7281";
     colorTitleText = "#FFFFFF";
     colorGrayText = "#454545";
     colorDarkText = "#7B838E";
     colorHorizontalTitle = "#4B5056";
-    colorRedDayText = "#C91E1E";
+    colorRedDayText = "#4f46e6";
     colorDarkSoft = "#999999";
     colorLightSoft = "#BBBBBB";
     colorTag2 = "#E50081";
@@ -9130,7 +9131,7 @@ export namespace OneView {
     ];
     eventsFarLeft = 0;
     tagTextIsBold = false;
-    titleWidthFactor = 50;
+    titleWidthFactor = 40;
     triangleColorStr = "rgba( 1, 81, 142, ";
     triangleTextNudgeY = 0;
     triangleTextNudgeX = 0;
@@ -9149,17 +9150,17 @@ export namespace OneView {
     colorBlack = "#000000";
     colorDark = "#333333";
     colorBigDateDividerStr = "rgba( 133, 136, 131, ";
-    colorTitleBackground = "#333333";
-    colorTitleText = "#8B8B8B";
+    colorTitleBackground = "#1e2a3b";
+    colorTitleText = "#95a2b8";
     colorGrayText = "#808080";
-    colorDarkText = "#A49C91";
+    colorDarkText = "#95a3b8";
     colorHorizontalTitle = "#7C7C7C";
-    colorRedDayText = "#3BE7EB";
+    colorRedDayText = "#c7d2ff";
     colorDarkSoft = "#999999";
     colorLightSoft = "#BBBBBB";
     colorTag2 = (this.colorTag = "#E50081");
     colorTagText = "#FFFFFF";
-    colorBackground = "#191919";
+    colorBackground = "#0f162a";
     colorWhite = (this.colorLight = "#FFFFFF");
     colorRed = "#333333";
     colorMarker = "#3BE7EB";
@@ -9190,7 +9191,7 @@ export namespace OneView {
     ];
     eventsFarLeft = 0;
     tagTextIsBold = false;
-    titleWidthFactor = 50;
+    titleWidthFactor = 40;
     triangleColorStr = "rgba( 1, 81, 142, ";
     triangleTextNudgeY = (this.triangleTextNudgeX = 0);
     titleBarFont = "system-ui";

@@ -12,7 +12,6 @@ function bob() {
 
   const { postRequest } = useLpc({
     appState(appState) {
-      console.log(appState.isDark, isDark);
       if (appState.isDark !== isDark) {
         isDark = !!appState.isDark;
         OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
