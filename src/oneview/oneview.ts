@@ -7995,30 +7995,45 @@ export namespace OneView {
 
       return false;
     }
-    touchMove(b) {
-      b.preventDefault();
-      this.touches = b.touches;
-      b =
+    touchMove(event: TouchEvent) {
+      event.preventDefault();
+      this.touches = event.touches;
+      const touchY =
         this.getTouchY(this.touches[0]) *
         OneView.core.ratio *
         OneView.core.domRatio;
-      var c =
+      var touchX =
           this.getTouchX(this.touches[0]) *
           OneView.core.ratio *
           OneView.core.domRatio,
-        e;
-      1 < this.touches.length &&
-        ((e =
+        adjustedTouchY;
+      if (this.touches.length > 1) {
+        adjustedTouchY =
           this.getTouchY(this.touches[1]) *
           OneView.core.ratio *
-          OneView.core.domRatio),
-        this.getTouchX(this.touches[1]));
-      OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
-        (0 < this.touches.length && this.testIfContinueDraggingMarker(b, 0),
-        1 < this.touches.length && this.testIfContinueDraggingMarker(e, 1));
-      this.currentPressStartedTime < OneView.core.getTimeStamp() - 550 &&
-        (this.canBeAClick = false);
-      1 === this.touches.length &&
+          OneView.core.domRatio;
+        this.getTouchX(this.touches[1]);
+      }
+      // Check if dragging date/time marker
+      if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+        if (this.touches.length > 0) {
+          this.testIfContinueDraggingMarker(touchY, 0);
+        }
+
+        if (this.touches.length > 1) {
+          this.testIfContinueDraggingMarker(adjustedTouchY, 1);
+        }
+      }
+
+      // Check if tap is too long to be a click
+      const tapTooLong = this.currentPressStartedTime < Date.now() - 550;
+      if (tapTooLong) {
+        this.canBeAClick = false;
+      }
+
+      // Check if finger dragged past threshold
+      const fingerDragged =
+        this.touches.length === 1 &&
         this.touchOneFingerStarted &&
         Math.abs(this.touchOneFingerStartX - this.getTouchX(this.touches[0])) +
           Math.abs(
@@ -8027,28 +8042,41 @@ export namespace OneView {
           this.touchSlop *
             OneView.core.ratio *
             OneView.core.domRatio *
-            (this.startedInTitleArea ? 1.5 : 1) &&
-        (this.canBeAClick = false);
-      !this.canBeAClick && this.startedInTitleArea
-        ? OneView.core.mainMenuControl.continueDragging(c, b)
-        : OneView.core.appStateHandler.isAddButtonBeingDragged
-        ? OneView.core.addButtonControl.continueDragging(c, b)
-        : OneView.core.appStateHandler.isDraggingTopMarker ||
-          OneView.core.appStateHandler.isDraggingBottomMarker ||
-          OneView.core.appStateHandler.isMainMenuShowing ||
-          OneView.core.appStateHandler.isPopupMainMenuShowing ||
-          OneView.core.appStateHandler.isPopupEditRecurringMenuShowing ||
-          (1 === this.touches.length &&
-            this.touchOneFingerStarted &&
-            (this.canBeAClick ||
-              (OneView.core.appStateHandler.isMainMenuShowing &&
-                OneView.core.mainMenuControl.hide()),
-            OneView.core.zopHandler.continueScroll(b),
-            OneView.core.drawAreaEffects.prepareAutoScroll(b)),
-          2 <= this.touches.length &&
-            this.touchTwoFingerStarted &&
-            OneView.core.zopHandler.continueZoom(b, e));
+            (this.startedInTitleArea ? 1.5 : 1);
+
+      if (fingerDragged) {
+        this.canBeAClick = false;
+      }
+
+      // Handle dragging
+      if (!this.canBeAClick && this.startedInTitleArea) {
+        OneView.core.mainMenuControl.continueDragging(touchX, touchY);
+      } else if (OneView.core.appStateHandler.isAddButtonBeingDragged) {
+        OneView.core.addButtonControl.continueDragging(touchX, touchY);
+      } else if (
+        !OneView.core.appStateHandler.isDraggingTopMarker &&
+        !OneView.core.appStateHandler.isDraggingBottomMarker &&
+        !OneView.core.appStateHandler.isMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupMainMenuShowing &&
+        !OneView.core.appStateHandler.isPopupEditRecurringMenuShowing
+      ) {
+        if (this.touches.length === 1 && this.touchOneFingerStarted) {
+          if (
+            this.canBeAClick ||
+            OneView.core.appStateHandler.isMainMenuShowing
+          ) {
+            // handle clicks
+          }
+
+          OneView.core.zopHandler.continueScroll(touchY);
+          OneView.core.drawAreaEffects.prepareAutoScroll(touchY);
+        } else if (this.touches.length >= 2 && this.touchTwoFingerStarted) {
+          OneView.core.zopHandler.continueZoom(touchY, adjustedTouchY);
+        }
+      }
+
       OneView.core.redraw(false);
+
       return false;
     }
     mouseMove(event: MouseEvent) {
@@ -8214,13 +8242,14 @@ export namespace OneView {
     }
     mouseScroll(event: WheelEvent) {
       event.preventDefault();
+      const pageY =
+        (event.pageY - OneView.core.domHandler.screenTopForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+
       if (!event.ctrlKey) {
         OneView.core.drawAreaEffects.stopAllEffects();
 
-        const pageY =
-          (event.pageY - OneView.core.domHandler.screenTopForDOM) *
-          OneView.core.ratio *
-          OneView.core.domRatio;
         const delta = event.deltaY;
         OneView.core.zopHandler.startScroll(pageY);
         OneView.core.zopHandler.continueScroll(pageY - event.deltaY);
@@ -8228,39 +8257,40 @@ export namespace OneView {
         OneView.core.redraw(false);
         return;
       }
-      var c = event.wheelDelta ? event.wheelDelta : -event.detail;
-      if (
-        0 !== c &&
-        !(
-          550 > OneView.core.getTimeStamp() - this.timeForLastScrollEvent &&
-          12 > Math.abs(c)
-        )
-      ) {
-        this.timeForLastScrollEvent = OneView.core.getTimeStamp();
-        0 < c && (c = 0.5);
-        0 > c && (c = -1);
-        var e = OneView.core.zopHandler.topZOP,
-          d = OneView.core.zopHandler.bottomZOP;
-        OneView.core.drawAreaEffects.azRunning &&
-          ((e = (OneView.core.drawAreaEffects.azGoalTopZOP + e) / 2),
-          (d = (OneView.core.drawAreaEffects.azGoalBottomZOP + d) / 2));
-        event =
-          OneView.core.zopHandler.getZOPFromPixel(
-            (event.pageY -
-              (OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
-                OneView.core.zopDrawArea.zopAreaTop)) *
-              OneView.core.ratio *
-              OneView.core.domRatio
-          ) -
-          (d + e) / 2;
-        event = 0 < c ? 0.5 * event : -0.5 * event;
-        c *= 0.25 * (d - e);
-        e = e + event + c;
-        d = d + event - c;
-        OneView.core.drawAreaEffects.stopAllEffects();
-        OneView.core.drawAreaEffects.startAutoZoom(e, d, false, function () {});
-        return false;
+
+      var delta = -event.deltaY;
+      console.log(event, event.deltaY);
+
+      this.timeForLastScrollEvent = OneView.core.getTimeStamp();
+      var topZop = OneView.core.zopHandler.topZOP,
+        bottomZop = OneView.core.zopHandler.bottomZOP;
+      if (OneView.core.drawAreaEffects.azRunning) {
+        topZop = (OneView.core.drawAreaEffects.azGoalTopZOP + topZop) / 2;
+        bottomZop =
+          (OneView.core.drawAreaEffects.azGoalBottomZOP + bottomZop) / 2;
       }
+
+      event =
+        OneView.core.zopHandler.getZOPFromPixel(
+          (event.pageY -
+            (OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
+              OneView.core.zopDrawArea.zopAreaTop)) *
+            OneView.core.ratio *
+            OneView.core.domRatio
+        ) -
+        (bottomZop + topZop) / 2;
+      // event = 0 < delta ? 0.5 * event : -0.5 * event;
+      delta *= 0.015 * (bottomZop - topZop);
+      topZop = topZop + delta;
+      bottomZop = bottomZop - delta;
+      OneView.core.drawAreaEffects.stopAllEffects();
+      OneView.core.zopHandler.setZoom(
+        topZop,
+        bottomZop,
+        OneView.core.zopHandler.topPixel,
+        OneView.core.zopHandler.bottomPixel
+      );
+      return false;
     }
     mouseLeave(b) {
       if (true === OneView.core.touchEnabledDevice) this.removeAllMouseEvents();
@@ -8361,8 +8391,11 @@ export namespace OneView {
       return this.currentZoom;
     }
     setZoom(a, c, e, d) {
+      // console.log(a, c, e, d);
       this.currentZoom = (c - a) / (d - e);
-      0 === this.currentZoom && (this.currentZoom = 1e3);
+      if (this.currentZoom === 0) {
+        this.currentZoom = 1e3;
+      }
       this.validateZoomValues();
       this.currentDelta = a - (e - this.topPixel) * this.currentZoom;
       this.setZOPBounds(
@@ -8413,7 +8446,6 @@ export namespace OneView {
         );
         b = this.getZOPFromPixel2(b, this.currentZoom, this.originalDelta);
         this.currentDelta = this.originalDelta - (b - c);
-        console.log(c, b, this.currentDelta);
         this.setZOPBounds(
           this.getZOPFromPixel2(
             this.topPixel,
@@ -8455,22 +8487,23 @@ export namespace OneView {
         this.originalDelta
       );
     }
-    continueZoom(a, c) {
-      this.currentYPixel = a;
-      this.currentYPixel2 = c;
+    continueZoom(yPixel: number, yPixel2: number) {
+      this.currentYPixel = yPixel;
+      this.currentYPixel2 = yPixel2;
       if (this.currentYPixel > this.currentYPixel2) {
         var b = this.currentYPixel;
         this.currentYPixel = this.currentYPixel2;
         this.currentYPixel2 = b;
       }
-      50 < this.currentYPixel2 - this.currentYPixel &&
-        (this.setZoom(
+      if (this.currentYPixel2 - this.currentYPixel > 50) {
+        this.setZoom(
           this.originalZOP,
           this.originalZOP2,
           this.currentYPixel,
           this.currentYPixel2
-        ),
-        this.validateZoomValues());
+        );
+        this.validateZoomValues();
+      }
     }
     endZoom() {}
     showInitialBounds(b: boolean) {
