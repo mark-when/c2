@@ -36,7 +36,7 @@ export namespace OneView {
     cachedFirstDayOfWeek = undefined;
     defaultUseWeek = false;
     defaultUse24hFormat = false;
-    theme = "0"
+    theme = "0";
 
     constructor() {
       super();
@@ -9193,12 +9193,12 @@ export namespace OneView {
     titleWidthFactor = 50;
     triangleColorStr = "rgba( 1, 81, 142, ";
     triangleTextNudgeY = (this.triangleTextNudgeX = 0);
-    titleBarFont = "RobotoL";
+    titleBarFont = "system-ui";
     titleBarFontSize = 16;
-    titleBarFontBold = "RobotoB";
-    textFont = "Roboto";
-    textFontBold = "RobotoB";
-    textFontThin = "RobotoL";
+    titleBarFontBold = "system-ui";
+    textFont = "system-ui";
+    textFontBold = "system-ui";
+    textFontThin = "system-ui";
     badgeColorIsTagTextColor = true;
     addButtonWidthFactor = 1.1;
   }
@@ -9684,23 +9684,25 @@ export namespace OneView {
     }
   }
   export class CanvasHorizontalCacheObject {
-    constructor(a, b) {
-      this.cachedTags = [];
-      this.cachedDates = [];
-      this.cachedDates2 = [];
-      this.cachedBadges = [];
-      this.badgeRowHeight =
-        this.date2RowHeight =
-        this.dateRowHeight =
-        this.tagRowHeight =
-        this.badgeTextHeight =
-        this.date2TextHeight =
-        this.dateTextHeight =
-        this.tagTextHeight =
-          0;
-      this.previousFont = "";
-      this.canvas = a;
-      this.canvasContext = b;
+    cachedTags = [];
+    cachedDates = [];
+    cachedDates2 = [];
+    cachedBadges = [];
+    badgeRowHeight = 0;
+    date2RowHeight = 0;
+    dateRowHeight = 0;
+    tagRowHeight = 0;
+    badgeTextHeight = 0;
+    date2TextHeight = 0;
+    dateTextHeight = 0;
+    tagTextHeight = 0;
+    previousFont = "";
+    canvas: HTMLCanvasElement;
+    canvasContext: CanvasRenderingContext2D;
+
+    constructor(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
+      this.canvas = canvas;
+      this.canvasContext = context;
     }
     setTagHeight(a) {
       if (this.tagTextHeight !== a) {

@@ -8,17 +8,32 @@ function bob() {
   OneView.core = new OneView.Core();
   OneView.core.init();
   OneView.core.startDrawLoop();
+  let isDark = false;
+
+  const { postRequest } = useLpc({
+    appState(appState) {
+      console.log(appState.isDark, isDark);
+      if (appState.isDark !== isDark) {
+        isDark = !!appState.isDark;
+        OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
+        OneView.core.settings.reloadTheme();
+        OneView.core.reloadAllCalendarData();
+      }
+    },
+    markwhenState(markwhenState) {},
+  });
+
+  postRequest("appState");
+  postRequest("markwhenState");
 }
 window.onload = function () {
-  window.setTimeout(function () {
-    try {
-      bob();
-    } catch (a) {
-      window.setTimeout(function () {
-        bob();
-      }, 3e3);
-    }
-  }, 50);
+  // window.setTimeout(function () {
+  //   try {
+  bob();
+  //   } catch (a) {
+  //     console.error(a);
+  //   }
+  // }, 50);
 };
 window.onpopstate = function (a) {
   OneView.core &&
@@ -28,17 +43,3 @@ window.onpopstate = function (a) {
 window.onhashchange = function () {
   OneView.core.eventHandler.closeAllPagesAndMenus();
 };
-
-let isDark = false;
-
-const { postRequest } = useLpc({
-  appState(appState) {
-    if (appState.isDark !== isDark) {
-      isDark = !!appState.isDark;
-      OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
-      OneView.core.settings.reloadTheme();
-      OneView.core.reloadAllCalendarData();
-    }
-  },
-  markwhenState(markwhenState) {},
-});
