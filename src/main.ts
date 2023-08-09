@@ -29,11 +29,16 @@ window.onhashchange = function () {
   OneView.core.eventHandler.closeAllPagesAndMenus();
 };
 
+let isDark = false;
+
 const { postRequest } = useLpc({
   appState(appState) {
-    console.log("appstate", appState);
+    if (appState.isDark !== isDark) {
+      isDark = !!appState.isDark;
+      OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
+      OneView.core.settings.reloadTheme();
+      OneView.core.reloadAllCalendarData();
+    }
   },
-  markwhenState(markwhenState) {
-    
-  },
+  markwhenState(markwhenState) {},
 });

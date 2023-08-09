@@ -36,6 +36,7 @@ export namespace OneView {
     cachedFirstDayOfWeek = undefined;
     defaultUseWeek = false;
     defaultUse24hFormat = false;
+    theme = "0"
 
     constructor() {
       super();
@@ -156,14 +157,6 @@ export namespace OneView {
       OneView.core.helper.monthesLong = new OneView.Hashtable();
       OneView.core.helper.weekdayShort = new OneView.Hashtable();
       OneView.core.helper.weekdayLong = new OneView.Hashtable();
-    }
-
-    get theme() {
-      return this.getString("oneview_settings_theme", "0");
-    }
-
-    set theme(a) {
-      this.localStorageSetItem("oneview_settings_theme", JSON.stringify(a));
     }
 
     get licenseDarkTheme() {
@@ -8897,17 +8890,20 @@ export namespace OneView {
     allowWeekNumber = true;
     lineThickness = 2;
 
-    constructor(a) {
-      this.reloadThemesSettings(a);
+    constructor(commonUserSettings: commonUserSettings) {
+      this.reloadThemesSettings(commonUserSettings);
     }
 
-    reloadThemesSettings(e) {
+    reloadThemesSettings(commonUserSettings: CommonUserSettings) {
       this.themes = new OneView.Dictionary();
       this.themes.add("0", new FreeTheme());
-      e.licenceDarkTheme && this.themes.add("3", new DarkTheme());
-      e.licenceCandyTheme && this.themes.add("4", new CandyTheme());
-      this.themes.containsKey(e.theme) || (e.theme = "0");
-      this.theme = this.themes[e.theme];
+      commonUserSettings.licenceDarkTheme &&
+        this.themes.add("3", new DarkTheme());
+      commonUserSettings.licenceCandyTheme &&
+        this.themes.add("4", new CandyTheme());
+      this.themes.containsKey(commonUserSettings.theme) ||
+        (commonUserSettings.theme = "0");
+      this.theme = this.themes[commonUserSettings.theme];
     }
     reloadTheme() {
       this.themes.containsKey(OneView.core.commonUserSettings.theme) ||
@@ -8915,7 +8911,7 @@ export namespace OneView {
       this.theme = this.themes[OneView.core.commonUserSettings.theme];
     }
   }
-  export class OriginalColorTheme {
+  export class OriginalColorTheme implements Theme {
     constructor() {
       this.themeName = "OneView Calendar Original";
       this.colorBlack = "#000000";
@@ -8974,7 +8970,7 @@ export namespace OneView {
     }
   }
 
-  export class MaterialColorTheme {
+  export class MaterialColorTheme implements Theme {
     constructor() {
       this.themeName = "Vivid Material";
       this.colorBlack = "#000000";
@@ -9207,7 +9203,7 @@ export namespace OneView {
     addButtonWidthFactor = 1.1;
   }
 
-  export class CandyTheme {
+  export class CandyTheme implements Theme {
     constructor() {
       this.themeName = "Candy theme";
       this.colorBlack = "#000000";
