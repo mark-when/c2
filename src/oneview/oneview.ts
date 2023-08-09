@@ -439,8 +439,8 @@ export namespace OneView {
       OneView.core.zopDrawArea.canvasContext.stroke();
       OneView.core.zopDrawArea.removeShadow(n);
     }
-    drawHorizontalLineNotZOP(b, c, e, f, g, d) {
-      OneView.core.zopDrawArea.setShadow(d);
+    drawHorizontalLineNotZOP(b, c, e, f, g, shadow) {
+      OneView.core.zopDrawArea.setShadow(shadow);
       c = Math.floor(c);
       OneView.core.zopDrawArea.canvasContext.beginPath();
       OneView.core.zopDrawArea.canvasContext.lineWidth = g;
@@ -449,7 +449,7 @@ export namespace OneView {
       OneView.core.zopDrawArea.canvasContext.lineTo(b + e, c);
       OneView.core.zopDrawArea.canvasContext.strokeStyle = f;
       OneView.core.zopDrawArea.canvasContext.stroke();
-      OneView.core.zopDrawArea.removeShadow(d);
+      OneView.core.zopDrawArea.removeShadow(shadow);
     }
     drawVerticalLineNotZOP(b, c, e, f, g) {
       b = Math.floor(b) + 0.5;
@@ -8645,14 +8645,31 @@ export namespace OneView {
   }
 
   export class CalendarObject {
-    constructor(a, c, e, d, g, m, n) {
-      this.id = a;
-      this.name = c;
-      this.colorId = d;
-      this.visibility = g;
-      this.canEditCalendar = m;
-      this.canEditCalendarEvents = n;
-      this.defaultReminders = e;
+    id: string;
+    name: string;
+    defaultReminders: unknown;
+    colorId: string;
+    visibility: unknown;
+    canEditCalendar: boolean;
+    canEditCalendarEvents: boolean;
+    countEvents: number;
+
+    constructor(
+      id: string,
+      name: string,
+      defaultReminders,
+      colorId: string,
+      visibility,
+      canEditCalendar: boolean,
+      canEditCalendarEvents: boolean
+    ) {
+      this.id = id;
+      this.name = name;
+      this.colorId = colorId;
+      this.visibility = visibility;
+      this.canEditCalendar = canEditCalendar;
+      this.canEditCalendarEvents = canEditCalendarEvents;
+      this.defaultReminders = defaultReminders;
       this.allEventsAreFullDay = true;
       this.countEvents = 0;
     }
@@ -9103,7 +9120,7 @@ export namespace OneView {
     colorBackground = "#FFFFFF";
     colorTagText = "#FFFFFF";
     colorRed = "#233142";
-    colorMarker = "#E53935";
+    colorMarker = "#4338ca";
     colorBlue = "#2890D1";
     colorAddButton = "#233142";
     colorDim = "rgba(0; 0; 0; 0.5)";
@@ -9163,7 +9180,7 @@ export namespace OneView {
     colorBackground = "#0f162a";
     colorWhite = (this.colorLight = "#FFFFFF");
     colorRed = "#333333";
-    colorMarker = "#3BE7EB";
+    colorMarker = "#808cf8";
     colorBlue = "#2890D1";
     colorAddButton = "#333333";
     colorDim = "rgba(0; 0; 0; 0.5)";
@@ -9329,7 +9346,9 @@ export namespace OneView {
     zopDrawArea = new OneView.ZopDrawArea();
     appStateHandler = new OneView.AppStateHandler();
     dateTimeSelectionHandler = new OneView.DateTimeSelectionHandler();
-
+    calendarEventHandler!: CalendarEventHandler;
+    drawAreaEffects!: DrawAreaEffects;
+    calendarDateHandler!: CalendarDateHandler;
     // dynamicallyLoadFile("css/style.css", "css", function () {});
     init() {
       this.setSizeSettings();
@@ -10012,7 +10031,7 @@ export namespace OneView {
         ((this.canvasContext.shadowOffsetX = 1 * OneView.core.ratio),
         (this.canvasContext.shadowOffsetY = 2 * OneView.core.ratio),
         (this.canvasContext.shadowBlur = 4 * OneView.core.ratio),
-        (this.canvasContext.shadowColor = "#555555"));
+        (this.canvasContext.shadowColor = "rgb(0 0 0 / 0.1)"));
     }
     clearTextDivs() {}
     drawCalendarDateObjectName(b, c, e, d, l, h, k, p) {
