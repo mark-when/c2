@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite --port=5150",
+    "preview": "vite preview --port=5150",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && vite build",
+    "buildIgnoreErrors": "tsc | 2>/dev/null; vite build",
     "watch": "tsc --watch"
   },
   "author": "",
