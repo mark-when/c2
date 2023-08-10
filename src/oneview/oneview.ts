@@ -6371,36 +6371,43 @@ export namespace OneView {
             this.selectVisibleEventTagsFor(n, b, c, e, f, d);
     }
     paintVisibleFullEventWrappers() {
-      var b, c, e, f;
       for (let i = 0; i < this.visibleFullEventWrappers.length; i++) {
-        const eventWrapper = this.visibleFullEventWrappers[i].calendarEvent;
+        const eventWrapper = this.visibleFullEventWrappers[i];
+        const event = eventWrapper.calendarEvent;
+        let left = eventWrapper.left;
+        const width = eventWrapper.right - left;
+
+        if (OneView.core.settings.rightToLeft) {
+          left = Math.floor(
+            this.eventsFarRight + this.eventsFarLeft - left - width
+          );
+          eventWrapper.paintedLeft = left;
+          eventWrapper.paintedRight = left + width;
+        }
+
+        eventWrapper.left = left;
+        eventWrapper.right = left + width;
+
+        if (width > 0) {
+          const color = OneView.core.helper.getEventColor(
+            event,
+            OneView.core.getCalendar(event.calendarId)
+          );
+          const textColor = OneView.core.helper.getEventTextColor(
+            event,
+            OneView.core.getCalendar(event.calendarId)
+          );
+          OneView.core.zopDrawArea.drawFullEvent(
+            left,
+            event.startZOP,
+            event.endZOP,
+            width,
+            color,
+            textColor,
+            event.summary
+          );
+        }
       }
-      for (b = 0; b < this.visibleFullEventWrappers.length; b++)
-        (c = this.visibleFullEventWrappers[b].calendarEvent),
-          (e = this.visibleFullEventWrappers[b].left),
-          (f = this.visibleFullEventWrappers[b].right - e),
-          true === OneView.core.settings.rightToLeft &&
-            ((e = Math.floor(this.eventsFarRight + this.eventsFarLeft - e - f)),
-            (this.visibleFullEventWrappers[b].paintedLeft = e),
-            (this.visibleFullEventWrappers[b].paintedRight = e + f)),
-          (this.visibleFullEventWrappers[b].left = e),
-          (this.visibleFullEventWrappers[b].right = e + f),
-          0 < f &&
-            OneView.core.zopDrawArea.drawFullEvent(
-              e,
-              c.startZOP,
-              c.endZOP,
-              f,
-              OneView.core.helper.getEventColor(
-                c,
-                OneView.core.getCalendar(c.calendarId)
-              ),
-              OneView.core.helper.getEventTextColor(
-                c,
-                OneView.core.getCalendar(c.calendarId)
-              ),
-              c.summary
-            );
     }
     paintVisibleEventTags() {
       var b,
@@ -10354,8 +10361,8 @@ export namespace OneView {
       endZop: number,
       width: number,
       color,
-      text: string,
-      isBold: boolean
+      textColor: string,
+      text: string
     ) {
       var startPixel = Math.max(
           OneView.core.zopHandler.getPixelFromZOP(startZop) + 1,
@@ -10413,12 +10420,12 @@ export namespace OneView {
           height < 2 * OneView.core.settings.tagHeight
         ) {
           this.drawText(
-            isBold,
+            text,
             x + tagColorWidth + textXOffset,
             startPixel - 1,
             textYOffset,
             OneView.core.settings.tagTextHeight,
-            text,
+            textColor,
             color,
             false,
             width - tagColorWidth - textXOffset - 2,
@@ -10433,9 +10440,9 @@ export namespace OneView {
             startZop,
             endZop,
             x + tagColorWidth + textXOffset,
-            isBold,
-            OneView.core.settings.tagTextHeight,
             text,
+            OneView.core.settings.tagTextHeight,
+            textColor,
             OneView.core.settings.margin,
             false,
             OneView.core.settings.theme.tagTextIsBold
