@@ -283,13 +283,14 @@ export namespace OneView {
   }
 
   export interface DrawFilledRectangleParams {
-    x: number
-    y: number
-    width: number
-    height: number
-    fillStyle: string
-    hasShadow: boolean
-    rounded: boolean
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    fillStyle: string;
+    hasShadow: boolean;
+    rounded: boolean;
+    strokeStyle: string | undefined;
   }
 
   export class DrawArea {
@@ -382,15 +383,16 @@ export namespace OneView {
         g
       );
     }
-    drawFilledRectangle(
-      x: number,
-      y: number,
-      width: number,
-      height: number,
+    drawFilledRectangle({
+      x,
+      y,
+      width,
+      height,
       fillStyle,
-      hasShadow: boolean,
-      rounded: boolean = false
-    ) {
+      hasShadow,
+      rounded,
+      strokeStyle,
+    }: DrawFilledRectangleParams) {
       OneView.core.zopDrawArea.setShadow(hasShadow);
       const context = OneView.core.zopDrawArea.canvasContext;
       context.fillStyle = fillStyle;
@@ -411,6 +413,15 @@ export namespace OneView {
           Math.floor(width),
           Math.floor(height)
         );
+        if (strokeStyle) {
+          context.strokeStyle = strokeStyle;
+          context.strokeRect(
+            Math.floor(x),
+            Math.floor(y),
+            Math.floor(width),
+            Math.floor(height)
+          );
+        }
       }
       OneView.core.zopDrawArea.removeShadow(hasShadow);
     }
@@ -1505,16 +1516,19 @@ export namespace OneView {
           1,
           Math.max(0, 1 - this.transparency)
         );
-        OneView.core.drawArea.drawFilledRectangle(
-          OneView.core.zopHandler.leftPixel,
-          0,
-          OneView.core.settings.titleWidth +
+        OneView.core.drawArea.drawFilledRectangle({
+          x: OneView.core.zopHandler.leftPixel,
+          y: 0,
+          width:
+            OneView.core.settings.titleWidth +
             OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged +
             2 * OneView.core.ratio,
-          OneView.core.zopDrawArea.zopAreaHeight,
-          OneView.core.settings.theme.colorTitleBackground,
-          false
-        );
+          height: OneView.core.zopDrawArea.zopAreaHeight,
+          fillStyle: OneView.core.settings.theme.colorTitleBackground,
+          hasShadow: false,
+          rounded: false,
+          strokeStyle: undefined,
+        });
         OneView.core.zopDrawArea.canvasContext.globalAlpha = 1;
         OneView.core.zopDrawArea.canvasContext.restore();
       }
@@ -2096,36 +2110,42 @@ export namespace OneView {
         OneView.core.domHandler.screenHeight - 20 - this.menuHeight,
         this.menuTop
       );
-      OneView.core.drawArea.drawFilledRectangle(
-        this.menuLeft - 1,
-        this.menuTop - 1,
-        this.menuWidth + 2,
-        this.menuHeight + 2,
-        OneView.core.settings.theme.colorWhite,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        this.menuLeft,
-        this.menuTop,
-        this.menuWidth,
-        this.menuHeight,
-        OneView.core.settings.theme.colorDarkSoft,
-        false
-      );
+      OneView.core.drawArea.drawFilledRectangle({
+        x: this.menuLeft - 1,
+        y: this.menuTop - 1,
+        width: this.menuWidth + 2,
+        height: this.menuHeight + 2,
+        fillStyle: OneView.core.settings.theme.colorWhite,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: this.menuLeft,
+        y: this.menuTop,
+        width: this.menuWidth,
+        height: this.menuHeight,
+        fillStyle: OneView.core.settings.theme.colorDarkSoft,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
       for (e = 0; e < this.menuItems.length; e++)
         this.paintMenuItem(this.menuItems[e]);
     }
     paintMenuItem(b) {
       if (b.isVisible) {
         var c = OneView.core.settings.menuItemHeight - 1;
-        OneView.core.drawArea.drawFilledRectangle(
-          this.menuLeft + 1,
-          this.menuTop + b.top + 1,
-          this.menuWidth - 2,
-          OneView.core.settings.menuItemHeight - 1,
-          OneView.core.settings.theme.colorDark,
-          false
-        );
+        OneView.core.drawArea.drawFilledRectangle({
+          x: this.menuLeft + 1,
+          y: this.menuTop + b.top + 1,
+          width: this.menuWidth - 2,
+          height: OneView.core.settings.menuItemHeight - 1,
+          fillStyle: OneView.core.settings.theme.colorDark,
+          hasShadow: false,
+          rounded: false,
+          strokeStyle: undefined,
+        });
         OneView.core.drawArea.drawText(
           b.text,
           this.menuLeft + c + 1,
@@ -4377,15 +4397,18 @@ export namespace OneView {
       else 0 > this.loadingCounter && (this.loadingCounter = 0);
       this.showMessage &&
         (5e3 > OneView.core.getTimeStamp() - this.messageStartTime
-          ? (OneView.core.drawArea.drawFilledRectangle(
-              0,
-              0,
-              OneView.core.zopDrawArea.zopAreaWidth,
-              OneView.core.settings.titleWidth +
+          ? (OneView.core.drawArea.drawFilledRectangle({
+              x: 0,
+              y: 0,
+              width: OneView.core.zopDrawArea.zopAreaWidth,
+              height:
+                OneView.core.settings.titleWidth +
                 OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged,
-              OneView.core.settings.theme.colorRed,
-              false
-            ),
+              fillStyle: OneView.core.settings.theme.colorRed,
+              hasShadow: false,
+              rounded: false,
+              strokeStyle: undefined,
+            }),
             OneView.core.drawArea.drawCenteredText(
               OneView.core.translate.get("Connection failed"),
               0,
@@ -5134,14 +5157,16 @@ export namespace OneView {
                   ),
                   OneView.core.zopHandler.bottomPixel
                 );
-              OneView.core.drawArea.drawFilledRectangle(
-                this.fakeLeft + OneView.core.settings.titleWidth,
-                c,
-                OneView.core.zopHandler.rightPixel - this.fakeLeft,
-                e - c,
-                this.oddWeekColor,
-                false
-              );
+              OneView.core.drawArea.drawFilledRectangle({
+                x: this.fakeLeft + OneView.core.settings.titleWidth,
+                y: c,
+                width: OneView.core.zopHandler.rightPixel - this.fakeLeft,
+                height: e - c,
+                fillStyle: this.oddWeekColor,
+                hasShadow: false,
+                rounded: false,
+                strokeStyle: undefined,
+              });
             }
           } else
             for (
@@ -5163,15 +5188,20 @@ export namespace OneView {
                   c + e * (f - 1),
                   OneView.core.zopHandler.topPixel
                 )),
-                OneView.core.drawArea.drawFilledRectangle(
-                  this.fakeLeft + OneView.core.settings.titleWidth,
-                  d,
-                  OneView.core.zopHandler.rightPixel - this.fakeLeft,
-                  Math.min(c + e * f + 1, OneView.core.zopHandler.bottomPixel) -
-                    d,
-                  this.oddWeekColor,
-                  false
-                ));
+                OneView.core.drawArea.drawFilledRectangle({
+                  x: this.fakeLeft + OneView.core.settings.titleWidth,
+                  y: d,
+                  width: OneView.core.zopHandler.rightPixel - this.fakeLeft,
+                  height:
+                    Math.min(
+                      c + e * f + 1,
+                      OneView.core.zopHandler.bottomPixel
+                    ) - d,
+                  fillStyle: this.oddWeekColor,
+                  hasShadow: false,
+                  rounded: false,
+                  strokeStyle: undefined,
+                }));
             }
       }
     }
@@ -6426,7 +6456,6 @@ export namespace OneView {
         eventWrapper.right = left + width;
 
         if (width > 0) {
-          const color = event.color ? `rgb(${event.color})` : "#6c7684";
           const textColor = OneView.core.helper.getEventTextColor(
             event,
             OneView.core.getCalendar(event.calendarId)
@@ -6436,7 +6465,7 @@ export namespace OneView {
             event.startZOP,
             event.endZOP,
             width,
-            color,
+            event.color,
             textColor,
             event.summary,
             event.isHovered,
@@ -7450,14 +7479,16 @@ export namespace OneView {
       return OneView.core.settings.titleWidth;
     }
     paintButton(b, c, e, d, g) {
-      OneView.core.drawArea.drawFilledRectangle(
-        c,
-        e,
-        d,
-        g,
-        OneView.core.settings.theme.colorDark,
-        false
-      );
+      OneView.core.drawArea.drawFilledRectangle({
+        x: c,
+        y: e,
+        width: d,
+        height: g,
+        fillStyle: OneView.core.settings.theme.colorDark,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
       g -= 6;
       OneView.core.drawArea.setFont(g, false, false, false);
       var f = OneView.core.zopDrawArea.measureTextWidth(b, g, false, true),
@@ -7495,81 +7526,99 @@ export namespace OneView {
             3,
             true
           );
-      OneView.core.drawArea.drawFilledRectangle(
-        this.markerLeft,
-        c,
-        this.markerWidth,
-        this.markerHeight,
-        this.markerColor,
-        true
-      );
+      OneView.core.drawArea.drawFilledRectangle({
+        x: this.markerLeft,
+        y: c,
+        widht: this.markerWidth,
+        height: this.markerHeight,
+        fillStyle: this.markerColor,
+        hasShadow: true,
+        rounded: false,
+        strokeStyle: undefined,
+      });
       e = this.markerHeight / 6;
       var d = this.markerLeft + this.markerWidth - 4 * e,
         g = c + (this.markerHeight - 3 * e) / 2 - 1;
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 1 * e,
-        g + 0 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 1 * e,
-        g + 1 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 1 * e,
-        g + 2 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 1 * e,
-        g + 3 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 2 * e,
-        g + 0 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 2 * e,
-        g + 1 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 2 * e,
-        g + 2 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        d + 2 * e,
-        g + 3 * e,
-        2,
-        2,
-        this.textColor,
-        false
-      );
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 1 * e,
+        y: g + 0 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 1 * e,
+        y: g + 1 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 1 * e,
+        y: g + 2 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 1 * e,
+        y: g + 3 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 2 * e,
+        y: g + 0 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 2 * e,
+        y: g + 1 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 2 * e,
+        y: g + 2 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: d + 2 * e,
+        y: g + 3 * e,
+        widht: 2,
+        height: 2,
+        fillStyle: this.textColor,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
       e = this.markerHeight / 2 - 4;
       OneView.core.zopDrawArea.drawText(
         b,
@@ -8859,6 +8908,9 @@ export namespace OneView {
       calendarId,
       eventId,
       color,
+      isHovered,
+      isDetail,
+      mwNode,
     }: CalendarEventParams) {
       this.summary = summary || "";
       this.description = description || "";
@@ -8879,6 +8931,9 @@ export namespace OneView {
       this.calendarId = calendarId;
       this.eventId = eventId;
       this.color = color;
+      this.isHovered = isHovered;
+      this.isDetail = isDetail;
+      this.mwNode = mwNode;
     }
   }
 
@@ -10234,25 +10289,33 @@ export namespace OneView {
     clearDrawArea() {
       this.characterFitCache.startNewRound();
       this.textMeasuresCache.startNewRound();
-      OneView.core.drawArea.drawFilledRectangle(
-        OneView.core.zopHandler.leftPixel +
+      OneView.core.drawArea.drawFilledRectangle({
+        x:
+          OneView.core.zopHandler.leftPixel +
           OneView.core.settings.titleWidth +
           OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged,
-        0,
-        OneView.core.zopHandler.rightPixel - OneView.core.zopHandler.leftPixel,
-        OneView.core.zopDrawArea.zopAreaHeight,
-        OneView.core.settings.theme.colorBackground,
-        false
-      );
-      OneView.core.drawArea.drawFilledRectangle(
-        OneView.core.zopHandler.leftPixel,
-        0,
-        OneView.core.settings.titleWidth +
+        y: 0,
+        width:
+          OneView.core.zopHandler.rightPixel -
+          OneView.core.zopHandler.leftPixel,
+        height: OneView.core.zopDrawArea.zopAreaHeight,
+        fillStyle: OneView.core.settings.theme.colorBackground,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
+      OneView.core.drawArea.drawFilledRectangle({
+        x: OneView.core.zopHandler.leftPixel,
+        y: 0,
+        width:
+          OneView.core.settings.titleWidth +
           OneView.core.mainMenuControl.nudgeBecauseMenuBeingDragged,
-        OneView.core.zopDrawArea.zopAreaHeight,
-        OneView.core.settings.theme.colorTitleBackground,
-        false
-      );
+        height: OneView.core.zopDrawArea.zopAreaHeight,
+        fillStyle: OneView.core.settings.theme.colorTitleBackground,
+        hasShadow: false,
+        rounded: false,
+        strokeStyle: undefined,
+      });
     }
     resetDrawAreaSize(b, c) {
       this.zopAreaTop = 0;
@@ -10422,23 +10485,27 @@ export namespace OneView {
         ),
         n = m + OneView.core.settings.margin;
       0 < g &&
-        OneView.core.drawArea.drawFilledRectangle(
-          b,
-          f,
-          g,
-          h - OneView.core.settings.margin,
-          OneView.core.settings.theme.colorBlue,
-          false
-        );
+        OneView.core.drawArea.drawFilledRectangle({
+          x: b,
+          y: f,
+          width: g,
+          height: h - OneView.core.settings.margin,
+          fillStyle: OneView.core.settings.theme.colorBlue,
+          hasShadow: false,
+          rounded: false,
+          strokeStyle: undefined,
+        });
       0 < e - g &&
-        (OneView.core.drawArea.drawFilledRectangle(
-          b + g,
-          f,
-          e - g,
-          h - OneView.core.settings.margin,
-          d,
-          false
-        ),
+        (OneView.core.drawArea.drawFilledRectangle({
+          x: b + g,
+          y: f,
+          width: e - g,
+          height: h - OneView.core.settings.margin,
+          fillStyle: d,
+          hasShadow: false,
+          rounded: false,
+          strokeStyle: undefined,
+        }),
         0.5 < p &&
           (0.95 > p && (l = OneView.core.helper.colorToRGBA(l, 2 * (p - 0.5))),
           this.drawText(
@@ -10497,24 +10564,33 @@ export namespace OneView {
           width - tagColorWidth
         );
         if (tagColorWidth > 0) {
-          OneView.core.drawArea.drawFilledRectangle(
-            x,
-            startPixel,
-            tagColorWidth,
-            eventHeight,
-            OneView.core.settings.theme.colorBlue,
-            false
-          );
+          OneView.core.drawArea.drawFilledRectangle({
+            x: x,
+            y: startPixel,
+            width: tagColorWidth,
+            height: eventHeight,
+            fillStyle: OneView.core.settings.theme.colorBlue,
+            hasShadow: false,
+            rounded: false,
+            strokeStyle: undefined,
+          });
         }
         if (width - tagColorWidth > 0) {
-          OneView.core.drawArea.drawFilledRectangle(
-            x + tagColorWidth,
-            startPixel,
-            width - tagColorWidth,
-            eventHeight,
-            color,
-            false
-          );
+          color = color ? `rgba(${color}, ${isHovered ? 1 : 0.9})` : "#6c7684";
+          OneView.core.drawArea.drawFilledRectangle({
+            x: x + tagColorWidth,
+            y: startPixel,
+            width: width - tagColorWidth,
+            height: eventHeight,
+            fillStyle: color,
+            hasShadow: false,
+            rounded: false,
+            strokeStyle: isHovered
+              ? OneView.core.commonUserSettings.theme === "0"
+                ? "#000"
+                : "#fff"
+              : undefined,
+          });
         }
 
         if (
@@ -10555,14 +10631,16 @@ export namespace OneView {
     drawPartialTag(b, c, e, d, l) {
       e -= OneView.core.settings.margin;
       4 > l ||
-        OneView.core.drawArea.drawFilledRectangle(
-          b,
-          c + 1,
-          e,
-          l - OneView.core.settings.margin,
-          d,
-          false
-        );
+        OneView.core.drawArea.drawFilledRectangle({
+          x: b,
+          y: c + 1,
+          width: e,
+          height: l - OneView.core.settings.margin,
+          fillStyle: d,
+          hasShadow: false,
+          rounded: false,
+          strokeStyle: undefined,
+        });
     }
     drawTextDiv(a, b, c, e, d, h, k, p, q, r) {}
     drawFilledRectangle(b, c, e, d, l, h) {
@@ -10746,14 +10824,16 @@ export namespace OneView {
         var c = 20 * OneView.core.ratio,
           e;
         for (e = 0; e < b.length; e++)
-          OneView.core.drawArea.drawFilledRectangle(
-            200,
-            c,
-            1e3,
-            20 * OneView.core.ratio,
-            "#000000",
-            false
-          ),
+          OneView.core.drawArea.drawFilledRectangle({
+            x: 200,
+            y: c,
+            width: 1e3,
+            height: 20 * OneView.core.ratio,
+            fillStyle: "#000000",
+            hasShadow: false,
+            rounded: false,
+            strokeStyle: undefined,
+          }),
             OneView.core.drawArea.drawText(
               b[e],
               202,

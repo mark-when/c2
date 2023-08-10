@@ -38,7 +38,7 @@ function bob() {
           color: eventColor(node, colorMap),
           isHovered: path.join(",") === hovering?.join(","),
           isDetail: path.join(",") === detail?.join(","),
-          mwNode: node
+          mwNode: node,
         });
         events.push(eventObj);
       }
@@ -75,14 +75,7 @@ function bob() {
         OneView.core.commonUserSettings.theme = isDark ? "3" : "0";
         OneView.core.settings.reloadTheme();
       }
-      if (
-        (!appState.hoveringPath && !hovering) ||
-        appState.hoveringPath?.join(",") === hovering?.join(",")
-      ) {
-        // do nothing, they are equivalent
-      } else {
-        hovering = appState.hoveringPath;
-      }
+      hovering = appState.hoveringPath;
       colorMap = appState.colorMap;
       detail = appState.detailPath;
       redraw(transformed, hovering);
