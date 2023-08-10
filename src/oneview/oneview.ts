@@ -4,6 +4,7 @@ import {
   xLanguageNames,
   xTranslations,
 } from "./translations";
+import { useLpc } from "@markwhen/view-client";
 
 export namespace OneView {
   // LocalStorage class
@@ -7744,86 +7745,118 @@ export namespace OneView {
       )
         for (; OneView.core.appStateHandler.back(); );
     }
-    click(b, c) {
-      var e = false,
-        d =
-          OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
-          OneView.core.zopDrawArea.zopAreaTop,
-        g =
-          OneView.core.domHandler.screenLeftForDOM * OneView.core.ratio +
-          OneView.core.zopDrawArea.zopAreaLeft;
-      OneView.core.appStateHandler.isChoosingDateTimeForEvent &&
-        (e = OneView.core.dateTimeSelectionHandler.click(b, c));
-      e ||
-        (OneView.core.appStateHandler.isMainMenuShowing
-          ? OneView.core.mainMenuControl.click(b - g, c - d)
-          : OneView.core.mainMenuControl.hitMenuButton(b - g, c - d) &&
-            !OneView.core.appStateHandler.isChoosingDateTimeForEvent
-          ? OneView.core.appStateHandler.mainButtonPressed()
-          : (e = OneView.core.calendarDateHandler.getHitWeekAt(
-              b - g,
-              c - d,
-              true
-            ))
-          ? OneView.core.calendarDateHandler.gotoCalendarDateObject(e, c - d)
-          : ((e = OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-              b - g,
-              c - d
-            )) ||
-              (e =
+    click(x: number, y: number) {
+      let clicked = false;
+      let topOffset =
+        OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
+        OneView.core.zopDrawArea.zopAreaTop;
+      let leftOffset =
+        OneView.core.domHandler.screenLeftForDOM * OneView.core.ratio +
+        OneView.core.zopDrawArea.zopAreaLeft;
+
+      if (OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+        clicked = OneView.core.dateTimeSelectionHandler.click(x, y);
+      }
+      if (!clicked) {
+        if (OneView.core.appStateHandler.isMainMenuShowing) {
+          OneView.core.mainMenuControl.click(x - leftOffset, y - topOffset);
+        } else if (
+          OneView.core.mainMenuControl.hitMenuButton(
+            x - leftOffset,
+            y - topOffset
+          )
+        ) {
+          if (!OneView.core.appStateHandler.isChoosingDateTimeForEvent) {
+            OneView.core.appStateHandler.mainButtonPressed();
+          }
+        } else {
+          const hitWeek = OneView.core.calendarDateHandler.getHitWeekAt(
+            x - leftOffset,
+            y - topOffset,
+            true
+          );
+          if (hitWeek) {
+            OneView.core.calendarDateHandler.gotoCalendarDateObject(
+              clicked,
+              y - topOffset
+            );
+          } else {
+            let hitEvent =
+              OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+                x - leftOffset,
+                y - topOffset
+              );
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g,
-                  c - d + 4
-                )),
-            e ||
-              (e =
+                  x - leftOffset,
+                  y - topOffset + 4
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g,
-                  c - d - 4
-                )),
-            e ||
-              (e =
+                  x - leftOffset,
+                  y - topOffset - 4
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g + 2,
-                  c - d
-                )),
-            e ||
-              (e =
+                  x - leftOffset + 2,
+                  y - topOffset
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g - 2,
-                  c - d
-                )),
-            e ||
-              (e =
+                  x - leftOffset - 2,
+                  y - topOffset
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g,
-                  c - d + 8
-                )),
-            e ||
-              (e =
+                  x - leftOffset,
+                  y - topOffset + 8
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g,
-                  c - d - 8
-                )),
-            e ||
-              (e =
+                  x - leftOffset,
+                  y - topOffset - 8
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g + 4,
-                  c - d
-                )),
-            e ||
-              (e =
+                  x - leftOffset + 4,
+                  y - topOffset
+                );
+            }
+            if (!hitEvent) {
+              hitEvent =
                 OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
-                  b - g - 4,
-                  c - d
-                )),
-            e
-              ? OneView.core.appStateHandler.viewEvent(e)
-              : OneView.core.calendarEventHandler.gotoBadgeAt(b - g, c - d) ||
+                  x - leftOffset - 4,
+                  y - topOffset
+                );
+            }
+            if (hitEvent) {
+              OneView.core.appStateHandler.viewEvent(hitEvent);
+            } else {
+              OneView.core.calendarEventHandler.gotoBadgeAt(
+                x - leftOffset,
+                y - topOffset
+              ) ||
                 OneView.core.calendarDateHandler.gotoCalendarDateObjectAt(
-                  b - g,
-                  c - d
-                )));
+                  x - leftOffset,
+                  y - topOffset
+                );
+            }
+          }
+        }
+      }
       OneView.core.redraw(true);
     }
     testIfStartDraggingMarker(b, c, e) {
@@ -8151,6 +8184,14 @@ export namespace OneView {
         OneView.core.zopHandler.continueZoom(this.mouseZoomY, pageY);
         OneView.core.redraw(false);
       }
+
+      let hitEvent =
+        OneView.core.calendarEventHandler.selectCalendarEventObjectAt(x, y);
+      OneView.core.postRequest(
+        "setHoveringPath",
+        hitEvent?.eventId.split(",").map((i) => parseInt(i)) ?? undefined
+      );
+      document.documentElement.style.cursor = hitEvent ? 'pointer' : 'default'
 
       return false;
     }
@@ -9501,7 +9542,12 @@ export namespace OneView {
     calendarEventHandler!: CalendarEventHandler;
     drawAreaEffects!: DrawAreaEffects;
     calendarDateHandler!: CalendarDateHandler;
-    // dynamicallyLoadFile("css/style.css", "css", function () {});
+    postRequest: ReturnType<typeof useLpc>["postRequest"];
+
+    constructor(postRequest: ReturnType<typeof useLpc>["postRequest"]) {
+      this.postRequest = postRequest;
+    }
+
     init() {
       this.setSizeSettings();
       this.domHandler.init();
