@@ -7927,7 +7927,10 @@ export namespace OneView {
                 );
             }
             if (hitEvent) {
-              OneView.core.appStateHandler.viewEvent(hitEvent);
+              OneView.core.postRequest(
+                "setDetailPath",
+                hitEvent.eventId.split(",").map((i) => parseInt(i))
+              );
             } else {
               OneView.core.calendarEventHandler.gotoBadgeAt(
                 x - leftOffset,
@@ -10576,7 +10579,12 @@ export namespace OneView {
           });
         }
         if (width - tagColorWidth > 0) {
-          color = color ? `rgba(${color}, ${isHovered ? 1 : 0.9})` : "#6c7684";
+          const isDark = OneView.core.commonUserSettings.theme === "0";
+          color = color
+            ? `rgba(${color}, ${isHovered ? 1 : 0.9})`
+            : isDark
+            ? "rgb(148, 163, 184)"
+            : "#6c7684";
           OneView.core.drawArea.drawFilledRectangle({
             x: x + tagColorWidth,
             y: startPixel,
@@ -10586,9 +10594,13 @@ export namespace OneView {
             hasShadow: false,
             rounded: false,
             strokeStyle: isHovered
-              ? OneView.core.commonUserSettings.theme === "0"
-                ? "#000"
+              ? isDark
+                ? "rgb(15, 23, 42)"
                 : "#fff"
+              : isDetail
+              ? isDark
+                ? "#4338ca"
+                : "rgb(165, 180, 252)"
               : undefined,
           });
         }
