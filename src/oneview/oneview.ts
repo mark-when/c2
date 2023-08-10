@@ -5880,27 +5880,27 @@ export namespace OneView {
   }
 
   export class CalendarEventHandler {
+    rootCalendarDateObjects: CalendarDateObject[] = [];
+    visibleEventTagWrappers: CalendarEventTagWrapper[] = [];
+    visibleFullEventWrappers: CalendarFullEventWrapper[] = [];
+    visibleTagEventGroups: CalendarEventTagGroup[] = [];
+    visibleBadges: Badge[] = [];
+    lowestLevelCalendarDateObjectType = void 0;
+    eventsFarRight = 0;
+    eventsFarLeft = 0;
+    absoluteMaxZOP = 0;
+    absoluteMinZOP = 0;
+    bottomZOP = 0;
+    topZOP = 0;
+    minFullEventZOPSize = 0;
+    counter = 0;
+    tagSurfaces = [];
+    selectedCalendarEvent: CalendarEventObject | undefined;
+    recalc = true;
+    commonTimeKeys = [];
+    commonTimeKeysHelper = [];
+
     constructor() {
-      this.rootCalendarDateObjects = [];
-      this.visibleEventTagWrappers = [];
-      this.visibleFullEventWrappers = [];
-      this.visibleTagEventGroups = [];
-      this.visibleBadges = [];
-      this.lowestLevelCalendarDateObjectType = void 0;
-      this.eventsFarRight =
-        this.eventsFarLeft =
-        this.absoluteMaxZOP =
-        this.absoluteMinZOP =
-        this.bottomZOP =
-        this.topZOP =
-        this.minFullEventZOPSize =
-        this.counter =
-          0;
-      this.tagSurfaces = [];
-      this.selectedCalendarEvent = void 0;
-      this.recalc = true;
-      this.commonTimeKeys = [];
-      this.commonTimeKeysHelper = [];
       this.rootCalendarDateObjects.push(
         new OneView.CalendarDateObject(
           OneView.CalendarDateObjectType.Title,
@@ -6372,6 +6372,9 @@ export namespace OneView {
     }
     paintVisibleFullEventWrappers() {
       var b, c, e, f;
+      for (let i = 0; i < this.visibleFullEventWrappers.length; i++) {
+        const eventWrapper = this.visibleFullEventWrappers[i].calendarEvent;
+      }
       for (b = 0; b < this.visibleFullEventWrappers.length; b++)
         (c = this.visibleFullEventWrappers[b].calendarEvent),
           (e = this.visibleFullEventWrappers[b].left),
@@ -8954,24 +8957,33 @@ export namespace OneView {
   }
 
   export class CalendarEventTagWrapper {
-    constructor(a) {
-      this.wantedPixelShift = this.right = this.left = this.position = 0;
-      this.isPartial = false;
-      this.parentCollidingFullEventWrappers = [];
-      this.visible = true;
+    wantedPixelShift = 0;
+    right = 0;
+    left = 0;
+    position = 0;
+    isPartial = false;
+    parentCollidingFullEventWrappers = [];
+    visible = true;
+    calendarEvent: CalendarEventObject | undefined;
+    constructor(a: CalendarEventObject) {
       this.calendarEvent = a;
     }
   }
 
   export class CalendarFullEventWrapper {
-    constructor(a) {
-      this.widthPercentWhenTagsExist = this.widthPercent = 0;
-      this.preferredWidth = this.right = this.left = void 0;
-      this.collisionsHaveBeenChecked = false;
-      this.parentCollidingFullEventWrappers = [];
-      this.childCollidingFullEventWrappers = [];
-      this.childCollidingEventTagWrappers = [];
-      this.calendarEvent = a;
+    widthPercentWhenTagsExist = 0;
+    widthPercent = 0;
+    preferredWidth = undefined;
+    right = undefined;
+    left = undefined;
+    collisionsHaveBeenChecked = false;
+    parentCollidingFullEventWrappers = [];
+    childCollidingFullEventWrappers = [];
+    childCollidingEventTagWrappers = [];
+    calendarEvent: CalendarEventObject;
+
+    constructor(calendarEvent: CalendarEventObject) {
+      this.calendarEvent = calendarEvent;
     }
   }
 
