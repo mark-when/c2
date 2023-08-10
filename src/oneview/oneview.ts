@@ -5,6 +5,7 @@ import {
   xTranslations,
 } from "./translations";
 import { useLpc } from "@markwhen/view-client";
+import { Event } from "@markwhen/parser/lib/Types";
 
 export namespace OneView {
   // LocalStorage class
@@ -280,6 +281,17 @@ export namespace OneView {
       return a;
     }
   }
+
+  export interface DrawFilledRectangleParams {
+    x: number
+    y: number
+    width: number
+    height: number
+    fillStyle: string
+    hasShadow: boolean
+    rounded: boolean
+  }
+
   export class DrawArea {
     previousFont = "";
     canvasCache = new OneView.SpeedCache();
@@ -290,6 +302,7 @@ export namespace OneView {
       OneView.core.zopDrawArea.canvasContext.fillText(b, 5, 30);
     }
     drawIcon(a, c, e, f, g) {
+      return;
       var b = this;
       if (!(this.loadingIconNames && 0 <= this.loadingIconNames.indexOf(a)))
         if (
@@ -369,16 +382,37 @@ export namespace OneView {
         g
       );
     }
-    drawFilledRectangle(b, c, e, f, g, d) {
-      OneView.core.zopDrawArea.setShadow(d);
-      OneView.core.zopDrawArea.canvasContext.fillStyle = g;
-      OneView.core.zopDrawArea.canvasContext.fillRect(
-        Math.floor(b),
-        Math.floor(c),
-        Math.floor(e),
-        Math.floor(f)
-      );
-      OneView.core.zopDrawArea.removeShadow(d);
+    drawFilledRectangle(
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      fillStyle,
+      hasShadow: boolean,
+      rounded: boolean = false
+    ) {
+      OneView.core.zopDrawArea.setShadow(hasShadow);
+      const context = OneView.core.zopDrawArea.canvasContext;
+      context.fillStyle = fillStyle;
+      if (rounded) {
+        context.beginPath();
+        context.roundRect(
+          Math.floor(x),
+          Math.floor(y),
+          Math.floor(width),
+          Math.floor(height),
+          15
+        );
+        context.fill();
+      } else {
+        context.fillRect(
+          Math.floor(x),
+          Math.floor(y),
+          Math.floor(width),
+          Math.floor(height)
+        );
+      }
+      OneView.core.zopDrawArea.removeShadow(hasShadow);
     }
     setFont(fontSize: number, c, e, f) {
       void 0 === c && (c = false);
@@ -1287,124 +1321,124 @@ export namespace OneView {
       OneView.core.appStateHandler.isMainMenuShowing && this.redraw();
     }
     redrawMenuIcon() {
-      OneView.core.zopDrawArea.canvasContext.globalAlpha = Math.max(
-        0,
-        -this.transparency
-      );
-      var currentZop = OneView.core.zopHandler.dateToZOP(new Date()),
-        maxTitleWidth = Math.min(
-          0.6 * OneView.core.settings.titleWidth,
-          20 * OneView.core.ratio * OneView.core.settings.zoom
-        ),
-        titleOffset = (OneView.core.settings.titleWidth - maxTitleWidth) / 2,
-        g = OneView.core.zopDrawArea.zopAreaTop + titleOffset,
-        d =
-          this.movingMenuWidth - OneView.core.settings.titleWidth + titleOffset,
-        titleOffset =
-          OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP,
-        currentZop = Math.max(
-          0,
-          (Math.abs(
-            currentZop - (OneView.core.zopHandler.topZOP + titleOffset / 2)
-          ) -
-            0.45 * titleOffset) /
-            (0.1 * titleOffset)
-        ),
-        n = 1 - Math.min(1, currentZop),
-        l = 1 - 3 * Math.max(0, Math.min(1.333, currentZop) - 1),
-        currentZop = OneView.core.settings.lineThickness,
-        h = g + maxTitleWidth / 5,
-        k = g + maxTitleWidth / 2,
-        p = g + maxTitleWidth - maxTitleWidth / 5,
-        q = g + maxTitleWidth / 2,
-        r = d + maxTitleWidth / 6,
-        v = d + maxTitleWidth - maxTitleWidth / 6,
-        t = (d + maxTitleWidth / 2) * n + (d + maxTitleWidth / 2) * (1 - n),
-        w = h * n + g * (1 - n),
-        z =
-          (d + maxTitleWidth - currentZop) * n + (d + maxTitleWidth) * (1 - n),
-        x = h * n + q * (1 - n),
-        titleOffset = (d + currentZop) * n + r * (1 - n),
-        A = k * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
-        r = (d + maxTitleWidth - currentZop) * n + r * (1 - n),
-        k = k * n + (q - maxTitleWidth / 7) * (1 - n),
-        u = (d + currentZop) * n + v * (1 - n),
-        g = p * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
-        v = (d + maxTitleWidth - currentZop) * n + v * (1 - n),
-        p = p * n + (q - maxTitleWidth / 7) * (1 - n);
-      OneView.core.drawArea.startLines(
-        (d + currentZop) * n + d * (1 - n),
-        h * n + q * (1 - n),
-        currentZop,
-        OneView.core.settings.theme.colorTitleText
-      );
-      OneView.core.drawArea.continueLines(t, w);
-      OneView.core.drawArea.continueLines(z, x);
-      OneView.core.drawArea.endLines();
-      1 <= l &&
-        (OneView.core.drawArea.drawLine2(
-          titleOffset,
-          A,
-          r,
-          k,
-          currentZop,
-          OneView.core.settings.theme.colorTitleText,
-          false
-        ),
-        OneView.core.drawArea.drawLine2(
-          u,
-          g,
-          v,
-          p,
-          currentZop,
-          OneView.core.settings.theme.colorTitleText,
-          false
-        ));
-      var y = maxTitleWidth / 5;
-      if (
-        1 > l &&
-        ((maxTitleWidth =
-          titleOffset * l + ((titleOffset + u - y) / 2) * (1 - l)),
-        (d = p * l + A * (1 - l)),
-        (n = u * l + ((titleOffset + u + y) / 2) * (1 - l)),
-        (h = p * l + A * (1 - l)),
-        (x = 2 * y),
-        1 > l &&
-          ((q = maxTitleWidth * l + maxTitleWidth * (1 - l)),
-          (t = d * l + (d - x) * (1 - l)),
-          (w = n * l + n * (1 - l)),
-          (z = h * l + (h - x) * (1 - l)),
-          1 > l))
-      ) {
-        var B = d - x,
-          x = q * l + (q + y / 2) * (1 - l),
-          C = t * l + B * (1 - l),
-          y = w * l + (w - y / 2) * (1 - l),
-          l = z * l + B * (1 - l);
-        OneView.core.drawArea.startLines(
-          r,
-          k,
-          currentZop,
-          OneView.core.settings.theme.colorTitleText
-        );
-        OneView.core.drawArea.continueLines(titleOffset, A);
-        OneView.core.drawArea.continueLines(maxTitleWidth, d);
-        OneView.core.drawArea.continueLines(q, t);
-        OneView.core.drawArea.continueLines(x, C);
-        OneView.core.drawArea.endLines();
-        OneView.core.drawArea.startLines(
-          v,
-          p,
-          currentZop,
-          OneView.core.settings.theme.colorTitleText
-        );
-        OneView.core.drawArea.continueLines(u, g);
-        OneView.core.drawArea.continueLines(n, h);
-        OneView.core.drawArea.continueLines(w, z);
-        OneView.core.drawArea.continueLines(y, l);
-        OneView.core.drawArea.endLines();
-      }
-      OneView.core.zopDrawArea.canvasContext.globalAlpha = 1;
+      // OneView.core.zopDrawArea.canvasContext.globalAlpha = Math.max(
+      //   0,
+      //   -this.transparency
+      // );
+      // var currentZop = OneView.core.zopHandler.dateToZOP(new Date()),
+      //   maxTitleWidth = Math.min(
+      //     0.6 * OneView.core.settings.titleWidth,
+      //     20 * OneView.core.ratio * OneView.core.settings.zoom
+      //   ),
+      //   titleOffset = (OneView.core.settings.titleWidth - maxTitleWidth) / 2,
+      //   g = OneView.core.zopDrawArea.zopAreaTop + titleOffset,
+      //   d =
+      //     this.movingMenuWidth - OneView.core.settings.titleWidth + titleOffset,
+      //   titleOffset =
+      //     OneView.core.zopHandler.bottomZOP - OneView.core.zopHandler.topZOP,
+      //   currentZop = Math.max(
+      //     0,
+      //     (Math.abs(
+      //       currentZop - (OneView.core.zopHandler.topZOP + titleOffset / 2)
+      //     ) -
+      //       0.45 * titleOffset) /
+      //       (0.1 * titleOffset)
+      //   ),
+      //   n = 1 - Math.min(1, currentZop),
+      //   l = 1 - 3 * Math.max(0, Math.min(1.333, currentZop) - 1),
+      //   currentZop = OneView.core.settings.lineThickness,
+      //   h = g + maxTitleWidth / 5,
+      //   k = g + maxTitleWidth / 2,
+      //   p = g + maxTitleWidth - maxTitleWidth / 5,
+      //   q = g + maxTitleWidth / 2,
+      //   r = d + maxTitleWidth / 6,
+      //   v = d + maxTitleWidth - maxTitleWidth / 6,
+      //   t = (d + maxTitleWidth / 2) * n + (d + maxTitleWidth / 2) * (1 - n),
+      //   w = h * n + g * (1 - n),
+      //   z =
+      //     (d + maxTitleWidth - currentZop) * n + (d + maxTitleWidth) * (1 - n),
+      //   x = h * n + q * (1 - n),
+      //   titleOffset = (d + currentZop) * n + r * (1 - n),
+      //   A = k * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
+      //   r = (d + maxTitleWidth - currentZop) * n + r * (1 - n),
+      //   k = k * n + (q - maxTitleWidth / 7) * (1 - n),
+      //   u = (d + currentZop) * n + v * (1 - n),
+      //   g = p * n + (g + maxTitleWidth - currentZop / 2) * (1 - n),
+      //   v = (d + maxTitleWidth - currentZop) * n + v * (1 - n),
+      //   p = p * n + (q - maxTitleWidth / 7) * (1 - n);
+      // OneView.core.drawArea.startLines(
+      //   (d + currentZop) * n + d * (1 - n),
+      //   h * n + q * (1 - n),
+      //   currentZop,
+      //   OneView.core.settings.theme.colorTitleText
+      // );
+      // OneView.core.drawArea.continueLines(t, w);
+      // OneView.core.drawArea.continueLines(z, x);
+      // OneView.core.drawArea.endLines();
+      // 1 <= l &&
+      //   (OneView.core.drawArea.drawLine2(
+      //     titleOffset,
+      //     A,
+      //     r,
+      //     k,
+      //     currentZop,
+      //     OneView.core.settings.theme.colorTitleText,
+      //     false
+      //   ),
+      //   OneView.core.drawArea.drawLine2(
+      //     u,
+      //     g,
+      //     v,
+      //     p,
+      //     currentZop,
+      //     OneView.core.settings.theme.colorTitleText,
+      //     false
+      //   ));
+      // var y = maxTitleWidth / 5;
+      // if (
+      //   1 > l &&
+      //   ((maxTitleWidth =
+      //     titleOffset * l + ((titleOffset + u - y) / 2) * (1 - l)),
+      //   (d = p * l + A * (1 - l)),
+      //   (n = u * l + ((titleOffset + u + y) / 2) * (1 - l)),
+      //   (h = p * l + A * (1 - l)),
+      //   (x = 2 * y),
+      //   1 > l &&
+      //     ((q = maxTitleWidth * l + maxTitleWidth * (1 - l)),
+      //     (t = d * l + (d - x) * (1 - l)),
+      //     (w = n * l + n * (1 - l)),
+      //     (z = h * l + (h - x) * (1 - l)),
+      //     1 > l))
+      // ) {
+      //   var B = d - x,
+      //     x = q * l + (q + y / 2) * (1 - l),
+      //     C = t * l + B * (1 - l),
+      //     y = w * l + (w - y / 2) * (1 - l),
+      //     l = z * l + B * (1 - l);
+      //   OneView.core.drawArea.startLines(
+      //     r,
+      //     k,
+      //     currentZop,
+      //     OneView.core.settings.theme.colorTitleText
+      //   );
+      //   OneView.core.drawArea.continueLines(titleOffset, A);
+      //   OneView.core.drawArea.continueLines(maxTitleWidth, d);
+      //   OneView.core.drawArea.continueLines(q, t);
+      //   OneView.core.drawArea.continueLines(x, C);
+      //   OneView.core.drawArea.endLines();
+      //   OneView.core.drawArea.startLines(
+      //     v,
+      //     p,
+      //     currentZop,
+      //     OneView.core.settings.theme.colorTitleText
+      //   );
+      //   OneView.core.drawArea.continueLines(u, g);
+      //   OneView.core.drawArea.continueLines(n, h);
+      //   OneView.core.drawArea.continueLines(w, z);
+      //   OneView.core.drawArea.continueLines(y, l);
+      //   OneView.core.drawArea.endLines();
+      // }
+      // OneView.core.zopDrawArea.canvasContext.globalAlpha = 1;
     }
     hitMenuButton(x: number, y: number) {
       if (
@@ -4959,21 +4993,21 @@ export namespace OneView {
             );
     }
     paintMarker(b) {
-      var c = this.fakeLeft + OneView.core.settings.titleWidth;
+      var left = -OneView.core.settings.titleWidth * 2;
       b = OneView.core.zopHandler.dateToZOP(b);
       var e = "3" != OneView.core.commonUserSettings.theme;
       OneView.core.zopDrawArea.drawHorizontalLineThick(
-        c + 2 * OneView.core.settings.tagHeight,
+        left + 2 * OneView.core.settings.tagHeight,
         b,
         OneView.core.zopHandler.rightPixel -
-          c -
+          left -
           OneView.core.settings.tagHeight,
         OneView.core.settings.theme.colorMarker,
         2 * OneView.core.ratio,
         e
       );
       OneView.core.zopDrawArea.drawFilledCircle(
-        c + 2 * OneView.core.settings.tagHeight,
+        left + 2 * OneView.core.settings.tagHeight,
         b,
         6 * OneView.core.ratio,
         OneView.core.settings.theme.colorMarker,
@@ -5072,7 +5106,7 @@ export namespace OneView {
         )
       );
       "3" == OneView.core.commonUserSettings.theme &&
-        (b = Math.floor(35 + (255 - b) / 4));
+        (b = Math.floor(15 + (255 - b) / 4));
       this.oddWeekColor = "rgb(" + b + ", " + (b + 10) + ", " + (b + 20) + ")";
       for (b = 0; b < this.weekCalendarDateObjects.length; b++) {
         if (
@@ -5508,27 +5542,29 @@ export namespace OneView {
         );
       return this.getVisibleChildCalendarDateObjects(c);
     }
-    paintVisibleTitleObjects(b, c, e, f, d, m) {
-      var g = b.length;
-      if (0 !== g) {
-        var l, h, k;
-        for (l = 0; l < g; l++)
-          (h = b[l]),
-            this.drawHorizontalLine(h, OneView.core.zopHandler.topZOP),
-            this.title4CalendarDateObjectType != h.calendarDateObjectType &&
-              ((k = h.longText),
-              true === f && (k = k + " (" + h.parentText + ")"),
-              OneView.core.zopDrawArea.drawVerticalTitle(
-                h.startZOP,
-                h.endZOP,
-                c + e,
-                k,
-                d,
-                OneView.core.settings.theme.colorTitleText,
-                OneView.core.settings.margin,
-                true,
-                m
-              ));
+    paintVisibleTitleObjects(titles: any[], c, e, f, d, m) {
+      var numTitles = titles.length;
+      var title;
+      for (let i = 0; i < numTitles; i++) {
+        const title = titles[i];
+        this.drawHorizontalLine(title, OneView.core.zopHandler.topZOP);
+        if (this.title4CalendarDateObjectType != title.calendarDateObjectType) {
+          let titleText = title.longText;
+          if (f) {
+            titleText = titleText + " (" + title.parentText + ")";
+          }
+          OneView.core.zopDrawArea.drawVerticalTitle(
+            title.startZOP,
+            title.endZOP,
+            c + e,
+            titleText,
+            d,
+            OneView.core.settings.theme.colorTitleText,
+            OneView.core.settings.margin,
+            true,
+            m
+          );
+        }
       }
     }
     drawHorizontalLine(b, c) {
@@ -6390,10 +6426,7 @@ export namespace OneView {
         eventWrapper.right = left + width;
 
         if (width > 0) {
-          const color = OneView.core.helper.getEventColor(
-            event,
-            OneView.core.getCalendar(event.calendarId)
-          );
+          const color = event.color ? `rgb(${event.color})` : "#6c7684";
           const textColor = OneView.core.helper.getEventTextColor(
             event,
             OneView.core.getCalendar(event.calendarId)
@@ -6405,7 +6438,9 @@ export namespace OneView {
             width,
             color,
             textColor,
-            event.summary
+            event.summary,
+            event.isHovered,
+            event.isDetail
           );
         }
       }
@@ -8191,7 +8226,7 @@ export namespace OneView {
         "setHoveringPath",
         hitEvent?.eventId.split(",").map((i) => parseInt(i)) ?? undefined
       );
-      document.documentElement.style.cursor = hitEvent ? 'pointer' : 'default'
+      document.documentElement.style.cursor = hitEvent ? "pointer" : "default";
 
       return false;
     }
@@ -8786,6 +8821,20 @@ export namespace OneView {
     }
   }
 
+  export interface CalendarEventParams {
+    summary: string;
+    description: string;
+    location: string;
+    startDate: Date;
+    endDate: Date;
+    calendarId: "Default";
+    eventId: string;
+    color: string | undefined;
+    isHovered: boolean;
+    isDetail: boolean;
+    mwNode: Node<Event>;
+  }
+
   export class CalendarEventObject {
     summary: string;
     description: string;
@@ -8796,26 +8845,30 @@ export namespace OneView {
     grade: number = 0;
     calendarId: string;
     eventId: string;
-    hovering: boolean = false;
+    isHovered: boolean = false;
+    isDetail: boolean = false;
+    mwNode: Node<Event>;
+    color: string | undefined;
 
-    constructor(
+    constructor({
       summary,
       description,
       location,
-      startDateTime,
-      endDateTime,
+      startDate,
+      endDate,
       calendarId,
-      eventId
-    ) {
+      eventId,
+      color,
+    }: CalendarEventParams) {
       this.summary = summary || "";
       this.description = description || "";
       this.location = location;
-      this.startDateTime = startDateTime;
-      this.endDateTime = endDateTime;
+      this.startDateTime = startDate;
+      this.endDateTime = endDate;
 
-      if (endDateTime.getHours() === 0 && endDateTime.getMinutes() === 0) {
+      if (endDate.getHours() === 0 && endDate.getMinutes() === 0) {
         this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
-          endDateTime,
+          endDate,
           -1
         );
       }
@@ -8825,6 +8878,7 @@ export namespace OneView {
       this.grade = 0;
       this.calendarId = calendarId;
       this.eventId = eventId;
+      this.color = color;
     }
   }
 
@@ -10408,7 +10462,9 @@ export namespace OneView {
       width: number,
       color,
       textColor: string,
-      text: string
+      text: string,
+      isHovered: boolean,
+      isDetail: boolean
     ) {
       var startPixel = Math.max(
           OneView.core.zopHandler.getPixelFromZOP(startZop) + 1,
