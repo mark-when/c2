@@ -8259,7 +8259,6 @@ export namespace OneView {
       }
 
       var delta = -event.deltaY;
-      console.log(event, event.deltaY);
 
       this.timeForLastScrollEvent = OneView.core.getTimeStamp();
       var topZop = OneView.core.zopHandler.topZOP,
@@ -8270,19 +8269,17 @@ export namespace OneView {
           (OneView.core.drawAreaEffects.azGoalBottomZOP + bottomZop) / 2;
       }
 
-      event =
-        OneView.core.zopHandler.getZOPFromPixel(
-          (event.pageY -
-            (OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
-              OneView.core.zopDrawArea.zopAreaTop)) *
-            OneView.core.ratio *
-            OneView.core.domRatio
-        ) -
-        (bottomZop + topZop) / 2;
-      // event = 0 < delta ? 0.5 * event : -0.5 * event;
+      event = OneView.core.zopHandler.getZOPFromPixel(
+        (event.pageY -
+          (OneView.core.domHandler.screenTopForDOM * OneView.core.ratio +
+            OneView.core.zopDrawArea.zopAreaTop)) *
+          OneView.core.ratio *
+          OneView.core.domRatio
+      );
+      const ratio = (event - bottomZop) / (topZop - bottomZop);
       delta *= 0.005 * (bottomZop - topZop);
-      topZop = topZop + delta;
-      bottomZop = bottomZop - delta;
+      topZop = topZop + delta * (1 - ratio);
+      bottomZop = bottomZop - delta * ratio;
       OneView.core.drawAreaEffects.stopAllEffects();
       OneView.core.zopHandler.setZoom(
         topZop,
@@ -8594,10 +8591,10 @@ export namespace OneView {
         e = Math.floor(e);
       return new OneView.NumberPair(e - d, e);
     }
-    getZOPFromPixel2(a, c, e) {
+    getZOPFromPixel2(a, c, e): number {
       return (a - this.topPixel) * c + e;
     }
-    getZOPFromPixel(a) {
+    getZOPFromPixel(a): number {
       return this.getZOPFromPixel2(a, this.currentZoom, this.currentDelta);
     }
     getZOPFromPixelDiff(a) {
