@@ -8277,7 +8277,7 @@ export namespace OneView {
           OneView.core.domRatio
       );
       const ratio = (event - bottomZop) / (topZop - bottomZop);
-      delta *= 0.005 * (bottomZop - topZop);
+      delta *= 0.01 * (bottomZop - topZop);
       topZop = topZop + delta * (1 - ratio);
       bottomZop = bottomZop - delta * ratio;
       OneView.core.drawAreaEffects.stopAllEffects();
@@ -8745,6 +8745,7 @@ export namespace OneView {
     grade: number = 0;
     calendarId: string;
     eventId: string;
+    hovering: boolean = false;
 
     constructor(
       summary,
@@ -10335,70 +10336,99 @@ export namespace OneView {
             OneView.core.settings.theme.tagTextIsBold
           )));
     }
-    drawFullEvent(b, c, e, d, l, h, k) {
-      var f = Math.max(OneView.core.zopHandler.getPixelFromZOP(c) + 1, 0),
-        g = Math.max(OneView.core.zopHandler.getPixelFromZOP(e), 0),
-        m =
-          OneView.core.zopHandler.getPixelFromZOP(e) -
-          OneView.core.zopHandler.getPixelFromZOP(c),
-        f = Math.min(f, g - OneView.core.settings.tagHeight);
-      d -= OneView.core.settings.margin;
-      g = g - f - 1;
-      if (!(0 >= g)) {
-        var n = Math.min(OneView.core.settings.tagColorWidth, d),
-          p = Math.floor(
-            (OneView.core.settings.tagHeight -
-              OneView.core.settings.tagTextHeight) /
-              2 -
-              OneView.core.settings.margin
-          ),
-          w = p + OneView.core.settings.margin,
-          z = Math.min(OneView.core.settings.tagHeight, d - n);
-        0 < n &&
+    drawFullEvent(
+      x: number,
+      startZop: number,
+      endZop: number,
+      width: number,
+      color,
+      text: string,
+      isBold: boolean
+    ) {
+      var startPixel = Math.max(
+          OneView.core.zopHandler.getPixelFromZOP(startZop) + 1,
+          0
+        ),
+        endPixel = Math.max(OneView.core.zopHandler.getPixelFromZOP(endZop), 0),
+        height =
+          OneView.core.zopHandler.getPixelFromZOP(endZop) -
+          OneView.core.zopHandler.getPixelFromZOP(startZop),
+        startPixel = Math.min(
+          startPixel,
+          endPixel - OneView.core.settings.tagHeight
+        );
+      width -= OneView.core.settings.margin;
+      const eventHeight = endPixel - startPixel - 1;
+      if (eventHeight > 0) {
+        const tagColorWidth = Math.min(
+          OneView.core.settings.tagColorWidth,
+          width
+        );
+        const textYOffset = Math.floor(
+          (OneView.core.settings.tagHeight -
+            OneView.core.settings.tagTextHeight) /
+            2 -
+            OneView.core.settings.margin
+        );
+        const textXOffset = textYOffset + OneView.core.settings.margin;
+        const textHeight = Math.min(
+          OneView.core.settings.tagHeight,
+          width - tagColorWidth
+        );
+        if (tagColorWidth > 0) {
           OneView.core.drawArea.drawFilledRectangle(
-            b,
-            f,
-            n,
-            g,
+            x,
+            startPixel,
+            tagColorWidth,
+            eventHeight,
             OneView.core.settings.theme.colorBlue,
             false
           );
-        0 < d - n &&
+        }
+        if (width - tagColorWidth > 0) {
           OneView.core.drawArea.drawFilledRectangle(
-            b + n,
-            f,
-            d - n,
-            g,
-            l,
+            x + tagColorWidth,
+            startPixel,
+            width - tagColorWidth,
+            eventHeight,
+            color,
             false
           );
-        1.6 * d > m || m < 2 * OneView.core.settings.tagHeight
-          ? this.drawText(
-              k,
-              b + n + w,
-              f - 1,
-              p,
-              OneView.core.settings.tagTextHeight,
-              h,
-              l,
-              false,
-              d - n - w - 2,
-              false,
-              OneView.core.settings.theme.tagTextIsBold
-            )
-          : z > OneView.core.settings.tagTextHeight &&
-            ((w = Math.floor(OneView.core.settings.tagHeight / 6)),
-            this.drawVerticalTitle(
-              c,
-              e,
-              b + n + w,
-              k,
-              OneView.core.settings.tagTextHeight,
-              h,
-              OneView.core.settings.margin,
-              false,
-              OneView.core.settings.theme.tagTextIsBold
-            ));
+        }
+
+        if (
+          height / width < 2 ||
+          height < 2 * OneView.core.settings.tagHeight
+        ) {
+          this.drawText(
+            isBold,
+            x + tagColorWidth + textXOffset,
+            startPixel - 1,
+            textYOffset,
+            OneView.core.settings.tagTextHeight,
+            text,
+            color,
+            false,
+            width - tagColorWidth - textXOffset - 2,
+            false,
+            OneView.core.settings.theme.tagTextIsBold
+          );
+        } else if (textHeight > OneView.core.settings.tagTextHeight) {
+          const adjustedHeight = Math.floor(
+            OneView.core.settings.tagHeight / 6
+          );
+          this.drawVerticalTitle(
+            startZop,
+            endZop,
+            x + tagColorWidth + textXOffset,
+            isBold,
+            OneView.core.settings.tagTextHeight,
+            text,
+            OneView.core.settings.margin,
+            false,
+            OneView.core.settings.theme.tagTextIsBold
+          );
+        }
       }
     }
     drawPartialTag(b, c, e, d, l) {
