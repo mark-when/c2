@@ -23,7 +23,11 @@ function bob() {
     return ourTags ? colorMap?.[source][ourTags[0]] : undefined;
   };
 
-  const redraw = (transformed: Node<NodeArray>, hovering: Path | undefined) => {
+  const redraw = (
+    transformed: Node<NodeArray>,
+    hovering: Path | undefined,
+    hard: boolean = true
+  ) => {
     events = [];
     for (const { node, path } of walk2(transformed, [])) {
       if (node && isEventNode(node)) {
@@ -65,7 +69,7 @@ function bob() {
       OneView.core.calendarEventHandler.addEventToCalendar(e);
     });
     OneView.core.calendarEventHandler.findCommonTimes();
-    OneView.core.redraw(true);
+    OneView.core.redraw(hard);
   };
 
   const { postRequest } = useLpc({

@@ -2133,7 +2133,7 @@ export namespace OneView {
       for (e = 0; e < this.menuItems.length; e++)
         this.paintMenuItem(this.menuItems[e]);
     }
-    paintMenuItem(b) {
+    paintMenuItem(b: MenuItemInfo) {
       if (b.isVisible) {
         var c = OneView.core.settings.menuItemHeight - 1;
         OneView.core.drawArea.drawFilledRectangle({
@@ -8384,6 +8384,21 @@ export namespace OneView {
         (event.pageY - OneView.core.domHandler.screenTopForDOM) *
         OneView.core.ratio *
         OneView.core.domRatio;
+      const pageX =
+        (event.pageX - OneView.core.domHandler.screenLeftForDOM) *
+        OneView.core.ratio *
+        OneView.core.domRatio;
+
+      // let hitEvent =
+      //   OneView.core.calendarEventHandler.selectCalendarEventObjectAt(
+      //     pageX,
+      //     pageY
+      //   );
+      // OneView.core.postRequest(
+      //   "setHoveringPath",
+      //   hitEvent?.eventId.split(",").map((i) => parseInt(i)) ?? undefined
+      // );
+      // document.documentElement.style.cursor = hitEvent ? "pointer" : "default";
 
       if (!event.ctrlKey) {
         OneView.core.drawAreaEffects.stopAllEffects();
