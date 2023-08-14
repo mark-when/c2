@@ -3744,8 +3744,7 @@ export namespace OneView {
         (this.canvasMenuContext = this.canvasMenu.getContext("2d")));
     }
     resetDrawAreaSize_Delayed() {
-      this.resetDrawAreaSize = this.resetDrawAreaSize.bind(this);
-      window.setTimeout(this.resetDrawAreaSize, 100);
+      this.resetDrawAreaSize()
     }
     resetDrawAreaSize() {
       var viewport = document.querySelector('meta[name="viewport"]');
@@ -3917,6 +3916,7 @@ export namespace OneView {
         this.screenHeight,
         this.screenWidth
       );
+
       OneView.core.mainMenuControl.resetDrawAreaSize(
         this.screenHeight,
         this.screenWidth
@@ -8919,11 +8919,11 @@ export namespace OneView {
 
     constructor(...params) {
       if (params.length > 1) {
-        this.summary = params[0]
-        this.description = params[1]
-        this.location = params[2]
-        this.startDateTime = params[3]
-        this.endDateTime = params[4]
+        this.summary = params[0];
+        this.description = params[1];
+        this.location = params[2];
+        this.startDateTime = params[3];
+        this.endDateTime = params[4];
 
         if (params[3].getHours() === 0 && params[3].getMinutes() === 0) {
           this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
@@ -8937,7 +8937,7 @@ export namespace OneView {
         this.grade = 0;
         this.calendarId = params[5];
         this.eventId = params[6];
-        this.color = '';
+        this.color = "";
         this.isHovered = false;
         this.isDetail = false;
         this.mwNode = undefined;
@@ -9960,7 +9960,7 @@ export namespace OneView {
         this.domHandler.resetDrawAreaSize_Delayed
       );
       resizeObserver.observe(document.documentElement);
-      this.domHandler.resetDrawAreaSize_Delayed();
+      // this.domHandler.resetDrawAreaSize_Delayed();
       this.zopHandler.showInitialBounds(false);
       this.readyToGo = true;
       this.redraw(true);
@@ -10362,6 +10362,7 @@ export namespace OneView {
       });
     }
     resetDrawAreaSize(b, c) {
+      console.log('resizing')
       this.zopAreaTop = 0;
       this.zopAreaHeight = b;
       this.zopAreaLeft = 0;
