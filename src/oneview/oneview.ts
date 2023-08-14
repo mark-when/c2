@@ -8917,41 +8917,67 @@ export namespace OneView {
     mwNode: Node<Event>;
     color: string | undefined;
 
-    constructor({
-      summary,
-      description,
-      location,
-      startDate,
-      endDate,
-      calendarId,
-      eventId,
-      color,
-      isHovered,
-      isDetail,
-      mwNode,
-    }: CalendarEventParams) {
-      this.summary = summary || "";
-      this.description = description || "";
-      this.location = location;
-      this.startDateTime = startDate;
-      this.endDateTime = endDate;
+    constructor(...params) {
+      if (params.length > 1) {
+        this.summary = params[0]
+        this.description = params[1]
+        this.location = params[2]
+        this.startDateTime = params[3]
+        this.endDateTime = params[4]
 
-      if (endDate.getHours() === 0 && endDate.getMinutes() === 0) {
-        this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+        if (params[3].getHours() === 0 && params[3].getMinutes() === 0) {
+          this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+            params[3],
+            -1
+          );
+        }
+
+        OneView.core.zopHandler.updateStartEndZOP(this);
+        this.isGraded = false;
+        this.grade = 0;
+        this.calendarId = params[5];
+        this.eventId = params[6];
+        this.color = '';
+        this.isHovered = false;
+        this.isDetail = false;
+        this.mwNode = undefined;
+      } else {
+        const {
+          summary,
+          description,
+          location,
+          startDate,
           endDate,
-          -1
-        );
-      }
+          calendarId,
+          eventId,
+          color,
+          isHovered,
+          isDetail,
+          mwNode,
+        }: CalendarEventParams = params[0];
+        this.summary = summary || "";
+        this.description = description || "";
+        this.location = location;
+        this.startDateTime = startDate;
+        this.endDateTime = endDate;
 
-      OneView.core.zopHandler.updateStartEndZOP(this);
-      this.isGraded = false;
-      this.grade = 0;
-      this.calendarId = calendarId;
-      this.eventId = eventId;
-      this.color = color;
-      this.isHovered = isHovered;
-      this.isDetail = isDetail;
-      this.mwNode = mwNode;
+        if (endDate.getHours() === 0 && endDate.getMinutes() === 0) {
+          this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+            endDate,
+            -1
+          );
+        }
+
+        OneView.core.zopHandler.updateStartEndZOP(this);
+        this.isGraded = false;
+        this.grade = 0;
+        this.calendarId = calendarId;
+        this.eventId = eventId;
+        this.color = color;
+        this.isHovered = isHovered;
+        this.isDetail = isDetail;
+        this.mwNode = mwNode;
+      }
     }
   }
 

@@ -20,7 +20,7 @@ function bob() {
       : node.tags;
     // @ts-ignore
     const source = node.source || "default";
-    return ourTags ? colorMap?.[source][ourTags[0]] : undefined;
+    return ourTags ? colorMap?.[source]?.[ourTags[0]] : undefined;
   };
 
   const redraw = (
