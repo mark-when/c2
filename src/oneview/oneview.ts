@@ -45,8 +45,10 @@ export namespace OneView {
     }
 
     get calendarIdLastAddedTo() {
-      var a = localStorage.getItem("oneview_settings_lastCalendarId");
-      if (void 0 !== a && null !== a) return JSON.parse(a);
+      try {
+        var a = localStorage.getItem("oneview_settings_lastCalendarId");
+        if (void 0 !== a && null !== a) return JSON.parse(a);
+      } catch {}
     }
     set calendarIdLastAddedTo(a) {
       this.localStorageSetItem(
@@ -259,21 +261,37 @@ export namespace OneView {
     }
 
     getBoolean(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? JSON.parse(c) : b;
+      try {
+        var c = localStorage.getItem(a);
+        return void 0 !== c && null !== c ? JSON.parse(c) : b;
+      } catch {
+        return b;
+      }
     }
     getObjectData(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? c : b;
+      try {
+        var c = localStorage.getItem(a);
+        return void 0 !== c && null !== c ? c : b;
+      } catch {
+        return b;
+      }
     }
     getString(a, b) {
-      var c = localStorage.getItem(a);
-      return void 0 !== c && null !== c ? JSON.parse(c) : b;
+      try {
+        var c = localStorage.getItem(a);
+        return void 0 !== c && null !== c ? JSON.parse(c) : b;
+      } catch {
+        return b;
+      }
     }
     getNumber(a, b, f) {
-      a = localStorage.getItem(a);
-      void 0 !== a && null !== a && (a = JSON.parse(a));
-      return void 0 !== a && null !== a ? (f || 0 != a ? a : b) : b;
+      try {
+        a = localStorage.getItem(a);
+        void 0 !== a && null !== a && (a = JSON.parse(a));
+        return void 0 !== a && null !== a ? (f || 0 != a ? a : b) : b;
+      } catch {
+        return b;
+      }
     }
     correctWeekDayNumber(a) {
       for (; 1 > a; ) a += 7;
@@ -3744,7 +3762,7 @@ export namespace OneView {
         (this.canvasMenuContext = this.canvasMenu.getContext("2d")));
     }
     resetDrawAreaSize_Delayed() {
-      this.resetDrawAreaSize()
+      this.resetDrawAreaSize();
     }
     resetDrawAreaSize() {
       var viewport = document.querySelector('meta[name="viewport"]');
@@ -8926,7 +8944,7 @@ export namespace OneView {
         this.endDateTime = params[4];
 
         if (params[3].getHours() === 0 && params[3].getMinutes() === 0) {
-          this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+          this.endDateTime = OneView.core?.calendarDateHandler?.addMinutes(
             params[3],
             -1
           );
@@ -8962,7 +8980,7 @@ export namespace OneView {
         this.endDateTime = endDate;
 
         if (endDate.getHours() === 0 && endDate.getMinutes() === 0) {
-          this.endDateTime = OneView.core.calendarDateHandler.addMinutes(
+          this.endDateTime = OneView.core?.calendarDateHandler?.addMinutes(
             endDate,
             -1
           );
@@ -10362,7 +10380,7 @@ export namespace OneView {
       });
     }
     resetDrawAreaSize(b, c) {
-      console.log('resizing')
+      console.log("resizing");
       this.zopAreaTop = 0;
       this.zopAreaHeight = b;
       this.zopAreaLeft = 0;
@@ -12083,10 +12101,14 @@ export namespace OneView {
       );
     }
     static getLastSessionWasInDemoMode() {
-      var a = localStorage.getItem(
-        "oneview_demo_last_session_was_in_demo_mode"
-      );
-      return null == a || void 0 == a ? true : JSON.parse(a);
+      try {
+        var a = localStorage.getItem(
+          "oneview_demo_last_session_was_in_demo_mode"
+        );
+        return null == a || void 0 == a ? true : JSON.parse(a);
+      } catch {
+        return true;
+      }
     }
     static setLastSessionWasInDemoMode(b) {
       new OneView.LocalStorage().localStorageSetItem(
@@ -12095,33 +12117,37 @@ export namespace OneView {
       );
     }
     loadEventsFromCache() {
-      var b = localStorage.getItem("oneview_demo_verrsion"),
-        d = localStorage.getItem("oneview_demo_saveComplete"),
-        f = localStorage.getItem("oneview_demo_allEvents"),
-        g = localStorage.getItem("oneview_demo_allCalendars"),
-        m = localStorage.getItem("oneview_demo_primaryCalendarId"),
-        n = localStorage.getItem("oneview_demo_demo");
-      if (
-        b !== this.dbVersion ||
-        "true" != d ||
-        null == g ||
-        void 0 == g ||
-        null == f ||
-        void 0 == f ||
-        null == m ||
-        void 0 == m ||
-        null == n ||
-        void 0 == n
-      )
-        return false;
       try {
-        (OneView.core.calendarPrimaryId = JSON.parse(m)),
-          (this.calendarEvents = JSON.parse(f, this.dateTimeReviver)),
-          (OneView.core.calendars = JSON.parse(g, this.dateTimeReviver));
-      } catch (l) {
+        var b = localStorage.getItem("oneview_demo_verrsion"),
+          d = localStorage.getItem("oneview_demo_saveComplete"),
+          f = localStorage.getItem("oneview_demo_allEvents"),
+          g = localStorage.getItem("oneview_demo_allCalendars"),
+          m = localStorage.getItem("oneview_demo_primaryCalendarId"),
+          n = localStorage.getItem("oneview_demo_demo");
+        if (
+          b !== this.dbVersion ||
+          "true" != d ||
+          null == g ||
+          void 0 == g ||
+          null == f ||
+          void 0 == f ||
+          null == m ||
+          void 0 == m ||
+          null == n ||
+          void 0 == n
+        )
+          return false;
+        try {
+          (OneView.core.calendarPrimaryId = JSON.parse(m)),
+            (this.calendarEvents = JSON.parse(f, this.dateTimeReviver)),
+            (OneView.core.calendars = JSON.parse(g, this.dateTimeReviver));
+        } catch (l) {
+          return false;
+        }
+        return true;
+      } catch {
         return false;
       }
-      return true;
     }
     persistCalendarsVisibilitySettings(b) {
       this.localStorageSetItem(
@@ -12132,16 +12158,18 @@ export namespace OneView {
       OneView.core.populateCalendars();
     }
     applyCalendarsVisibilitySettings() {
-      var b = localStorage.getItem("oneview_demo_visibilitySettings");
-      if (null !== b && void 0 !== b)
-        for (
-          var b = JSON.parse(b, this.dateTimeReviver), d = 0;
-          d < OneView.core.calendars.length;
-          d++
-        )
-          for (var f = 0; f < b.length; f++)
-            b[f].id == OneView.core.calendars[d].id &&
-              (OneView.core.calendars[d].visibility = b[f].newVisibility);
+      try {
+        var b = localStorage.getItem("oneview_demo_visibilitySettings");
+        if (null !== b && void 0 !== b)
+          for (
+            var b = JSON.parse(b, this.dateTimeReviver), d = 0;
+            d < OneView.core.calendars.length;
+            d++
+          )
+            for (var f = 0; f < b.length; f++)
+              b[f].id == OneView.core.calendars[d].id &&
+                (OneView.core.calendars[d].visibility = b[f].newVisibility);
+      } catch {}
     }
     analyticsEvent(a, b) {}
     analyticsPage(a) {}
