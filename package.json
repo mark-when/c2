@@ -1,5 +1,5 @@
 {
-  "name": "cal2",
+  "name": "oneview",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -15,11 +15,15 @@
   "devDependencies": {
     "@types/node": "^20.4.8",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vite-plugin-singlefile": "^0.13.3"
   },
   "dependencies": {
     "@markwhen/parser": "^0.9.1",
     "@markwhen/view-client": "^1.4.0",
     "moment": "^2.29.4"
-  }
+  },
+  "files": [
+    "dist/index.html"
+  ]
 }
