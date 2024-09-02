@@ -1770,6 +1770,7 @@ export namespace OneView {
         OneView.core.settings.titleWidth;
     }
     redrawAddButton() {
+      return;
       OneView.core.appStateHandler.isAddButtonBeingDragged ||
       this.isAnimationActive()
         ? (this.passedMinDistance() &&
