@@ -1,8 +1,7 @@
 import { OneView } from "./oneview/oneview";
-import { useLpc } from "@markwhen/view-client";
-import { isEventNode, walk2 } from "@markwhen/parser/lib/Noder";
-import { Path } from "@markwhen/parser/lib/Types";
-import { Node, NodeArray, SomeNode } from "@markwhen/parser/lib/Node";
+import { useLpc, MarkwhenState, Sourced } from "@markwhen/view-client";
+import { isEvent, iter, Eventy, Event, EventGroup } from "@markwhen/parser";
+import { Path } from "@markwhen/parser";
 
 type ColorMap = Record<string, Record<string, string>>;
 
@@ -12,37 +11,34 @@ function bob() {
   let isDark = false;
   let events: OneView.CalendarEventObject[] = [];
   let colorMap: ColorMap = {};
-  let transformed: Node<NodeArray>;
+  let transformed: EventGroup;
 
-  const eventColor = (node: SomeNode, colorMap: ColorMap) => {
-    const ourTags = isEventNode(node)
-      ? node.value.eventDescription.tags
-      : node.tags;
-    // @ts-ignore
+  const eventColor = (node: Sourced<Eventy>, colorMap: ColorMap) => {
+    const ourTags = node.tags;
     const source = node.source || "default";
     return ourTags ? colorMap?.[source]?.[ourTags[0]] : undefined;
   };
 
   const redraw = (
-    transformed: Node<NodeArray>,
+    transformed: EventGroup,
     hovering: Path | undefined,
     hard: boolean = true
   ) => {
     events = [];
-    for (const { node, path } of walk2(transformed, [])) {
-      if (node && isEventNode(node)) {
+    for (const { eventy, path } of iter(transformed)) {
+      if (eventy && isEvent(eventy)) {
         const eventObj = new OneView.CalendarEventObject({
-          summary: node.value.eventDescription.eventDescription,
+          summary: eventy.firstLine.restTrimmed,
           description: path.join(","),
           location: "",
-          startDate: new Date(node.value.dateRangeIso.fromDateTimeIso),
-          endDate: new Date(node.value.dateRangeIso.toDateTimeIso),
+          startDate: new Date(eventy.dateRangeIso.fromDateTimeIso),
+          endDate: new Date(eventy.dateRangeIso.toDateTimeIso),
           calendarId: "Default",
           eventId: path.join(","),
-          color: eventColor(node, colorMap),
+          color: eventColor(eventy, colorMap),
           isHovered: path.join(",") === hovering?.join(","),
           isDetail: path.join(",") === detail?.join(","),
-          mwNode: node,
+          mwNode: eventy,
         });
         events.push(eventObj);
       }

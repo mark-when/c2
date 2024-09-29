@@ -5147,9 +5147,12 @@ export namespace OneView {
                 OneView.core.zopHandler.zopSizeOfWeek)
         )
       );
-      "3" == OneView.core.commonUserSettings.theme &&
-        (b = Math.floor(15 + (255 - b) / 4));
-      this.oddWeekColor = "rgb(" + b + ", " + (b + 10) + ", " + (b + 20) + ")";
+      const dark = "3" == OneView.core.commonUserSettings.theme;
+      // weekend
+      console.log(b);
+      this.oddWeekColor = `rgba(${b}, ${b}, ${b}, calc(${dark ? 1 : 1.5} - ${
+        b / 255
+      }))`;
       for (b = 0; b < this.weekCalendarDateObjects.length; b++) {
         if (
           this.weekCalendarDateObjects[b].endZOP >
@@ -9532,7 +9535,7 @@ export namespace OneView {
     colorBlack = "#000000";
     colorDark = "#333333";
     colorBigDateDividerStr = "rgba( 133, 136, 131, ";
-    colorTitleBackground = "#0e162a";
+    colorTitleBackground = "#27272a";
     colorTitleText = "#95a2b8";
     colorGrayText = "#808080";
     colorDarkText = "#95a3b8";
@@ -9542,7 +9545,7 @@ export namespace OneView {
     colorLightSoft = "#BBBBBB";
     colorTag2 = (this.colorTag = "#E50081");
     colorTagText = "#FFFFFF";
-    colorBackground = "#0f162a";
+    colorBackground = "#27272a";
     colorWhite = (this.colorLight = "#FFFFFF");
     colorRed = "#333333";
     colorMarker = "#e0e7ff";

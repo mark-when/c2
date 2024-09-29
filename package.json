@@ -15,12 +15,12 @@
   "devDependencies": {
     "@types/node": "^20.4.8",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9",
-    "vite-plugin-singlefile": "^0.13.3"
+    "vite": "^5.4.8",
+    "vite-plugin-singlefile": "^2.0.2"
   },
   "dependencies": {
-    "@markwhen/parser": "^0.9.1",
-    "@markwhen/view-client": "^1.4.0",
+    "@markwhen/parser": "^0.12.0-beta.4",
+    "@markwhen/view-client": "^1.5.0-beta.1",
     "moment": "^2.29.4"
   },
   "files": [
