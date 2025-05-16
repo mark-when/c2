@@ -1,0 +1,8 @@
+{
+  "name": "Oneview",
+  "description": "Vertical scrolling timeline.",
+  "repo": "https://github.com/mark-when/c2",
+  "iconSvgPath": "M 9 8 h 7 Z M 8 12 h 6 Z M 11 16 h 5 Z M 5 4 Q 4 4 4 5 L 4 19 Q 4 20 5 20 L 20 20 Q 21 20 21 19 L 21 5 Q 21 4 20 4 Z",
+  "screenshots": ["oneview.png"],
+  "by": "markwhen"
+}
