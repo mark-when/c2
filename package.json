@@ -7,7 +7,7 @@
     "dev": "vite",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildIgnoreErrors": "tsc | 2>/dev/null; vite build && cp _headers dist/_headers",
+    "buildIgnoreErrors": "tsc | 2>/dev/null; vite build",
     "watch": "tsc --watch"
   },
   "author": "",
