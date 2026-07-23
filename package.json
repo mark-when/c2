@@ -19,8 +19,8 @@
     "vite-plugin-singlefile": "^2.2.0"
   },
   "dependencies": {
-    "@markwhen/parser": "^1.1.0",
-    "@markwhen/view-client": "^1.5.3",
+    "@markwhen/parser": "^1.2.0",
+    "@markwhen/view-client": "^1.6.2",
     "moment": "^2.30.1"
   },
   "files": [
